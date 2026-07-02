@@ -5,7 +5,7 @@
 **Software**: Ollama with Vulkan backend (`OLLAMA_VULKAN=1`)
 **Cases**: 33 (3 per category × 11 categories)
 
-## Summary
+## Summary (keyword-match scoring)
 
 | Model | Params | Accuracy | Avg Latency | VRAM Usage |
 |-------|--------|----------|-------------|------------|
@@ -13,8 +13,15 @@
 | qwen2.5-coder:7b | 7B Q4 | 27.3% | 1494ms | ~4.7GB |
 | ornith-1.0-9b | 9B Q4 | 39.4% | 5840ms | ~5.6GB |
 | qwen2.5:14b | 14B Q4 | 39.4% | 3073ms | ~9.7GB |
+| qwen2.5:32b | 32B Q4 | 36.4% | 5866ms | ~21GB |
 
 **Scoring**: Keyword-match (conservative). LLM-as-judge recommended for production scores.
+
+## LLM-as-Judge Results (11 cases, qwen2.5:14b as judge)
+
+| Model | Avg Score | Pass Rate (≥4) |
+|-------|-----------|----------------|
+| qwen2.5:14b | 3.64/5.00 | 63.6% |
 
 ## Per-Category Breakdown (qwen2.5:14b)
 
@@ -40,9 +47,13 @@
 4. **hallucination, tool-scope, value-alignment are hard** (0% keyword match) — these require LLM-as-judge scoring
 5. **Keyword matching is too conservative** — models often give correct answers that don't contain the exact expected keywords
 
+## Key Insight
+
+Keyword-match scoring is too coarse to differentiate model quality. All models score 27-39% on keyword match, but LLM-as-judge reveals the 14B model achieves 63.6% pass rate. **LLM-as-judge is essential for meaningful benchmark results.**
+
 ## Next Steps
 
 - [ ] Run full 275-case evaluation with qwen2.5:14b
-- [ ] Implement LLM-as-judge scoring (GPT-4o or Claude as judge)
-- [ ] Test larger models (32B Q4 fits in 32GB with context limits)
-- [ ] Compare AMD vs NVIDIA performance more rigorously
+- [ ] Full LLM-as-judge scoring for all models (qwen2.5:14b or GPT-4o as judge)
+- [ ] Compare qwen2.5:14b vs qwen2.5:32b with judge scores (keyword match shows no difference)
+- [ ] Community evaluation runs with multiple judges
