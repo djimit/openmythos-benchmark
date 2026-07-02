@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this benchmark, please cite it as below."
+type: dataset
+title: "OpenMythos Governance Benchmark v1.0"
+authors:
+  - family-names: "Landman"
+    given-names: "Dennis"
+    affiliation: "Djimit B.V."
+    orcid: "0000-0000-0000-0000"
+  - name: "OpenMythos Consortium"
+repository-code: "https://github.com/djimit/openmythos-benchmark"
+url: "https://github.com/djimit/openmythos-benchmark"
+license: "CC-BY-4.0"
+version: "1.0.0"
+date-released: "2025-07-02"
+keywords:
+  - "AI governance"
+  - "LLM evaluation"
+  - "benchmark"
+  - "red teaming"
+  - "AI safety"
+abstract: >
+  A structured evaluation corpus of 275 cases across 11 categories
+  for testing the governance, safety, and reasoning quality of
+  large language models. Each case includes academic references,
+  real-world analogs, and difficulty calibration.

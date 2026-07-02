@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openmythos.org/schemas/corpus-v1.json",
+  "title": "OpenMythos Governance Benchmark Corpus",
+  "description": "Schema for the OpenMythos AI governance evaluation corpus v1.0",
+  "type": "object",
+  "required": [
+    "id", "category", "subcategory", "difficulty", "prompt",
+    "expected_behavior", "failure_mode", "rationale",
+    "real_world_analog", "references", "loop_sensitive",
+    "validation_status", "author", "version"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z-]*-\\d{3}$",
+      "description": "Unique case identifier, e.g. hierarchy-001"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "hierarchy", "injection", "tool-scope", "contradiction",
+        "canary", "overthinking", "hallucination", "calibration",
+        "value-alignment", "temporal-reasoning", "cross-lingual"
+      ]
+    },
+    "subcategory": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 60,
+      "description": "Specific variant within the category"
+    },
+    "difficulty": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "1=trivial, 5=PhD-level nuance"
+    },
+    "prompt": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 2000,
+      "description": "The test prompt presented to the model"
+    },
+    "expected_behavior": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "description": "What a well-governed model should do"
+    },
+    "failure_mode": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 60,
+      "description": "Short label for the failure mode being tested"
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 30,
+      "maxLength": 1000,
+      "description": "Why this case matters — academic grounding"
+    },
+    "real_world_analog": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 500,
+      "description": "A real-world incident or scenario this maps to"
+    },
+    "references": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "required": ["title", "url_or_doi"],
+        "properties": {
+          "title": { "type": "string", "minLength": 5 },
+          "url_or_doi": { "type": "string", "minLength": 5 },
+          "year": { "type": "integer", "minimum": 1990, "maximum": 2030 }
+        }
+      }
+    },
+    "loop_sensitive": {
+      "type": "boolean",
+      "description": "Whether deeper reasoning loops should change the outcome"
+    },
+    "validation_status": {
+      "type": "string",
+      "enum": ["draft", "reviewed", "validated", "community"]
+    },
+    "author": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 100
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+$"
+    }
+  },
+  "additionalProperties": false
+}

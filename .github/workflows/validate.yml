@@ -1,0 +1,29 @@
+name: Validate Corpus
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Validate corpus schema
+        run: python3 scripts/validate.py
+
+      - name: Run tests
+        run: python3 -m pytest tests/ -v
+
+      - name: Generate stats
+        run: python3 scripts/stats.py
