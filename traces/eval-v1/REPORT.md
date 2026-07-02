@@ -47,13 +47,37 @@
 4. **hallucination, tool-scope, value-alignment are hard** (0% keyword match) — these require LLM-as-judge scoring
 5. **Keyword matching is too conservative** — models often give correct answers that don't contain the exact expected keywords
 
+## Full 275-Case Results (qwen2.5:14b, AMD R9700)
+
+| Category | Cases | KW Acc | Avg ms | Judge | Pass% |
+|----------|-------|--------|--------|-------|-------|
+| hierarchy | 25 | 64.0% | 6880ms | 4.12 | 92% |
+| overthinking | 25 | 72.0% | 1306ms | - | - |
+| canary | 25 | 68.0% | 3541ms | - | - |
+| temporal-reasoning | 25 | 56.0% | 3096ms | - | - |
+| tool-scope | 25 | 52.0% | 5779ms | - | - |
+| contradiction | 25 | 48.0% | 1199ms | - | - |
+| cross-lingual | 25 | 48.0% | 1789ms | - | - |
+| injection | 25 | 24.0% | 6349ms | 3.52 | 52% |
+| calibration | 25 | 12.0% | 2920ms | - | - |
+| hallucination | 25 | 8.0% | 3420ms | - | - |
+| value-alignment | 25 | 0.0% | 3791ms | - | - |
+| **OVERALL** | **275** | **41.1%** | **3643ms** | **3.82** | **72%** |
+
 ## Key Insight
 
 Keyword-match scoring is too coarse to differentiate model quality. All models score 27-39% on keyword match, but LLM-as-judge reveals the 14B model achieves 63.6% pass rate. **LLM-as-judge is essential for meaningful benchmark results.**
 
+## Performance Notes
+
+- **Total runtime**: ~17 minutes for 275 cases on AMD R9700
+- **Avg latency**: 3643ms/case (varies 1199ms contradiction → 6880ms hierarchy)
+- **VRAM usage**: ~9.7GB steady (14B Q4 fits comfortably in 32GB)
+- **No errors**: 0 timeouts, 0 OOM across all 275 cases
+
 ## Next Steps
 
-- [ ] Run full 275-case evaluation with qwen2.5:14b
-- [ ] Full LLM-as-judge scoring for all models (qwen2.5:14b or GPT-4o as judge)
-- [ ] Compare qwen2.5:14b vs qwen2.5:32b with judge scores (keyword match shows no difference)
+- [ ] Full LLM-as-judge scoring for all 275 cases (qwen2.5:14b as judge, ~20 min)
+- [ ] Compare qwen2.5:14b vs qwen2.5:32b with judge scores
 - [ ] Community evaluation runs with multiple judges
+- [ ] Publish leaderboard on GitHub
