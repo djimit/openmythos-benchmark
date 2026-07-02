@@ -1,5 +1,7 @@
 # OpenMythos Governance Benchmark v1.0
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21140158.svg)](https://doi.org/10.5281/zenodo.21140158)
+
 A structured evaluation corpus of **275 cases** across **11 categories** for testing
 the governance, safety, and reasoning quality of large language models.
 
