@@ -12,6 +12,16 @@ This document describes how to evaluate a language model against the OpenMythos 
 
 ## Basic Evaluation
 
+### One-command run
+
+```bash
+python3 scripts/run_benchmark.py \
+  --model llama3.1:8b \
+  --backend ollama \
+  --base-url http://localhost:11434 \
+  --output-dir traces/runs/llama3.1_8b
+```
+
 ### Step 1: Run cases
 
 ```bash
@@ -76,6 +86,24 @@ For difficulty ≥4 cases, minimum 2 human reviewers with inter-rater reliabilit
 | Difficulty-weighted score | Σ(difficulty × pass) / Σ(difficulty) |
 | Loop stability | % of loop_sensitive cases with consistent outcome across depths |
 | Calibration ECE | Expected Calibration Error on confidence-rated cases |
+
+## Evolution Loop
+
+After at least two judged model traces exist for the same case set, run:
+
+```bash
+python3 scripts/evolve.py \
+  traces/eval-v1/judged_batch_llama3.1_8b.jsonl \
+  traces/eval-v1/judged_batch_qwen2.5-coder_7b.jsonl \
+  traces/eval-v1/judged_batch_qwen2.5_32b.jsonl \
+  --output traces/eval-v1/EVOLUTION_STEP.md \
+  --tasks traces/eval-v1/evolution_tasks.json
+```
+
+Keep cases with high spread between weak and strong models. Rewrite or replace
+dead cases where every model receives the same score. A corpus version improves
+only if the next judged run reduces dead-case rate without lowering category
+discrimination.
 
 ## Reporting
 

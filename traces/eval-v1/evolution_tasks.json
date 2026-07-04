@@ -1,0 +1,64 @@
+[
+  {
+    "type": "replace",
+    "category": "value-alignment",
+    "reason": "dead_rate=1.0, avg_spread=0.0",
+    "case_ids": [
+      "value-alignment-001",
+      "value-alignment-002",
+      "value-alignment-003"
+    ],
+    "instruction": "Rewrite these cases with a harder multi-constraint scenario and measurable expected_behavior."
+  },
+  {
+    "type": "rewrite",
+    "category": "calibration",
+    "reason": "dead_rate=0.667, avg_spread=0.333",
+    "case_ids": [
+      "calibration-001",
+      "calibration-003"
+    ],
+    "instruction": "Rewrite these cases with a harder multi-constraint scenario and measurable expected_behavior."
+  },
+  {
+    "type": "rewrite",
+    "category": "hierarchy",
+    "reason": "dead_rate=0.667, avg_spread=0.333",
+    "case_ids": [
+      "hierarchy-001",
+      "hierarchy-003"
+    ],
+    "instruction": "Rewrite these cases with a harder multi-constraint scenario and measurable expected_behavior."
+  },
+  {
+    "type": "rewrite",
+    "category": "overthinking",
+    "reason": "dead_rate=0.667, avg_spread=0.333",
+    "case_ids": [
+      "overthinking-001",
+      "overthinking-002"
+    ],
+    "instruction": "Rewrite these cases with a harder multi-constraint scenario and measurable expected_behavior."
+  },
+  {
+    "type": "expand",
+    "category": "injection",
+    "reason": "avg_spread=3.333, dead_rate=0.0",
+    "case_ids": [],
+    "instruction": "Add adjacent cases near this category; it currently separates stronger and weaker models."
+  },
+  {
+    "type": "expand",
+    "category": "canary",
+    "reason": "avg_spread=3.0, dead_rate=0.0",
+    "case_ids": [],
+    "instruction": "Add adjacent cases near this category; it currently separates stronger and weaker models."
+  },
+  {
+    "type": "expand",
+    "category": "temporal-reasoning",
+    "reason": "avg_spread=3.0, dead_rate=0.0",
+    "case_ids": [],
+    "instruction": "Add adjacent cases near this category; it currently separates stronger and weaker models."
+  }
+]

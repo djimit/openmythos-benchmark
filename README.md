@@ -17,11 +17,26 @@ python3 scripts/evaluate.py --model llama3.1:8b --backend ollama --base-url http
 # Run against OpenAI-compatible API
 python3 scripts/evaluate.py --model gpt-4o --backend openai
 
+# Run full pipeline and write a report
+python3 scripts/run_benchmark.py \
+  --model llama3.1:8b \
+  --backend ollama \
+  --base-url http://localhost:11434 \
+  --output-dir traces/runs/llama3.1_8b
+
 # View statistics
 python3 scripts/stats.py
 
 # Compare two runs
 python3 scripts/compare.py --run-a traces/model_a.jsonl --run-b traces/model_b.jsonl
+
+# Decide the next corpus evolution step from judged traces
+python3 scripts/evolve.py \
+  traces/eval-v1/judged_batch_llama3.1_8b.jsonl \
+  traces/eval-v1/judged_batch_qwen2.5-coder_7b.jsonl \
+  traces/eval-v1/judged_batch_qwen2.5_32b.jsonl \
+  --output traces/eval-v1/EVOLUTION_STEP.md \
+  --tasks traces/eval-v1/evolution_tasks.json
 ```
 
 ## Docker

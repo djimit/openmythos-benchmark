@@ -38,9 +38,9 @@ TRACES_DIR = REPO_ROOT / "traces" / "eval-v1"
 CORPUS_PATH = REPO_ROOT / "cases" / "corpus.jsonl"
 
 
-def load_corpus():
+def load_corpus(path: Path = CORPUS_PATH):
     corpus = {}
-    with open(CORPUS_PATH) as f:
+    with open(path) as f:
         for line in f:
             if line.strip():
                 c = json.loads(line)
@@ -48,7 +48,19 @@ def load_corpus():
     return corpus
 
 
-def call_judge(prompt, model, backend, base_url=None, api_key=None):
+def _response_text(result):
+    text = result.get("output_text", "")
+    if text:
+        return text
+    chunks = []
+    for item in result.get("output", []):
+        for part in item.get("content", []):
+            if part.get("type") == "output_text":
+                chunks.append(part.get("text", ""))
+    return "".join(chunks)
+
+
+def call_judge(prompt, model, backend, base_url=None, api_key=None, api="chat"):
     if backend == "ollama":
         url = f"{base_url or 'http://localhost:11434'}/api/generate"
         payload = json.dumps(
@@ -61,6 +73,36 @@ def call_judge(prompt, model, backend, base_url=None, api_key=None):
         ).encode()
         req = urllib.request.Request(
             url, data=payload, headers={"Content-Type": "application/json"}
+        )
+    elif backend == "anthropic":
+        payload = json.dumps(
+            {
+                "model": model,
+                "max_tokens": 10,
+                "messages": [{"role": "user", "content": prompt}],
+            }
+        ).encode()
+        req = urllib.request.Request(
+            "https://api.anthropic.com/v1/messages",
+            data=payload,
+            headers={
+                "Content-Type": "application/json",
+                "x-api-key": api_key or os.environ.get("ANTHROPIC_API_KEY", ""),
+                "anthropic-version": "2023-06-01",
+            },
+        )
+    elif api == "responses":
+        url = f"{(base_url or 'https://api.openai.com/v1').rstrip('/')}/responses"
+        payload = json.dumps(
+            {"model": model, "input": prompt, "max_output_tokens": 10}
+        ).encode()
+        req = urllib.request.Request(
+            url,
+            data=payload,
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {api_key or os.environ.get('OPENAI_API_KEY', '')}",
+            },
         )
     else:
         url = f"{base_url or 'https://api.openai.com/v1'}/chat/completions"
@@ -86,6 +128,11 @@ def call_judge(prompt, model, backend, base_url=None, api_key=None):
 
     if backend == "ollama":
         return result.get("response", "3").strip()[0]
+    elif backend == "anthropic":
+        return result["content"][0]["text"].strip()[0]
+    elif api == "responses":
+        text = _response_text(result).strip()
+        return text[0] if text else "3"
     else:
         return result["choices"][0]["message"]["content"].strip()[0]
 
@@ -93,16 +140,25 @@ def call_judge(prompt, model, backend, base_url=None, api_key=None):
 def main():
     parser = argparse.ArgumentParser(description="LLM-as-judge scoring")
     parser.add_argument("--trace", required=True, help="Path to trace JSONL")
+    parser.add_argument("--corpus", type=Path, default=CORPUS_PATH, help="Corpus JSONL path")
     parser.add_argument("--judge-model", default="gpt-4o-mini", help="Judge model")
     parser.add_argument(
-        "--judge-backend", default="openai", choices=["ollama", "openai"]
+        "--judge-backend",
+        default="openai",
+        choices=["ollama", "openai", "anthropic"],
     )
     parser.add_argument("--judge-url", default=None, help="Judge API URL")
+    parser.add_argument(
+        "--judge-api",
+        default="chat",
+        choices=["chat", "responses"],
+        help="OpenAI judge API surface",
+    )
     parser.add_argument("--output", default=None, help="Output JSONL path")
     parser.add_argument("--limit", type=int, default=None, help="Limit cases")
     args = parser.parse_args()
 
-    corpus = load_corpus()
+    corpus = load_corpus(args.corpus)
     trace_path = Path(args.trace)
 
     results = []
@@ -142,7 +198,11 @@ def main():
                 )
                 try:
                     score_str = call_judge(
-                        prompt, args.judge_model, args.judge_backend, args.judge_url
+                        prompt,
+                        args.judge_model,
+                        args.judge_backend,
+                        args.judge_url,
+                        api=args.judge_api,
                     )
                     score = (
                         int(score_str)

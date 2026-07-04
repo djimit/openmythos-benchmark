@@ -11,9 +11,9 @@ REPO_ROOT = Path(__file__).parent.parent
 CORPUS_PATH = REPO_ROOT / "cases" / "corpus.jsonl"
 
 
-def load_corpus() -> list[dict]:
+def load_corpus(path: Path = CORPUS_PATH) -> list[dict]:
     cases = []
-    with open(CORPUS_PATH) as f:
+    with open(path) as f:
         for line in f:
             line = line.strip()
             if line:
@@ -43,7 +43,7 @@ def call_ollama(
     }
 
 
-def call_openai(
+def call_openai_chat(
     prompt: str, model: str, api_key: str = None, base_url: str = None
 ) -> dict:
     """Call OpenAI-compatible API."""
@@ -82,19 +82,109 @@ def call_openai(
     }
 
 
+def call_openai_responses(
+    prompt: str, model: str, api_key: str = None, base_url: str = None
+) -> dict:
+    """Call the OpenAI Responses API for GPT-5-class baselines."""
+    import urllib.request
+
+    api_key = api_key or os.environ.get("OPENAI_API_KEY", "")
+    base_url = (base_url or os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")).rstrip("/")
+    payload = json.dumps(
+        {"model": model, "input": prompt, "max_output_tokens": 512}
+    ).encode()
+    req = urllib.request.Request(
+        f"{base_url}/responses",
+        data=payload,
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {api_key}",
+        },
+    )
+    start = time.time()
+    with urllib.request.urlopen(req, timeout=120) as resp:
+        result = json.loads(resp.read())
+    elapsed = time.time() - start
+    text = result.get("output_text", "")
+    if not text:
+        chunks = []
+        for item in result.get("output", []):
+            for part in item.get("content", []):
+                if part.get("type") == "output_text":
+                    chunks.append(part.get("text", ""))
+        text = "".join(chunks)
+    usage = result.get("usage", {})
+    return {
+        "response": text,
+        "tokens": usage.get("total_tokens", 0),
+        "latency_ms": round(elapsed * 1000, 1),
+    }
+
+
+def call_openai(
+    prompt: str,
+    model: str,
+    api_key: str = None,
+    base_url: str = None,
+    api: str = "chat",
+) -> dict:
+    if api == "responses":
+        return call_openai_responses(prompt, model, api_key, base_url)
+    return call_openai_chat(prompt, model, api_key, base_url)
+
+
+def call_anthropic(prompt: str, model: str, api_key: str = None) -> dict:
+    """Call the Anthropic Messages API (raw HTTP — matches the stdlib style here)."""
+    import urllib.request
+
+    api_key = api_key or os.environ.get("ANTHROPIC_API_KEY", "")
+    payload = json.dumps(
+        {
+            "model": model,
+            "max_tokens": 512,
+            "messages": [{"role": "user", "content": prompt}],
+        }
+    ).encode()
+    req = urllib.request.Request(
+        "https://api.anthropic.com/v1/messages",
+        data=payload,
+        headers={
+            "Content-Type": "application/json",
+            "x-api-key": api_key,
+            "anthropic-version": "2023-06-01",
+        },
+    )
+    start = time.time()
+    with urllib.request.urlopen(req, timeout=120) as resp:
+        result = json.loads(resp.read())
+    elapsed = time.time() - start
+    # ponytail: first text block is the answer; refusals still carry a text block
+    text = next((b["text"] for b in result.get("content", []) if b["type"] == "text"), "")
+    usage = result.get("usage", {})
+    return {
+        "response": text,
+        "tokens": usage.get("input_tokens", 0) + usage.get("output_tokens", 0),
+        "latency_ms": round(elapsed * 1000, 1),
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(description="Run OpenMythos benchmark cases")
     parser.add_argument("--model", required=True, help="Model name")
-    parser.add_argument("--backend", default="ollama", choices=["ollama", "openai"])
+    parser.add_argument(
+        "--backend", default="ollama", choices=["ollama", "openai", "anthropic"]
+    )
     parser.add_argument("--base-url", default=None, help="API base URL")
+    parser.add_argument("--api", default="chat", choices=["chat", "responses"], help="OpenAI API surface")
     parser.add_argument("--output", default=None, help="Output JSONL path")
+    parser.add_argument("--corpus", type=Path, default=CORPUS_PATH, help="Corpus JSONL path")
     parser.add_argument("--limit", type=int, default=None, help="Limit number of cases")
     parser.add_argument(
         "--categories", nargs="+", default=None, help="Filter categories"
     )
     args = parser.parse_args()
 
-    cases = load_corpus()
+    cases = load_corpus(args.corpus)
     if args.categories:
         cases = [c for c in cases if c["category"] in args.categories]
     if args.limit:
@@ -118,9 +208,11 @@ def main():
                         args.model,
                         args.base_url or "http://localhost:11434",
                     )
+                elif args.backend == "anthropic":
+                    result = call_anthropic(case["prompt"], args.model)
                 else:
                     result = call_openai(
-                        case["prompt"], args.model, base_url=args.base_url
+                        case["prompt"], args.model, base_url=args.base_url, api=args.api
                     )
             except Exception as e:
                 result = {"response": f"ERROR: {e}", "tokens": 0, "latency_ms": 0}
