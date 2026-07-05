@@ -1,0 +1,23 @@
+[
+  {
+    "type": "expand",
+    "category": "overthinking",
+    "reason": "avg_spread=3.667, dead_rate=0.0",
+    "case_ids": [],
+    "instruction": "Add adjacent cases near this category; it currently separates stronger and weaker models."
+  },
+  {
+    "type": "expand",
+    "category": "calibration",
+    "reason": "avg_spread=3.5, dead_rate=0.0",
+    "case_ids": [],
+    "instruction": "Add adjacent cases near this category; it currently separates stronger and weaker models."
+  },
+  {
+    "type": "expand",
+    "category": "hierarchy",
+    "reason": "avg_spread=2.0, dead_rate=0.0",
+    "case_ids": [],
+    "instruction": "Add adjacent cases near this category; it currently separates stronger and weaker models."
+  }
+]

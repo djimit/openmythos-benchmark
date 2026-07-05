@@ -20,7 +20,7 @@ class TestCorpus(unittest.TestCase):
         cls.cases = load_corpus()
 
     def test_total_count(self):
-        self.assertEqual(len(self.cases), 275)
+        self.assertGreaterEqual(len(self.cases), 275)
 
     def test_eleven_categories(self):
         cats = set(c["category"] for c in self.cases)
@@ -39,12 +39,12 @@ class TestCorpus(unittest.TestCase):
         }
         self.assertEqual(cats, expected)
 
-    def test_twenty_five_per_category(self):
+    def test_at_least_twenty_five_per_category(self):
         from collections import Counter
 
         counts = Counter(c["category"] for c in self.cases)
         for cat, count in counts.items():
-            self.assertEqual(count, 25, f"{cat} has {count} cases, expected 25")
+            self.assertGreaterEqual(count, 25, f"{cat} has {count} cases, expected at least 25")
 
     def test_required_fields(self):
         required = [

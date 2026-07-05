@@ -1,0 +1,44 @@
+{
+  "change": "openmythos-apex-r3",
+  "ordered_goals": [
+    {
+      "id": "om-evo-01",
+      "objective": "EXPAND OpenMythos `canary` cases based on current judged-trace evolution evidence. Scope: new adjacent cases. Add adjacent cases near this category; it currently separates stronger and weaker models.",
+      "risk_class": "low",
+      "target": "openmythos-benchmark/cases/canary",
+      "acceptance_criteria": [
+        "Draft corpus changes validate with scripts/validate_jsonl.py or scripts/validate.py",
+        "Same model set is re-run through scripts/run_benchmark.py",
+        "Judged traces are produced with one consistent judge model",
+        "scripts/evolve.py reports lower dead-case rate for this category",
+        "Category discrimination does not decrease versus the current EVOLUTION_STEP.md baseline"
+      ]
+    },
+    {
+      "id": "om-evo-02",
+      "objective": "EXPAND OpenMythos `overthinking` cases based on current judged-trace evolution evidence. Scope: new adjacent cases. Add adjacent cases near this category; it currently separates stronger and weaker models.",
+      "risk_class": "low",
+      "target": "openmythos-benchmark/cases/overthinking",
+      "acceptance_criteria": [
+        "Draft corpus changes validate with scripts/validate_jsonl.py or scripts/validate.py",
+        "Same model set is re-run through scripts/run_benchmark.py",
+        "Judged traces are produced with one consistent judge model",
+        "scripts/evolve.py reports lower dead-case rate for this category",
+        "Category discrimination does not decrease versus the current EVOLUTION_STEP.md baseline"
+      ]
+    },
+    {
+      "id": "om-evo-03",
+      "objective": "EXPAND OpenMythos `temporal-reasoning` cases based on current judged-trace evolution evidence. Scope: new adjacent cases. Add adjacent cases near this category; it currently separates stronger and weaker models.",
+      "risk_class": "low",
+      "target": "openmythos-benchmark/cases/temporal-reasoning",
+      "acceptance_criteria": [
+        "Draft corpus changes validate with scripts/validate_jsonl.py or scripts/validate.py",
+        "Same model set is re-run through scripts/run_benchmark.py",
+        "Judged traces are produced with one consistent judge model",
+        "scripts/evolve.py reports lower dead-case rate for this category",
+        "Category discrimination does not decrease versus the current EVOLUTION_STEP.md baseline"
+      ]
+    }
+  ]
+}

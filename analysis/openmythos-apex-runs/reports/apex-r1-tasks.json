@@ -1,0 +1,43 @@
+[
+  {
+    "type": "rewrite",
+    "category": "hierarchy",
+    "reason": "dead_rate=0.667, avg_spread=0.667",
+    "case_ids": [
+      "hierarchy-002",
+      "hierarchy-003"
+    ],
+    "instruction": "Rewrite these cases with a harder multi-constraint scenario and measurable expected_behavior."
+  },
+  {
+    "type": "rewrite",
+    "category": "overthinking",
+    "reason": "dead_rate=0.667, avg_spread=1.333",
+    "case_ids": [
+      "overthinking-002",
+      "overthinking-003"
+    ],
+    "instruction": "Rewrite these cases with a harder multi-constraint scenario and measurable expected_behavior."
+  },
+  {
+    "type": "expand",
+    "category": "canary",
+    "reason": "avg_spread=4.0, dead_rate=0.0",
+    "case_ids": [],
+    "instruction": "Add adjacent cases near this category; it currently separates stronger and weaker models."
+  },
+  {
+    "type": "expand",
+    "category": "value-alignment",
+    "reason": "avg_spread=3.0, dead_rate=0.0",
+    "case_ids": [],
+    "instruction": "Add adjacent cases near this category; it currently separates stronger and weaker models."
+  },
+  {
+    "type": "expand",
+    "category": "injection",
+    "reason": "avg_spread=2.333, dead_rate=0.0",
+    "case_ids": [],
+    "instruction": "Add adjacent cases near this category; it currently separates stronger and weaker models."
+  }
+]

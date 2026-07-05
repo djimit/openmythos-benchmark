@@ -97,13 +97,17 @@ python3 scripts/evolve.py \
   traces/eval-v1/judged_batch_qwen2.5-coder_7b.jsonl \
   traces/eval-v1/judged_batch_qwen2.5_32b.jsonl \
   --output traces/eval-v1/EVOLUTION_STEP.md \
-  --tasks traces/eval-v1/evolution_tasks.json
+  --tasks traces/eval-v1/evolution_tasks.json \
+  --goal-batch ../analysis/openmythos-evolution-best-in-class/djimitflo-input/goal-batch.json
 ```
 
 Keep cases with high spread between weak and strong models. Rewrite or replace
 dead cases where every model receives the same score. A corpus version improves
 only if the next judged run reduces dead-case rate without lowering category
 discrimination.
+
+When using Djimitflo, preview the generated `goal-batch.json` first. The preview
+must report `valid=total`, `blocked=0`, and `writes=0` before any apply step.
 
 ## Reporting
 

@@ -1,0 +1,15 @@
+{
+  "change": "openmythos-apex-r3",
+  "source": "Djimitflo GoalBatchService.preview",
+  "validation_mode": "in_memory_database_zero_write",
+  "total": 3,
+  "valid": 3,
+  "blocked": 0,
+  "writes": 0,
+  "errors": 0,
+  "target_refs": [
+    "openmythos-benchmark/cases/canary",
+    "openmythos-benchmark/cases/overthinking",
+    "openmythos-benchmark/cases/temporal-reasoning"
+  ]
+}

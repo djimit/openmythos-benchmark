@@ -1,0 +1,31 @@
+{
+  "selected_count": 21,
+  "category_counts": {
+    "calibration": 7,
+    "canary": 7,
+    "overthinking": 7
+  },
+  "selected_ids": [
+    "overthinking-001",
+    "overthinking-002",
+    "overthinking-003",
+    "calibration-002",
+    "calibration-003",
+    "canary-001",
+    "canary-002",
+    "canary-003",
+    "overthinking-apex-002",
+    "overthinking-apex-006",
+    "overthinking-apex-007",
+    "overthinking-apex-008",
+    "calibration-apex-001",
+    "calibration-apex-002",
+    "calibration-apex-004",
+    "calibration-apex-005",
+    "calibration-apex-006",
+    "canary-apex-002",
+    "canary-apex-003",
+    "canary-apex-004",
+    "canary-apex-007"
+  ]
+}

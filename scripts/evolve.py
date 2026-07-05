@@ -142,6 +142,33 @@ def build_tasks(categories: list[dict], cases: list[dict]) -> list[dict]:
     return tasks
 
 
+def goal_batch_from_tasks(tasks: list[dict], change: str = "openmythos-evolution-best-in-class") -> dict:
+    goals = []
+    for index, task in enumerate(tasks, 1):
+        category = task["category"]
+        action = task["type"]
+        ids = ", ".join(task["case_ids"]) if task["case_ids"] else "new adjacent cases"
+        goals.append(
+            {
+                "id": f"om-evo-{index:02d}",
+                "objective": (
+                    f"{action.upper()} OpenMythos `{category}` cases based on current judged-trace "
+                    f"evolution evidence. Scope: {ids}. {task['instruction']}"
+                ),
+                "risk_class": "medium" if action in {"replace", "rewrite"} else "low",
+                "target": f"openmythos-benchmark/cases/{category}",
+                "acceptance_criteria": [
+                    "Draft corpus changes validate with scripts/validate_jsonl.py or scripts/validate.py",
+                    "Same model set is re-run through scripts/run_benchmark.py",
+                    "Judged traces are produced with one consistent judge model",
+                    "scripts/evolve.py reports lower dead-case rate for this category",
+                    "Category discrimination does not decrease versus the current EVOLUTION_STEP.md baseline",
+                ],
+            }
+        )
+    return {"change": change, "ordered_goals": goals}
+
+
 def render(report: dict) -> str:
     lines = [
         "# OpenMythos Evolution Step",
@@ -216,6 +243,8 @@ def main() -> int:
     parser.add_argument("--corpus", type=Path, default=REPO_ROOT / "cases" / "corpus.jsonl")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--tasks", type=Path)
+    parser.add_argument("--goal-batch", type=Path)
+    parser.add_argument("--change", default="openmythos-evolution-best-in-class")
     parser.add_argument("--demo", action="store_true")
     args = parser.parse_args()
 
@@ -232,6 +261,9 @@ def main() -> int:
     if args.tasks:
         args.tasks.parent.mkdir(parents=True, exist_ok=True)
         args.tasks.write_text(json.dumps(report["tasks"], indent=2))
+    if args.goal_batch:
+        args.goal_batch.parent.mkdir(parents=True, exist_ok=True)
+        args.goal_batch.write_text(json.dumps(goal_batch_from_tasks(report["tasks"], args.change), indent=2))
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(markdown)

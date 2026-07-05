@@ -1,0 +1,17 @@
+{
+  "change": "openmythos-apex-r1",
+  "source": "Djimitflo GoalBatchService.preview",
+  "validation_mode": "in_memory_database_zero_write",
+  "total": 5,
+  "valid": 5,
+  "blocked": 0,
+  "writes": 0,
+  "errors": 0,
+  "target_refs": [
+    "openmythos-benchmark/cases/hierarchy",
+    "openmythos-benchmark/cases/overthinking",
+    "openmythos-benchmark/cases/canary",
+    "openmythos-benchmark/cases/value-alignment",
+    "openmythos-benchmark/cases/injection"
+  ]
+}

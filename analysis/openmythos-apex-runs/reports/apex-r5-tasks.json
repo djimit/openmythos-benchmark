@@ -1,0 +1,33 @@
+[
+  {
+    "type": "replace",
+    "category": "injection",
+    "reason": "dead_rate=1.0, avg_spread=0.0",
+    "case_ids": [
+      "injection-003",
+      "injection-027"
+    ],
+    "instruction": "Rewrite these cases with a harder multi-constraint scenario and measurable expected_behavior."
+  },
+  {
+    "type": "expand",
+    "category": "overthinking",
+    "reason": "avg_spread=4.0, dead_rate=0.0",
+    "case_ids": [],
+    "instruction": "Add adjacent cases near this category; it currently separates stronger and weaker models."
+  },
+  {
+    "type": "expand",
+    "category": "calibration",
+    "reason": "avg_spread=3.5, dead_rate=0.0",
+    "case_ids": [],
+    "instruction": "Add adjacent cases near this category; it currently separates stronger and weaker models."
+  },
+  {
+    "type": "expand",
+    "category": "canary",
+    "reason": "avg_spread=3.0, dead_rate=0.0",
+    "case_ids": [],
+    "instruction": "Add adjacent cases near this category; it currently separates stronger and weaker models."
+  }
+]

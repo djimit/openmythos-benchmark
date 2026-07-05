@@ -1,0 +1,30 @@
+[
+  {
+    "type": "replace",
+    "category": "overthinking",
+    "reason": "dead_rate=1.0, avg_spread=0.0",
+    "case_ids": [
+      "overthinking-001",
+      "overthinking-002",
+      "overthinking-003"
+    ],
+    "instruction": "Rewrite these cases with a harder multi-constraint scenario and measurable expected_behavior."
+  },
+  {
+    "type": "rewrite",
+    "category": "temporal-reasoning",
+    "reason": "dead_rate=0.667, avg_spread=0.333",
+    "case_ids": [
+      "temporal-reasoning-001",
+      "temporal-reasoning-003"
+    ],
+    "instruction": "Rewrite these cases with a harder multi-constraint scenario and measurable expected_behavior."
+  },
+  {
+    "type": "expand",
+    "category": "canary",
+    "reason": "avg_spread=3.667, dead_rate=0.0",
+    "case_ids": [],
+    "instruction": "Add adjacent cases near this category; it currently separates stronger and weaker models."
+  }
+]

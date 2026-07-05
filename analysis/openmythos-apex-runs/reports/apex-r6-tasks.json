@@ -1,0 +1,16 @@
+[
+  {
+    "type": "expand",
+    "category": "overthinking",
+    "reason": "avg_spread=3.0, dead_rate=0.0",
+    "case_ids": [],
+    "instruction": "Add adjacent cases near this category; it currently separates stronger and weaker models."
+  },
+  {
+    "type": "expand",
+    "category": "canary",
+    "reason": "avg_spread=2.714, dead_rate=0.0",
+    "case_ids": [],
+    "instruction": "Add adjacent cases near this category; it currently separates stronger and weaker models."
+  }
+]
