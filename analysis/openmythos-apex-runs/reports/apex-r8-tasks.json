@@ -1,0 +1,18 @@
+[
+  {
+    "type": "rewrite",
+    "category": "canary",
+    "reason": "dead_rate=0.5, avg_spread=2.0",
+    "case_ids": [
+      "canary-apex-006"
+    ],
+    "instruction": "Rewrite these cases with a harder multi-constraint scenario and measurable expected_behavior."
+  },
+  {
+    "type": "expand",
+    "category": "overthinking",
+    "reason": "avg_spread=3.0, dead_rate=0.0",
+    "case_ids": [],
+    "instruction": "Add adjacent cases near this category; it currently separates stronger and weaker models."
+  }
+]
