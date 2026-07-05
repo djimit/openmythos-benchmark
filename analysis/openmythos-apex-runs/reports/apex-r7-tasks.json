@@ -1,0 +1,23 @@
+[
+  {
+    "type": "replace",
+    "category": "overthinking",
+    "reason": "dead_rate=1.0, avg_spread=0.0",
+    "case_ids": [
+      "overthinking-apex-005",
+      "overthinking-apex-006",
+      "overthinking-apex-007"
+    ],
+    "instruction": "Rewrite these cases with a harder multi-constraint scenario and measurable expected_behavior."
+  },
+  {
+    "type": "rewrite",
+    "category": "canary",
+    "reason": "dead_rate=0.667, avg_spread=1.333",
+    "case_ids": [
+      "canary-apex-006",
+      "canary-apex-007"
+    ],
+    "instruction": "Rewrite these cases with a harder multi-constraint scenario and measurable expected_behavior."
+  }
+]
