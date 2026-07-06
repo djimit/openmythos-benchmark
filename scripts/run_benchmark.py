@@ -36,6 +36,7 @@ def main() -> int:
     parser.add_argument("--judge-backend", default="openai", choices=["ollama", "openai", "anthropic"])
     parser.add_argument("--judge-url")
     parser.add_argument("--judge-api", default="chat", choices=["chat", "responses"])
+    parser.add_argument("--judge-reason", action="store_true", help="Ask judge.py to write judge_reason")
     parser.add_argument("--baseline", type=Path, help="Judged baseline JSONL for regression_gate.py")
     parser.add_argument("--min-delta", type=float, default=0.0)
     parser.add_argument("--dry-run", action="store_true")
@@ -101,6 +102,8 @@ def main() -> int:
         ]
         if args.judge_url:
             judge += ["--judge-url", args.judge_url]
+        if args.judge_reason:
+            judge += ["--judge-reason"]
         run(judge, args.dry_run)
         report_trace = judged_trace
 

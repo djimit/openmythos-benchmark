@@ -1,0 +1,254 @@
+[
+  {
+    "id": "dae2a63f-8241-4125-9adb-b72311b95b75",
+    "status": "completed",
+    "metadata": {
+      "goal_batch": {
+        "id": "om-evo-r1-01",
+        "change": "openmythos-advice-r1-significant-step",
+        "target_ref": "openmythos-benchmark/cases/overthinking"
+      },
+      "imported_without_worker_start": true,
+      "handoff_status": "completed_by_openmythos_targeted_execution",
+      "handoff_note": "Imported from OpenMythos advice-r1. Generic Djimitflo doc-drift daemon attempted read-only discovery and marked failed because certification gates were skipped; keep blocked until a targeted OpenMythos worker executes the acceptance criteria.",
+      "blocked_reason": "awaiting_targeted_openmythos_worker",
+      "completed_evidence": {
+        "source": "OpenMythos targeted R3 execution",
+        "completed_at": "2026-07-05T21:39:56.064Z",
+        "report": "/Users/dlandman/OpenMythos/openmythos-benchmark/analysis/openmythos-advice-runs/EXECUTION_R3_FINAL.md",
+        "target": "/Users/dlandman/OpenMythos/openmythos-benchmark/analysis/openmythos-advice-runs/advice-r3-final-targeted.jsonl",
+        "traces": "/Users/dlandman/OpenMythos/openmythos-benchmark/traces/advice-r3-final",
+        "corpus_total": 322,
+        "final_cases": [
+          "overthinking-027",
+          "overthinking-028",
+          "overthinking-029",
+          "overthinking-030",
+          "value-alignment-031",
+          "value-alignment-032",
+          "value-alignment-033",
+          "value-alignment-034"
+        ],
+        "judged_averages": {
+          "llama3_1_8b": 1.75,
+          "qwen2_5_coder_7b": 2.125,
+          "qwen2_5_14b": 4.375
+        },
+        "discrimination": {
+          "overall_spread": 2.625,
+          "dead_case_rate": 0,
+          "overthinking_spread": 3.5,
+          "value_alignment_spread": 3.75
+        },
+        "promotion_gate": "pass_no_all_pass_dead_cases",
+        "negative_control": "legacy_r1_rejected_overthinking_027_030",
+        "validation": [
+          "py_compile",
+          "judge_demo",
+          "promotion_gate_demo",
+          "discrimination_demo",
+          "evolve_demo",
+          "validate_py",
+          "stats_py",
+          "validate_jsonl",
+          "unittest_test_corpus"
+        ]
+      },
+      "completed_at": "2026-07-05T21:39:56.064Z"
+    }
+  },
+  {
+    "id": "5f8a794b-8075-4d7a-90ea-21890f169460",
+    "status": "completed",
+    "metadata": {
+      "goal_batch": {
+        "id": "om-evo-r1-02",
+        "change": "openmythos-advice-r1-significant-step",
+        "target_ref": "openmythos-benchmark/cases/value-alignment"
+      },
+      "imported_without_worker_start": true,
+      "handoff_status": "completed_by_openmythos_targeted_execution",
+      "handoff_note": "Imported from OpenMythos advice-r1. Generic Djimitflo doc-drift daemon attempted read-only discovery and marked failed because certification gates were skipped; keep blocked until a targeted OpenMythos worker executes the acceptance criteria.",
+      "blocked_reason": "awaiting_targeted_openmythos_worker",
+      "completed_evidence": {
+        "source": "OpenMythos targeted R3 execution",
+        "completed_at": "2026-07-05T21:39:56.064Z",
+        "report": "/Users/dlandman/OpenMythos/openmythos-benchmark/analysis/openmythos-advice-runs/EXECUTION_R3_FINAL.md",
+        "target": "/Users/dlandman/OpenMythos/openmythos-benchmark/analysis/openmythos-advice-runs/advice-r3-final-targeted.jsonl",
+        "traces": "/Users/dlandman/OpenMythos/openmythos-benchmark/traces/advice-r3-final",
+        "corpus_total": 322,
+        "final_cases": [
+          "overthinking-027",
+          "overthinking-028",
+          "overthinking-029",
+          "overthinking-030",
+          "value-alignment-031",
+          "value-alignment-032",
+          "value-alignment-033",
+          "value-alignment-034"
+        ],
+        "judged_averages": {
+          "llama3_1_8b": 1.75,
+          "qwen2_5_coder_7b": 2.125,
+          "qwen2_5_14b": 4.375
+        },
+        "discrimination": {
+          "overall_spread": 2.625,
+          "dead_case_rate": 0,
+          "overthinking_spread": 3.5,
+          "value_alignment_spread": 3.75
+        },
+        "promotion_gate": "pass_no_all_pass_dead_cases",
+        "negative_control": "legacy_r1_rejected_overthinking_027_030",
+        "validation": [
+          "py_compile",
+          "judge_demo",
+          "promotion_gate_demo",
+          "discrimination_demo",
+          "evolve_demo",
+          "validate_py",
+          "stats_py",
+          "validate_jsonl",
+          "unittest_test_corpus"
+        ]
+      },
+      "completed_at": "2026-07-05T21:39:56.064Z"
+    }
+  },
+  {
+    "id": "6a8df1c2-261c-4754-a5d9-17046cd49bcb",
+    "status": "completed",
+    "metadata": {
+      "goal_batch": {
+        "id": "om-evo-r1-03",
+        "change": "openmythos-advice-r1-significant-step",
+        "target_ref": "openmythos-benchmark/scripts"
+      },
+      "imported_without_worker_start": true,
+      "dag": [
+        {
+          "step": "implement",
+          "capability_id": null,
+          "role": "maker",
+          "runtime": "codex",
+          "dependencies": []
+        }
+      ],
+      "decomposed_at": "2026-07-05T20:26:21.110Z",
+      "handoff_status": "completed_by_openmythos_targeted_execution",
+      "handoff_note": "Imported from OpenMythos advice-r1. Generic Djimitflo doc-drift daemon attempted read-only discovery and marked failed because certification gates were skipped; keep blocked until a targeted OpenMythos worker executes the acceptance criteria.",
+      "blocked_reason": "awaiting_targeted_openmythos_worker",
+      "completed_evidence": {
+        "source": "OpenMythos targeted R3 execution",
+        "completed_at": "2026-07-05T21:39:56.064Z",
+        "report": "/Users/dlandman/OpenMythos/openmythos-benchmark/analysis/openmythos-advice-runs/EXECUTION_R3_FINAL.md",
+        "target": "/Users/dlandman/OpenMythos/openmythos-benchmark/analysis/openmythos-advice-runs/advice-r3-final-targeted.jsonl",
+        "traces": "/Users/dlandman/OpenMythos/openmythos-benchmark/traces/advice-r3-final",
+        "corpus_total": 322,
+        "final_cases": [
+          "overthinking-027",
+          "overthinking-028",
+          "overthinking-029",
+          "overthinking-030",
+          "value-alignment-031",
+          "value-alignment-032",
+          "value-alignment-033",
+          "value-alignment-034"
+        ],
+        "judged_averages": {
+          "llama3_1_8b": 1.75,
+          "qwen2_5_coder_7b": 2.125,
+          "qwen2_5_14b": 4.375
+        },
+        "discrimination": {
+          "overall_spread": 2.625,
+          "dead_case_rate": 0,
+          "overthinking_spread": 3.5,
+          "value_alignment_spread": 3.75
+        },
+        "promotion_gate": "pass_no_all_pass_dead_cases",
+        "negative_control": "legacy_r1_rejected_overthinking_027_030",
+        "validation": [
+          "py_compile",
+          "judge_demo",
+          "promotion_gate_demo",
+          "discrimination_demo",
+          "evolve_demo",
+          "validate_py",
+          "stats_py",
+          "validate_jsonl",
+          "unittest_test_corpus"
+        ]
+      },
+      "completed_at": "2026-07-05T21:39:56.064Z"
+    }
+  },
+  {
+    "id": "0fc717e1-e869-450a-a2fd-31a2dd5dcaa0",
+    "status": "completed",
+    "metadata": {
+      "goal_batch": {
+        "id": "om-evo-r1-04",
+        "change": "openmythos-advice-r1-significant-step",
+        "target_ref": "openmythos-benchmark/scripts/judge.py"
+      },
+      "imported_without_worker_start": true,
+      "dag": [
+        {
+          "step": "fix",
+          "capability_id": null,
+          "role": "maker",
+          "runtime": "codex",
+          "dependencies": []
+        }
+      ],
+      "decomposed_at": "2026-07-05T20:26:22.235Z",
+      "handoff_status": "completed_by_openmythos_targeted_execution",
+      "handoff_note": "Imported from OpenMythos advice-r1. Generic Djimitflo doc-drift daemon attempted read-only discovery and marked failed because certification gates were skipped; keep blocked until a targeted OpenMythos worker executes the acceptance criteria.",
+      "blocked_reason": "awaiting_targeted_openmythos_worker",
+      "completed_evidence": {
+        "source": "OpenMythos targeted R3 execution",
+        "completed_at": "2026-07-05T21:39:56.064Z",
+        "report": "/Users/dlandman/OpenMythos/openmythos-benchmark/analysis/openmythos-advice-runs/EXECUTION_R3_FINAL.md",
+        "target": "/Users/dlandman/OpenMythos/openmythos-benchmark/analysis/openmythos-advice-runs/advice-r3-final-targeted.jsonl",
+        "traces": "/Users/dlandman/OpenMythos/openmythos-benchmark/traces/advice-r3-final",
+        "corpus_total": 322,
+        "final_cases": [
+          "overthinking-027",
+          "overthinking-028",
+          "overthinking-029",
+          "overthinking-030",
+          "value-alignment-031",
+          "value-alignment-032",
+          "value-alignment-033",
+          "value-alignment-034"
+        ],
+        "judged_averages": {
+          "llama3_1_8b": 1.75,
+          "qwen2_5_coder_7b": 2.125,
+          "qwen2_5_14b": 4.375
+        },
+        "discrimination": {
+          "overall_spread": 2.625,
+          "dead_case_rate": 0,
+          "overthinking_spread": 3.5,
+          "value_alignment_spread": 3.75
+        },
+        "promotion_gate": "pass_no_all_pass_dead_cases",
+        "negative_control": "legacy_r1_rejected_overthinking_027_030",
+        "validation": [
+          "py_compile",
+          "judge_demo",
+          "promotion_gate_demo",
+          "discrimination_demo",
+          "evolve_demo",
+          "validate_py",
+          "stats_py",
+          "validate_jsonl",
+          "unittest_test_corpus"
+        ]
+      },
+      "completed_at": "2026-07-05T21:39:56.064Z"
+    }
+  }
+]

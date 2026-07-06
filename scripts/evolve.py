@@ -117,7 +117,7 @@ def build_tasks(categories: list[dict], cases: list[dict]) -> list[dict]:
     strong_categories = [c for c in categories if c["action"] == "expand"]
 
     for cat in sorted(weak_categories, key=lambda c: (-c["dead_rate"], c["avg_spread"]))[:4]:
-        dead = [c for c in cases if c["category"] == cat["category"] and c["spread"] == 0][:3]
+        dead = [c for c in cases if c["category"] == cat["category"] and c["spread"] == 0]
         tasks.append(
             {
                 "type": cat["action"],

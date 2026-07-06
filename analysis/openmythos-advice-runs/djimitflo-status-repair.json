@@ -1,0 +1,82 @@
+[
+  {
+    "id": "dae2a63f-8241-4125-9adb-b72311b95b75",
+    "status": "blocked",
+    "metadata": {
+      "goal_batch": {
+        "id": "om-evo-r1-01",
+        "change": "openmythos-advice-r1-significant-step",
+        "target_ref": "openmythos-benchmark/cases/overthinking"
+      },
+      "imported_without_worker_start": true,
+      "handoff_status": "ready_for_targeted_openmythos_execution",
+      "handoff_note": "Imported from OpenMythos advice-r1. Generic Djimitflo doc-drift daemon attempted read-only discovery and marked failed because certification gates were skipped; keep blocked until a targeted OpenMythos worker executes the acceptance criteria.",
+      "blocked_reason": "awaiting_targeted_openmythos_worker"
+    }
+  },
+  {
+    "id": "5f8a794b-8075-4d7a-90ea-21890f169460",
+    "status": "blocked",
+    "metadata": {
+      "goal_batch": {
+        "id": "om-evo-r1-02",
+        "change": "openmythos-advice-r1-significant-step",
+        "target_ref": "openmythos-benchmark/cases/value-alignment"
+      },
+      "imported_without_worker_start": true,
+      "handoff_status": "ready_for_targeted_openmythos_execution",
+      "handoff_note": "Imported from OpenMythos advice-r1. Generic Djimitflo doc-drift daemon attempted read-only discovery and marked failed because certification gates were skipped; keep blocked until a targeted OpenMythos worker executes the acceptance criteria.",
+      "blocked_reason": "awaiting_targeted_openmythos_worker"
+    }
+  },
+  {
+    "id": "6a8df1c2-261c-4754-a5d9-17046cd49bcb",
+    "status": "blocked",
+    "metadata": {
+      "goal_batch": {
+        "id": "om-evo-r1-03",
+        "change": "openmythos-advice-r1-significant-step",
+        "target_ref": "openmythos-benchmark/scripts"
+      },
+      "imported_without_worker_start": true,
+      "dag": [
+        {
+          "step": "implement",
+          "capability_id": null,
+          "role": "maker",
+          "runtime": "codex",
+          "dependencies": []
+        }
+      ],
+      "decomposed_at": "2026-07-05T20:26:21.110Z",
+      "handoff_status": "ready_for_targeted_openmythos_execution",
+      "handoff_note": "Imported from OpenMythos advice-r1. Generic Djimitflo doc-drift daemon attempted read-only discovery and marked failed because certification gates were skipped; keep blocked until a targeted OpenMythos worker executes the acceptance criteria.",
+      "blocked_reason": "awaiting_targeted_openmythos_worker"
+    }
+  },
+  {
+    "id": "0fc717e1-e869-450a-a2fd-31a2dd5dcaa0",
+    "status": "blocked",
+    "metadata": {
+      "goal_batch": {
+        "id": "om-evo-r1-04",
+        "change": "openmythos-advice-r1-significant-step",
+        "target_ref": "openmythos-benchmark/scripts/judge.py"
+      },
+      "imported_without_worker_start": true,
+      "dag": [
+        {
+          "step": "fix",
+          "capability_id": null,
+          "role": "maker",
+          "runtime": "codex",
+          "dependencies": []
+        }
+      ],
+      "decomposed_at": "2026-07-05T20:26:22.235Z",
+      "handoff_status": "ready_for_targeted_openmythos_execution",
+      "handoff_note": "Imported from OpenMythos advice-r1. Generic Djimitflo doc-drift daemon attempted read-only discovery and marked failed because certification gates were skipped; keep blocked until a targeted OpenMythos worker executes the acceptance criteria.",
+      "blocked_reason": "awaiting_targeted_openmythos_worker"
+    }
+  }
+]

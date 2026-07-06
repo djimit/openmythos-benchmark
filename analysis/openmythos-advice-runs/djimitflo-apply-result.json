@@ -1,0 +1,128 @@
+{
+  "preview": {
+    "change": "openmythos-advice-r1-significant-step",
+    "total": 4,
+    "valid": 4,
+    "blocked": 0,
+    "items": [
+      {
+        "id": "om-evo-r1-01",
+        "objective": "Replace OpenMythos overthinking dead cases overthinking-027 through overthinking-030 with hard multi-constraint exact-output cases. Use the current advice-r1 judged traces as evidence: overthinking has avg spread 0.60 and dead rate 0.80, so the cases are not useful hard benchmark material.",
+        "risk_class": "medium",
+        "target_ref": "openmythos-benchmark/cases/overthinking",
+        "acceptance_criteria": [
+          "New draft cases validate with scripts/validate_jsonl.py against cases/corpus-schema.json",
+          "The replacement batch mixes strict output shape with date arithmetic, priority ordering, conflicting irrelevant context, or constraint selection",
+          "The same model set is re-run with scripts/run_benchmark.py and judged with qwen2.5:32b-instruct-q4_K_M",
+          "scripts/discrimination.py reports overthinking dead rate below 0.30 on the replacement batch",
+          "No replacement case is promoted when all evaluated models score the same value at 4 or higher"
+        ],
+        "blocked_reasons": []
+      },
+      {
+        "id": "om-evo-r1-02",
+        "objective": "Expand OpenMythos value-alignment around discriminating anchors value-alignment-026, 027, 028 and 030. The current advice-r1 run shows value-alignment avg spread 2.80 and dead rate 0.00, making it the strongest category for immediate corpus growth.",
+        "risk_class": "low",
+        "target_ref": "openmythos-benchmark/cases/value-alignment",
+        "acceptance_criteria": [
+          "Add adjacent value-alignment draft cases covering authority pressure, consent provenance, privacy-vs-litigation, partial authorization, and safe alternative execution",
+          "Each candidate keeps a measurable expected_behavior field with an explicit safe alternative",
+          "At least one evaluated weaker model scores below 4 and at least one stronger model scores 4 or above for each promoted case",
+          "scripts/validate.py passes after promotion",
+          "scripts/discrimination.py keeps value-alignment dead rate at 0.00 on the promoted batch"
+        ],
+        "blocked_reasons": []
+      },
+      {
+        "id": "om-evo-r1-03",
+        "objective": "Add an OpenMythos promotion gate that rejects all-pass dead cases before corpus promotion. The gate should fail any draft candidate where all judged models produce the same score and that score is 4 or higher.",
+        "risk_class": "medium",
+        "target_ref": "openmythos-benchmark/scripts",
+        "acceptance_criteria": [
+          "The gate reuses judged JSONL traces and does not introduce a new dependency",
+          "A small demo or test proves all-pass 5,5,5 cases fail and discriminating 2,5,2 cases pass",
+          "The gate can be run from the command line against two or more judged traces",
+          "The gate reports the rejected case ids and category dead rates",
+          "Existing validate, stats, evolve demo, and discrimination checks still pass"
+        ],
+        "blocked_reasons": []
+      },
+      {
+        "id": "om-evo-r1-04",
+        "objective": "Store short judge rationale in OpenMythos judged traces so failed or borderline cases can be repaired without inferring the failure mode from judge_score alone.",
+        "risk_class": "medium",
+        "target_ref": "openmythos-benchmark/scripts/judge.py",
+        "acceptance_criteria": [
+          "judge.py can emit judge_score plus a short judge_reason field while preserving existing score-only behavior by default or compatibility",
+          "The reason prompt remains concise and bounded so local Ollama judging stays cheap",
+          "Existing report and discrimination scripts continue to work with judged traces that include judge_reason",
+          "A minimal demo or test proves judge_reason is written when enabled",
+          "No OpenAI key is required for the local Ollama validation path"
+        ],
+        "blocked_reasons": []
+      }
+    ],
+    "errors": [],
+    "writes": 0
+  },
+  "created_goals": [
+    {
+      "id": "dae2a63f-8241-4125-9adb-b72311b95b75",
+      "objective": "Replace OpenMythos overthinking dead cases overthinking-027 through overthinking-030 with hard multi-constraint exact-output cases. Use the current advice-r1 judged traces as evidence: overthinking has avg spread 0.60 and dead rate 0.80, so the cases are not useful hard benchmark material.",
+      "risk_class": "medium",
+      "status": "created",
+      "metadata": {
+        "goal_batch": {
+          "id": "om-evo-r1-01",
+          "change": "openmythos-advice-r1-significant-step",
+          "target_ref": "openmythos-benchmark/cases/overthinking"
+        },
+        "imported_without_worker_start": true
+      }
+    },
+    {
+      "id": "5f8a794b-8075-4d7a-90ea-21890f169460",
+      "objective": "Expand OpenMythos value-alignment around discriminating anchors value-alignment-026, 027, 028 and 030. The current advice-r1 run shows value-alignment avg spread 2.80 and dead rate 0.00, making it the strongest category for immediate corpus growth.",
+      "risk_class": "low",
+      "status": "created",
+      "metadata": {
+        "goal_batch": {
+          "id": "om-evo-r1-02",
+          "change": "openmythos-advice-r1-significant-step",
+          "target_ref": "openmythos-benchmark/cases/value-alignment"
+        },
+        "imported_without_worker_start": true
+      }
+    },
+    {
+      "id": "6a8df1c2-261c-4754-a5d9-17046cd49bcb",
+      "objective": "Add an OpenMythos promotion gate that rejects all-pass dead cases before corpus promotion. The gate should fail any draft candidate where all judged models produce the same score and that score is 4 or higher.",
+      "risk_class": "medium",
+      "status": "created",
+      "metadata": {
+        "goal_batch": {
+          "id": "om-evo-r1-03",
+          "change": "openmythos-advice-r1-significant-step",
+          "target_ref": "openmythos-benchmark/scripts"
+        },
+        "imported_without_worker_start": true
+      }
+    },
+    {
+      "id": "0fc717e1-e869-450a-a2fd-31a2dd5dcaa0",
+      "objective": "Store short judge rationale in OpenMythos judged traces so failed or borderline cases can be repaired without inferring the failure mode from judge_score alone.",
+      "risk_class": "medium",
+      "status": "created",
+      "metadata": {
+        "goal_batch": {
+          "id": "om-evo-r1-04",
+          "change": "openmythos-advice-r1-significant-step",
+          "target_ref": "openmythos-benchmark/scripts/judge.py"
+        },
+        "imported_without_worker_start": true
+      }
+    }
+  ],
+  "skipped": [],
+  "started_workers": 0
+}

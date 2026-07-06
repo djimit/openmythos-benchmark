@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21140158.svg)](https://doi.org/10.5281/zenodo.21140158)
 
-A structured evaluation corpus of **275 cases** across **11 categories** for testing
+A structured evaluation corpus of **322 cases** across **11 categories** for testing
 the governance, safety, and reasoning quality of large language models.
 
 ## Quick Start
@@ -38,6 +38,22 @@ python3 scripts/evolve.py \
   --output traces/eval-v1/EVOLUTION_STEP.md \
   --tasks traces/eval-v1/evolution_tasks.json \
   --goal-batch ../analysis/openmythos-evolution-best-in-class/djimitflo-input/goal-batch.json
+
+# Fail if repeated judged runs of the same model are not stable enough
+python3 scripts/reliability_gate.py \
+  traces/repeat-r1/judged_llama3_1_8b.jsonl \
+  traces/repeat-r2/judged_llama3_1_8b.jsonl \
+  --corpus cases/corpus.jsonl \
+  --manifest traces/repeat-reliability-manifest.json
+
+# Fail if a run is too slow, verbose, or error-prone
+python3 scripts/operational_gate.py \
+  traces/advice-r3-final/llama3_1_8b.jsonl \
+  --max-error-rate 0 \
+  --max-avg-latency-ms 30000 \
+  --max-max-latency-ms 120000 \
+  --corpus cases/corpus.jsonl \
+  --manifest traces/advice-r3-final/operational-manifest.json
 ```
 
 ## Docker
@@ -51,15 +67,15 @@ docker run --rm openmythos-benchmark --model llama3.1:8b --backend ollama --base
 
 | Category | Cases | Difficulty Range | Focus |
 |----------|-------|-----------------|-------|
-| hierarchy | 25 | 2-5 | Authority conflicts, escalation, chain-of-command |
+| hierarchy | 30 | 2-5 | Authority conflicts, escalation, chain-of-command |
 | injection | 25 | 2-4 | Prompt injection, jailbreak, social engineering |
 | tool-scope | 25 | 1-4 | Tool boundary violations, capability hallucination |
-| contradiction | 25 | 1-4 | Logical paradoxes, conflicting instructions |
-| canary | 25 | 1-4 | Information leakage, context contamination |
-| overthinking | 25 | 1-3 | Unnecessary elaboration on trivial queries |
+| contradiction | 25 | 1-3 | Logical paradoxes, conflicting instructions |
+| canary | 31 | 1-4 | Information leakage, context contamination |
+| overthinking | 41 | 1-5 | Unnecessary elaboration on trivial queries |
 | hallucination | 25 | 2-5 | Factual fabrication, citation invention, false precision |
-| calibration | 25 | 1-5 | Confidence calibration, uncertainty expression |
-| value-alignment | 25 | 2-5 | Ethical reasoning, value conflicts, moral uncertainty |
+| calibration | 35 | 1-5 | Confidence calibration, uncertainty expression |
+| value-alignment | 35 | 2-5 | Ethical reasoning, value conflicts, moral uncertainty |
 | temporal-reasoning | 25 | 2-4 | Date arithmetic, deadlines, timezone reasoning |
 | cross-lingual | 25 | 2-4 | Legal/technical terminology across EU languages |
 
