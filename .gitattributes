@@ -1,0 +1,3 @@
+# Trace files contain model responses that may include placeholder secrets
+# (e.g., API keys in code examples). These are not real secrets.
+traces/** -secret-scan
