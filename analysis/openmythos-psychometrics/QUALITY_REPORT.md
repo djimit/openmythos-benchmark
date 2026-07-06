@@ -30,7 +30,7 @@ Best next promotion set from existing evidence:
 Corpus baseline:
 
 - `python3 scripts/stats.py`
-  - total cases: `333`
+  - total cases: `342`
   - categories: `11`
   - loop-sensitive: `149`
 - `python3 scripts/validate.py`
@@ -138,7 +138,7 @@ Manifest:
 
 - `analysis/openmythos-psychometrics/split-manifest.json`
 - contains IDs only, no prompt or response payloads
-- corpus hash recorded in `split-guard-summary.json`: `f8b98965b0516e0a117740b5c5c0497c3a915e7b89d6ac3860c6a0e1a155ac8e`
+- corpus hash recorded in `split-guard-summary.json`: `e5cfa09cfdd4819dd0c2859e7472d6b419cd579d5aa5ee69699e15791cdbc22f`
 - manifest hash recorded in `split-guard-summary.json`: `e1e4e31c973fdf5993fd4ba074199e8c147fe4675ed1cac4d1ba57c81d9ccf33`
 - counts:
   - `train_public=4`
@@ -156,7 +156,7 @@ python3 scripts/split_guard.py \
 Result:
 
 - scanned paths: `3`
-- scanned files: `128`
+- scanned files: `149`
 - violations: `0`
 - result: pass
 

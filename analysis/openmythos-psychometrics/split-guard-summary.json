@@ -1,14 +1,14 @@
 {
   "corpus": {
     "path": "/Users/dlandman/OpenMythos/openmythos-benchmark/cases/corpus.jsonl",
-    "sha256": "f8b98965b0516e0a117740b5c5c0497c3a915e7b89d6ac3860c6a0e1a155ac8e"
+    "sha256": "e5cfa09cfdd4819dd0c2859e7472d6b419cd579d5aa5ee69699e15791cdbc22f"
   },
   "manifest": {
     "path": "analysis/openmythos-psychometrics/split-manifest.json",
     "sha256": "e1e4e31c973fdf5993fd4ba074199e8c147fe4675ed1cac4d1ba57c81d9ccf33"
   },
   "passed": true,
-  "scanned_files": 128,
+  "scanned_files": 149,
   "scanned_paths": [
     "/Users/dlandman/OpenMythos/openmythos-benchmark/analysis/openmythos-advice-runs",
     "/Users/dlandman/OpenMythos/openmythos-benchmark/analysis/openmythos-apex-runs",
