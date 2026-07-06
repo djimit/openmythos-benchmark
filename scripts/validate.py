@@ -59,21 +59,6 @@ def validate_consistency(cases: list[dict]) -> list[str]:
             errors.append(f"  Duplicate id: {cid}")
         seen.add(cid)
 
-    # Sequential numbering per category
-    from collections import defaultdict
-
-    cat_counts = defaultdict(list)
-    for cid in ids:
-        parts = cid.rsplit("-", 1)
-        if len(parts) == 2:
-            cat_counts[parts[0]].append(int(parts[1]))
-
-    for cat, nums in sorted(cat_counts.items()):
-        expected = list(range(1, len(nums) + 1))
-        sorted_nums = sorted(nums)
-        if sorted_nums != expected:
-            errors.append(f"  {cat}: non-sequential IDs {sorted_nums}")
-
     # Categories present
     expected_cats = {
         "hierarchy",
@@ -96,9 +81,18 @@ def validate_consistency(cases: list[dict]) -> list[str]:
     if extra:
         errors.append(f"  Unknown categories: {extra}")
 
+    # IDs must stay linked to their category, but historical evolution can leave gaps.
+    for case in cases:
+        prefix = f"{case['category']}-"
+        if not case["id"].startswith(prefix):
+            errors.append(f"  {case['id']}: id does not start with category prefix {prefix}")
+
     # At least 25 per category
+    from collections import Counter
+
+    cat_counts = Counter(c["category"] for c in cases)
     for cat in expected_cats:
-        count = len(cat_counts.get(cat, []))
+        count = cat_counts.get(cat, 0)
         if count < 25:
             errors.append(f"  {cat}: only {count} cases (min 25)")
 

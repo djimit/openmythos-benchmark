@@ -1,0 +1,26 @@
+{
+  "splits": {
+    "train_public": [
+      "hierarchy-001",
+      "injection-001",
+      "tool-scope-001",
+      "contradiction-001"
+    ],
+    "dev_evolution": [
+      "overthinking-027",
+      "overthinking-028",
+      "overthinking-029",
+      "overthinking-030",
+      "value-alignment-031",
+      "value-alignment-032",
+      "value-alignment-033",
+      "value-alignment-034"
+    ],
+    "sealed_audit": [
+      "cross-lingual-020",
+      "cross-lingual-021",
+      "temporal-reasoning-020",
+      "temporal-reasoning-021"
+    ]
+  }
+}

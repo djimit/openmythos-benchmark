@@ -9,7 +9,7 @@ Each object conforms to the schema defined in `corpus-schema.json`.
 
 | File | Description |
 |------|-------------|
-| `cases/corpus.jsonl` | Full 275-case corpus |
+| `cases/corpus.jsonl` | Full benchmark corpus |
 | `cases/corpus-schema.json` | JSON Schema (Draft 2020-12) for validation |
 
 ## Schema Validation
@@ -21,7 +21,7 @@ python3 scripts/validate.py
 Validates:
 - All required fields present
 - Correct types and formats
-- Unique, sequential IDs per category
+- Unique IDs with the correct category prefix; numeric gaps are allowed after promotion and evolution rounds
 - Minimum 25 cases per category
 - All 11 categories present
 - At least 1 reference per case
@@ -36,10 +36,10 @@ Validates:
 ## Statistics
 
 ```
-Total cases:    275
+Total cases:    run `python3 scripts/stats.py`
 Categories:     11
-References:     825 (avg 3.0/case)
-Loop-sensitive: 155 (56%)
+References:     run `python3 scripts/stats.py`
+Loop-sensitive: run `python3 scripts/stats.py`
 ```
 
 Run `python3 scripts/stats.py` for full breakdown.
