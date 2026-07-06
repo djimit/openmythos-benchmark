@@ -110,11 +110,26 @@ def parse_score(text):
     return "3"
 
 
-def call_model(prompt, model, backend, base_url=None, api_key=None, api="chat", strict=False, max_tokens=10):
+def call_model(
+    prompt,
+    model,
+    backend,
+    base_url=None,
+    api_key=None,
+    api="chat",
+    strict=False,
+    max_tokens=10,
+):
     """Call a judge model. Auto-detects frontier models and adjusts parameters."""
     # Frontier models (GPT-5, etc.) don't work with max_tokens on LiteLLM
-    frontier_models = {"openai-gpt5", "openai-gpt5-mini", "openai-gpt5-codex",
-                       "requesty-gpt5", "deepseek-v4-pro", "deepseek-v4-flash"}
+    frontier_models = {
+        "openai-gpt5",
+        "openai-gpt5-mini",
+        "openai-gpt5-codex",
+        "requesty-gpt5",
+        "deepseek-v4-pro",
+        "deepseek-v4-flash",
+    }
     is_frontier = model in frontier_models or "gpt5" in model.lower()
 
     if backend == "ollama":
@@ -124,7 +139,10 @@ def call_model(prompt, model, backend, base_url=None, api_key=None, api="chat", 
                 "model": model,
                 "prompt": prompt,
                 "stream": False,
-                "options": {"temperature": 0, "num_predict": max_tokens if strict else max(max_tokens, 50)},
+                "options": {
+                    "temperature": 0,
+                    "num_predict": max_tokens if strict else max(max_tokens, 50),
+                },
             }
         ).encode()
         req = urllib.request.Request(
@@ -187,8 +205,12 @@ def call_model(prompt, model, backend, base_url=None, api_key=None, api="chat", 
         return result["choices"][0]["message"]["content"].strip()
 
 
-def call_judge(prompt, model, backend, base_url=None, api_key=None, api="chat", strict=False):
-    return parse_score(call_model(prompt, model, backend, base_url, api_key, api, strict))
+def call_judge(
+    prompt, model, backend, base_url=None, api_key=None, api="chat", strict=False
+):
+    return parse_score(
+        call_model(prompt, model, backend, base_url, api_key, api, strict)
+    )
 
 
 def parse_reason(text):
@@ -206,7 +228,9 @@ def judged_entry(row, score, judge_model, reason=None):
 
 def demo() -> int:
     text = "4|Minor missing escalation detail."
-    entry = judged_entry({"case_id": "demo"}, int(parse_score(text)), "demo-judge", parse_reason(text))
+    entry = judged_entry(
+        {"case_id": "demo"}, int(parse_score(text)), "demo-judge", parse_reason(text)
+    )
     assert entry["judge_score"] == 4, entry
     assert entry["judge_reason"] == "Minor missing escalation detail.", entry
     print("demo OK")
@@ -234,9 +258,17 @@ def main():
     )
     parser.add_argument("--output", default=None, help="Output JSONL path")
     parser.add_argument("--limit", type=int, default=None, help="Limit cases")
-    parser.add_argument("--strict", action="store_true", help="Use stricter scoring rubric")
-    parser.add_argument("--judge-reason", action="store_true", help="Also write a short judge_reason field")
-    parser.add_argument("--demo", action="store_true", help="Run a no-network self-check")
+    parser.add_argument(
+        "--strict", action="store_true", help="Use stricter scoring rubric"
+    )
+    parser.add_argument(
+        "--judge-reason",
+        action="store_true",
+        help="Also write a short judge_reason field",
+    )
+    parser.add_argument(
+        "--demo", action="store_true", help="Run a no-network self-check"
+    )
     args = parser.parse_args()
 
     if args.demo:
@@ -268,20 +300,32 @@ def main():
     )
 
     scores = []
-    prompt_template = JUDGE_PROMPT_REASON if args.judge_reason else JUDGE_PROMPT_STRICT if args.strict else JUDGE_PROMPT
+    prompt_template = (
+        JUDGE_PROMPT_REASON
+        if args.judge_reason
+        else JUDGE_PROMPT_STRICT
+        if args.strict
+        else JUDGE_PROMPT
+    )
     with open(output_path, "w") as f:
         for i, r in enumerate(results):
-            case = corpus.get(r["case_id"], {})
+            case_id = r.get("case_id", r.get("id", "?"))
+            case = corpus.get(case_id, {})
+            # Fallback: if corpus lookup fails, try matching by expected_behavior in trace
+            expected_behavior = case.get(
+                "expected_behavior", r.get("expected_behavior", "?")
+            )
+            failure_mode = case.get("failure_mode", r.get("failure_mode", "?"))
             reason = ""
-            if r["response"].startswith("ERROR"):
+            if r.get("response", "").startswith("ERROR"):
                 score = 1
                 reason = "Model response was an evaluation error."
             else:
                 prompt = prompt_template.format(
-                    category=r.get("category", "?"),
-                    difficulty=r.get("difficulty", "?"),
-                    prompt=r["prompt"][:500],
-                    expected_behavior=r["expected_behavior"],
+                    category=r.get("category", case.get("category", "?")),
+                    difficulty=r.get("difficulty", case.get("difficulty", "?")),
+                    prompt=r.get("prompt", "")[:500],
+                    expected_behavior=expected_behavior,
                     failure_mode=case.get("failure_mode", "?"),
                     response=r["response"][:1000],
                 )
@@ -317,7 +361,9 @@ def main():
                     score = 3
 
             scores.append(score)
-            entry = judged_entry(r, score, args.judge_model, reason if args.judge_reason else None)
+            entry = judged_entry(
+                r, score, args.judge_model, reason if args.judge_reason else None
+            )
             f.write(json.dumps(entry, ensure_ascii=False) + "\n")
 
             if (i + 1) % 10 == 0:

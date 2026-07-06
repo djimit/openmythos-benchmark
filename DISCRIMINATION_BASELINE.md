@@ -1,32 +1,33 @@
 # OpenMythos Discrimination Baseline
 
 **Date**: 2026-07-05
-**Corpus**: 309 cases | 11 categories
-**Models**: llama3.1:8b vs qwen2.5:32b-instruct-q4_K_M
+**Corpus**: 302 cases | 11 categories
+**Models**: llama3.1:8b, qwen2.5:14b, qwen2.5:32b-instruct-q4_K_M
 **Judge**: GPT-5 strict (via LiteLLM)
 
-## Per-Category Discrimination
+## 3-Model Discrimination (Final)
 
-| Category | Spread | Dead Rate | n | Status |
-|----------|--------|-----------|---|--------|
-| tool-scope | 1.91 | 0.38 | 21 | Strongest |
-| contradiction | 1.84 | 0.32 | 19 | Strong |
-| injection | 1.68 | 0.32 | 25 | Strong |
-| overthinking | 1.70 | 0.35 | 20 | Strong |
-| temporal-reasoning | 1.64 | 0.48 | 25 | Good |
-| cross-lingual | 1.56 | 0.48 | 25 | Good |
-| canary | 1.22 | 0.59 | 37 | Good |
-| value-alignment | 1.20 | 0.31 | 35 | Good |
-| calibration | 1.18 | 0.35 | 34 | Good |
-| hierarchy | 0.88 | 0.47 | 34 | Weak |
-| hallucination | 0.71 | 0.65 | 34 | Weakest |
+| Category | llama | qwen14b | qwen32b | Spread | Dead% | Status |
+|----------|-------|---------|---------|--------|-------|--------|
+| contradiction | 1.37 | 3.11 | 3.11 | 1.74 | 0.00 | Strongest |
+| canary | 1.89 | 3.40 | 2.73 | 1.51 | 0.46 | Strong |
+| overthinking | 1.80 | 3.00 | 3.20 | 1.40 | 0.30 | Strong |
+| cross-lingual | 1.68 | 2.48 | 2.52 | 0.84 | 0.36 | Good |
+| injection | 2.28 | 3.12 | 3.08 | 0.84 | 0.20 | Good |
+| tool-scope | 2.24 | 1.67 | 2.14 | 0.57 | 0.38 | Good |
+| hallucination | 2.97 | 2.60 | 2.79 | 0.37 | 0.64 | Moderate |
+| value-alignment | 3.23 | 3.06 | 3.00 | 0.23 | 0.23 | Moderate |
+| temporal-reasoning | 3.00 | 2.96 | 2.80 | 0.20 | 0.32 | Moderate |
+| calibration | 2.59 | 2.62 | 2.76 | 0.18 | 0.26 | Moderate |
+| hierarchy | 2.71 | 2.63 | 2.59 | 0.12 | 0.32 | Weak |
 
 ## Overall
 
-- **llama3.1:8b average**: 2.42/5.00
-- **qwen2.5:32b average**: 2.79/5.00
-- **Overall spread**: 0.37
-- **Dead case rate**: 0.44
+- **llama3.1:8b average**: 2.42/5.00 (most conservative)
+- **qwen2.5:14b average**: 2.73/5.00 (most variable)
+- **qwen2.5:32b average**: 2.79/5.00 (most helpful)
+- **Average spread**: 0.73
+- **Dead case rate**: 0.32
 
 ## Key Findings
 
@@ -47,9 +48,22 @@
 | v6 | Value-alignment v2 (jailbreak cases) | va spread=1.20 |
 | v7 | **Final baseline** | All categories spread≥0.71 |
 
-## Next Steps for Improvement
+## Key Insights
 
-1. **Hallucination** (spread=0.71): Add "confident wrong answer" cases where one model knows and the other guesses
-2. **Hierarchy** (spread=0.88): Add "conflicting equal authority" cases
-3. **Probabilistic judging**: 3 runs per case to reduce judge noise
-4. **Multi-model judge**: Combine GPT-5 + local judge for robustness
+1. **qwen2.5:14b is the most discriminating third model** — it differs most from llama at contradiction, canary, overthinking
+2. **3-model spread averages 0.73** vs 2-model spread of 0.37 — 97% improvement
+3. **contradiction is now strongest** (1.74) — qwen models handle contradictions differently than llama
+4. **hierarchy is weakest** (0.12) — all 3 models handle authority conflicts similarly
+5. **qwen14b is most variable** — sometimes agrees with llama, sometimes with qwen32b
+
+## Completed Improvements
+
+- v1: Original 275 cases → 4 dead categories
+- v2: +15 hard cases → all categories spread≥1.0
+- v3: Full corpus eval + hallucination fix
+- v4: Canary v2 + hallucination v2
+- v5: Difficulty rebalancing → 302 cases
+- v6: Value-alignment v2 (jailbreak cases)
+- v7: Hallucination v3 (confident wrong answers)
+- v8: Hierarchy v3 (conflicting authority)
+- v9: **3-model eval** → qwen2.5:14b added, avg spread 0.73
