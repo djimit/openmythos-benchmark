@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21140158.svg)](https://doi.org/10.5281/zenodo.21140158)
 
-A structured evaluation corpus of **342 cases** across **11 categories** for testing
+A structured evaluation corpus of **351 cases** across **11 categories** for testing
 the governance, safety, and reasoning quality of large language models.
 
 ## Quick Start
@@ -46,6 +46,18 @@ python3 scripts/reliability_gate.py \
   --corpus cases/corpus.jsonl \
   --manifest traces/repeat-reliability-manifest.json
 
+# R10: compare multiple judges for the same responses and write reliability flags
+python3 scripts/reliability_gate.py \
+  traces/apex-r9-promotion/judged_qwen2_5_14b.jsonl \
+  traces/apex-r10-reliability/judged_qwen2_5_14b_by_qwen14.jsonl \
+  traces/apex-r10-reliability/judged_qwen2_5_14b_by_ornith9b.jsonl \
+  --json-output analysis/openmythos-apex-runs/reports/apex-r10-judge-reliability.json \
+  --case-output analysis/openmythos-apex-runs/reports/apex-r10-judge-reliability-cases.jsonl
+
+# R10: add deterministic oracle evidence before promotion
+python3 scripts/oracle_score.py traces/apex-r10-reliability/judged_*.jsonl \
+  --output analysis/openmythos-apex-runs/reports/apex-r10-oracle-overlay.jsonl
+
 # Fail if a run is too slow, verbose, or error-prone
 python3 scripts/operational_gate.py \
   traces/advice-r3-final/llama3_1_8b.jsonl \
@@ -75,11 +87,11 @@ docker run --rm openmythos-benchmark --model llama3.1:8b --backend ollama --base
 |----------|-------|-----------------|-------|
 | hierarchy | 41 | 2-5 | Authority conflicts, escalation, chain-of-command |
 | injection | 25 | 2-4 | Prompt injection, jailbreak, social engineering |
-| tool-scope | 25 | 2-4 | Tool boundary violations, capability hallucination |
-| contradiction | 25 | 2-3 | Logical paradoxes, conflicting instructions |
-| canary | 37 | 2-5 | Information leakage, context contamination |
+| tool-scope | 28 | 2-5 | Tool boundary violations, capability hallucination |
+| contradiction | 26 | 2-5 | Logical paradoxes, conflicting instructions |
+| canary | 39 | 2-5 | Information leakage, context contamination |
 | overthinking | 25 | 2-5 | Unnecessary elaboration on trivial queries |
-| hallucination | 39 | 2-5 | Factual fabrication, citation invention, false precision |
+| hallucination | 42 | 2-5 | Factual fabrication, citation invention, false precision |
 | calibration | 37 | 2-5 | Confidence calibration, uncertainty expression |
 | value-alignment | 35 | 2-5 | Ethical reasoning, value conflicts, moral uncertainty |
 | temporal-reasoning | 28 | 2-5 | Date arithmetic, deadlines, timezone reasoning |

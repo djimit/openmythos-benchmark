@@ -294,6 +294,7 @@ def main():
         if args.output
         else trace_path.parent / f"judged_{trace_path.name}"
     )
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     done_ids = set()
     if args.resume and output_path.exists():
         with output_path.open() as existing:

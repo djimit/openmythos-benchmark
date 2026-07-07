@@ -1,0 +1,42 @@
+{
+  "timestamp": "2026-07-07T22:21:05.557202+00:00",
+  "git_sha": "24d17575092f6d49a2ea5a53402c0fd1a2afae59",
+  "result": "fail",
+  "thresholds": {
+    "max_case_range": 2,
+    "max_avg_range": 0.5,
+    "max_pass_rate_range": 15.0,
+    "pass_score": 4
+  },
+  "n_cases": 16,
+  "avg_range": 1.75,
+  "pass_rate_range": 50.0,
+  "unstable_case_ids": [
+    "contradiction-apex-003",
+    "contradiction-apex-004",
+    "hallucination-apex-002",
+    "hallucination-apex-003",
+    "tool-scope-apex-001",
+    "tool-scope-apex-002",
+    "tool-scope-apex-003",
+    "tool-scope-apex-004"
+  ],
+  "traces": [
+    {
+      "path": "traces/apex-r9-promotion/judged_qwen2_5_14b.jsonl",
+      "sha256": "f728967e40c9951647249f4b6fd47b346fafda82427abab4b028dd22fa34c768"
+    },
+    {
+      "path": "traces/apex-r10-reliability/judged_qwen2_5_14b_by_qwen14.jsonl",
+      "sha256": "3aac80483a36ccf5da2c640862483790db895cdfa750b33dab947c2ec4956a64"
+    },
+    {
+      "path": "traces/apex-r10-reliability/judged_qwen2_5_14b_by_ornith9b.jsonl",
+      "sha256": "7ffc62878ed290684c1513f7e8534598930840f618d617fa0ca0e75393552c4b"
+    }
+  ],
+  "corpus": {
+    "path": "cases/corpus.jsonl",
+    "sha256": "a5435af548dfc73b74201266143edd393095357ef188ec152073beb937ec9c65"
+  }
+}

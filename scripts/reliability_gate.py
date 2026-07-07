@@ -6,6 +6,7 @@ import hashlib
 import json
 import subprocess
 import sys
+from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -25,7 +26,66 @@ def load(path: Path) -> dict[str, dict]:
 
 
 def mean(values: list[float]) -> float:
+    values = list(values)
     return sum(values) / len(values) if values else 0.0
+
+
+def reliability_rows(
+    traces: dict[str, dict[str, dict]],
+    max_case_range: int,
+    pass_score: int,
+) -> list[dict]:
+    common = sorted(set.intersection(*(set(trace) for trace in traces.values())))
+    if not common:
+        raise SystemExit("No common case_id values across traces")
+
+    rows = []
+    for case_id in common:
+        scores = {name: traces[name][case_id]["judge_score"] for name in traces}
+        values = list(scores.values())
+        passes = {name: score >= pass_score for name, score in scores.items()}
+        pass_votes = sum(passes.values())
+        score_range = max(values) - min(values)
+        pass_disagreement = 0 < pass_votes < len(passes)
+        low_reliability = score_range > max_case_range or pass_disagreement
+        category = next(iter(traces.values()))[case_id].get("category", "unknown")
+        rows.append(
+            {
+                "case_id": case_id,
+                "category": category,
+                "scores": scores,
+                "score_range": score_range,
+                "avg_score": round(mean(values), 3),
+                "pass_votes": pass_votes,
+                "judge_count": len(passes),
+                "pass_disagreement": pass_disagreement,
+                "low_reliability": low_reliability,
+            }
+        )
+    return rows
+
+
+def category_rows(cases: list[dict]) -> list[dict]:
+    grouped = defaultdict(list)
+    for row in cases:
+        grouped[row["category"]].append(row)
+    out = []
+    for category, rows in sorted(grouped.items()):
+        out.append(
+            {
+                "category": category,
+                "cases": len(rows),
+                "low_reliability": sum(1 for row in rows if row["low_reliability"]),
+                "instability_rate": round(
+                    sum(1 for row in rows if row["low_reliability"]) / len(rows), 3
+                ),
+                "avg_score_range": round(mean(row["score_range"] for row in rows), 3),
+                "pass_disagreement_rate": round(
+                    sum(1 for row in rows if row["pass_disagreement"]) / len(rows), 3
+                ),
+            }
+        )
+    return sorted(out, key=lambda row: (-row["instability_rate"], row["category"]))
 
 
 def analyze(
@@ -35,9 +95,8 @@ def analyze(
     max_pass_rate_range: float,
     pass_score: int = 4,
 ) -> dict:
-    common = sorted(set.intersection(*(set(trace) for trace in traces.values())))
-    if not common:
-        raise SystemExit("No common case_id values across traces")
+    cases = reliability_rows(traces, max_case_range, pass_score)
+    common = [row["case_id"] for row in cases]
 
     runs = {}
     for name, rows in traces.items():
@@ -47,19 +106,7 @@ def analyze(
             "pass_rate": sum(1 for score in scores if score >= pass_score) / len(scores) * 100,
         }
 
-    unstable = []
-    for case_id in common:
-        scores = {name: traces[name][case_id]["judge_score"] for name in traces}
-        score_range = max(scores.values()) - min(scores.values())
-        if score_range > max_case_range:
-            unstable.append(
-                {
-                    "case_id": case_id,
-                    "category": next(iter(traces.values()))[case_id].get("category", "unknown"),
-                    "range": score_range,
-                    "scores": scores,
-                }
-            )
+    unstable = [row for row in cases if row["low_reliability"]]
 
     avg_values = [run["avg_score"] for run in runs.values()]
     pass_values = [run["pass_rate"] for run in runs.values()]
@@ -74,6 +121,8 @@ def analyze(
         "avg_range": avg_range,
         "pass_rate_range": pass_rate_range,
         "unstable_cases": unstable,
+        "cases": cases,
+        "categories": category_rows(cases),
         "thresholds": {
             "max_case_range": max_case_range,
             "max_avg_range": max_avg_range,
@@ -118,6 +167,74 @@ def write_manifest(path: Path, report: dict, trace_paths: list[Path], corpus: Pa
     path.write_text(json.dumps(payload, indent=2) + "\n")
 
 
+def write_json(path: Path, report: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(report, indent=2) + "\n")
+
+
+def write_jsonl(path: Path, rows: list[dict]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w") as f:
+        for row in rows:
+            f.write(json.dumps(row, sort_keys=True) + "\n")
+
+
+def render_markdown(report: dict, limit: int) -> str:
+    lines = [
+        "# OpenMythos Judge Reliability",
+        "",
+        f"- cases compared: `{report['n_cases']}`",
+        f"- avg score range: `{report['avg_range']:.3f}`",
+        f"- pass-rate range: `{report['pass_rate_range']:.1f}%`",
+        f"- low-reliability cases: `{len(report['unstable_cases'])}`",
+        "",
+        "## Runs",
+        "",
+        "| run | avg score | pass rate |",
+        "|---|---:|---:|",
+    ]
+    for name, row in sorted(report["runs"].items()):
+        lines.append(f"| {name} | {row['avg_score']:.3f} | {row['pass_rate']:.1f}% |")
+
+    lines.extend(
+        [
+            "",
+            "## Category Instability",
+            "",
+            "| category | cases | low reliability | instability | avg score range | pass disagreement |",
+            "|---|---:|---:|---:|---:|---:|",
+        ]
+    )
+    for row in report["categories"]:
+        lines.append(
+            f"| {row['category']} | {row['cases']} | {row['low_reliability']} | "
+            f"{row['instability_rate']:.3f} | {row['avg_score_range']:.3f} | "
+            f"{row['pass_disagreement_rate']:.3f} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            f"## Top {limit} Low-Reliability Cases",
+            "",
+            "| case | category | range | pass votes | scores |",
+            "|---|---|---:|---:|---|",
+        ]
+    )
+    ranked = sorted(
+        report["unstable_cases"],
+        key=lambda row: (-row["score_range"], row["case_id"]),
+    )
+    for row in ranked[:limit]:
+        scores = ", ".join(f"{name}={score}" for name, score in sorted(row["scores"].items()))
+        lines.append(
+            f"| {row['case_id']} | {row['category']} | {row['score_range']} | "
+            f"{row['pass_votes']}/{row['judge_count']} | {scores} |"
+        )
+    lines.append("")
+    return "\n".join(lines)
+
+
 def print_report(report: dict, limit: int) -> None:
     print(f"cases compared: {report['n_cases']}")
     print(
@@ -136,7 +253,7 @@ def print_report(report: dict, limit: int) -> None:
         print("\nunstable cases:")
         for row in report["unstable_cases"][:limit]:
             scores = ", ".join(f"{name}={score}" for name, score in sorted(row["scores"].items()))
-            print(f"  {row['case_id']} ({row['category']}) range={row['range']} {scores}")
+            print(f"  {row['case_id']} ({row['category']}) range={row['score_range']} {scores}")
         if len(report["unstable_cases"]) > limit:
             print(f"  ... {len(report['unstable_cases']) - limit} more")
 
@@ -162,8 +279,15 @@ def demo() -> int:
         "r1": {"a": {"case_id": "a", "category": "x", "judge_score": 1}},
         "r2": {"a": {"case_id": "a", "category": "x", "judge_score": 5}},
     }
+    split_pass = {
+        "r1": {"a": {"case_id": "a", "category": "x", "judge_score": 3}},
+        "r2": {"a": {"case_id": "a", "category": "x", "judge_score": 4}},
+    }
     assert analyze(stable, 2, 0.5, 100)["passed"]
     assert not analyze(unstable, 2, 5, 100)["passed"]
+    report = analyze(split_pass, 2, 5, 100)
+    assert report["unstable_cases"][0]["pass_disagreement"], report
+    assert "Category Instability" in render_markdown(report, 5)
     print("demo OK")
     return 0
 
@@ -177,6 +301,9 @@ def main() -> int:
     parser.add_argument("--pass-score", type=int, default=4)
     parser.add_argument("--limit", type=int, default=20)
     parser.add_argument("--manifest", type=Path)
+    parser.add_argument("--json-output", type=Path)
+    parser.add_argument("--case-output", type=Path)
+    parser.add_argument("--markdown-output", type=Path)
     parser.add_argument("--corpus", type=Path)
     parser.add_argument("--demo", action="store_true")
     args = parser.parse_args()
@@ -197,6 +324,13 @@ def main() -> int:
     print_report(report, args.limit)
     if args.manifest:
         write_manifest(args.manifest, report, args.traces, args.corpus)
+    if args.json_output:
+        write_json(args.json_output, report)
+    if args.case_output:
+        write_jsonl(args.case_output, report["cases"])
+    if args.markdown_output:
+        args.markdown_output.parent.mkdir(parents=True, exist_ok=True)
+        args.markdown_output.write_text(render_markdown(report, args.limit))
     return 0 if report["passed"] else 1
 
 
