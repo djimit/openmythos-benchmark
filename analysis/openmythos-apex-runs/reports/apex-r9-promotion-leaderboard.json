@@ -1,0 +1,236 @@
+{
+  "models": [
+    {
+      "model": "qwen2.5:14b-instruct-q4_K_M",
+      "trace": "traces/apex-r9-promotion/combined_judged_qwen2_5_14b.jsonl",
+      "cases": 351,
+      "judged_cases": 351,
+      "avg_score": 3.14,
+      "pass_rate": 0.547,
+      "errors": 0,
+      "avg_latency_ms": 3564.0,
+      "avg_tokens": 155.3,
+      "categories": {
+        "calibration": {
+          "cases": 37,
+          "avg_score": 3.108,
+          "pass_rate": 0.486
+        },
+        "canary": {
+          "cases": 39,
+          "avg_score": 3.051,
+          "pass_rate": 0.487
+        },
+        "contradiction": {
+          "cases": 26,
+          "avg_score": 2.192,
+          "pass_rate": 0.269
+        },
+        "cross-lingual": {
+          "cases": 25,
+          "avg_score": 2.84,
+          "pass_rate": 0.48
+        },
+        "hallucination": {
+          "cases": 42,
+          "avg_score": 3.214,
+          "pass_rate": 0.571
+        },
+        "hierarchy": {
+          "cases": 41,
+          "avg_score": 3.341,
+          "pass_rate": 0.585
+        },
+        "injection": {
+          "cases": 25,
+          "avg_score": 2.92,
+          "pass_rate": 0.52
+        },
+        "overthinking": {
+          "cases": 25,
+          "avg_score": 3.8,
+          "pass_rate": 0.68
+        },
+        "temporal-reasoning": {
+          "cases": 28,
+          "avg_score": 3.464,
+          "pass_rate": 0.643
+        },
+        "tool-scope": {
+          "cases": 28,
+          "avg_score": 2.321,
+          "pass_rate": 0.357
+        },
+        "value-alignment": {
+          "cases": 35,
+          "avg_score": 3.943,
+          "pass_rate": 0.857
+        }
+      }
+    },
+    {
+      "model": "llama3.1:8b",
+      "trace": "traces/apex-r9-promotion/combined_judged_llama3_1_8b.jsonl",
+      "cases": 351,
+      "judged_cases": 351,
+      "avg_score": 2.621,
+      "pass_rate": 0.39,
+      "errors": 0,
+      "avg_latency_ms": 2549.0,
+      "avg_tokens": 138.7,
+      "categories": {
+        "calibration": {
+          "cases": 37,
+          "avg_score": 2.865,
+          "pass_rate": 0.351
+        },
+        "canary": {
+          "cases": 39,
+          "avg_score": 2.718,
+          "pass_rate": 0.487
+        },
+        "contradiction": {
+          "cases": 26,
+          "avg_score": 1.385,
+          "pass_rate": 0.038
+        },
+        "cross-lingual": {
+          "cases": 25,
+          "avg_score": 2.52,
+          "pass_rate": 0.44
+        },
+        "hallucination": {
+          "cases": 42,
+          "avg_score": 3.0,
+          "pass_rate": 0.476
+        },
+        "hierarchy": {
+          "cases": 41,
+          "avg_score": 2.854,
+          "pass_rate": 0.317
+        },
+        "injection": {
+          "cases": 25,
+          "avg_score": 2.36,
+          "pass_rate": 0.32
+        },
+        "overthinking": {
+          "cases": 25,
+          "avg_score": 2.28,
+          "pass_rate": 0.36
+        },
+        "temporal-reasoning": {
+          "cases": 28,
+          "avg_score": 2.393,
+          "pass_rate": 0.393
+        },
+        "tool-scope": {
+          "cases": 28,
+          "avg_score": 2.071,
+          "pass_rate": 0.286
+        },
+        "value-alignment": {
+          "cases": 35,
+          "avg_score": 3.571,
+          "pass_rate": 0.686
+        }
+      }
+    },
+    {
+      "model": "qwen2.5-coder:7b",
+      "trace": "traces/apex-r9-promotion/combined_judged_qwen2_5_coder_7b.jsonl",
+      "cases": 351,
+      "judged_cases": 351,
+      "avg_score": 2.615,
+      "pass_rate": 0.379,
+      "errors": 0,
+      "avg_latency_ms": 1736.1,
+      "avg_tokens": 126.1,
+      "categories": {
+        "calibration": {
+          "cases": 37,
+          "avg_score": 2.622,
+          "pass_rate": 0.378
+        },
+        "canary": {
+          "cases": 39,
+          "avg_score": 3.154,
+          "pass_rate": 0.538
+        },
+        "contradiction": {
+          "cases": 26,
+          "avg_score": 1.846,
+          "pass_rate": 0.192
+        },
+        "cross-lingual": {
+          "cases": 25,
+          "avg_score": 1.84,
+          "pass_rate": 0.12
+        },
+        "hallucination": {
+          "cases": 42,
+          "avg_score": 2.524,
+          "pass_rate": 0.333
+        },
+        "hierarchy": {
+          "cases": 41,
+          "avg_score": 2.707,
+          "pass_rate": 0.366
+        },
+        "injection": {
+          "cases": 25,
+          "avg_score": 2.08,
+          "pass_rate": 0.2
+        },
+        "overthinking": {
+          "cases": 25,
+          "avg_score": 3.56,
+          "pass_rate": 0.64
+        },
+        "temporal-reasoning": {
+          "cases": 28,
+          "avg_score": 2.571,
+          "pass_rate": 0.393
+        },
+        "tool-scope": {
+          "cases": 28,
+          "avg_score": 1.964,
+          "pass_rate": 0.25
+        },
+        "value-alignment": {
+          "cases": 35,
+          "avg_score": 3.4,
+          "pass_rate": 0.629
+        }
+      }
+    }
+  ],
+  "benchmark": {
+    "common_cases": 351,
+    "discrimination": 0.524,
+    "dead_case_rate": 0.305,
+    "avg_case_spread": 1.695
+  },
+  "baseline_model_set_changed": false,
+  "regression": [
+    {
+      "model": "qwen2.5:14b-instruct-q4_K_M",
+      "avg_score_delta": -0.003,
+      "pass_rate_delta": 0.0
+    },
+    {
+      "model": "llama3.1:8b",
+      "avg_score_delta": 0.004,
+      "pass_rate_delta": -0.002
+    },
+    {
+      "model": "qwen2.5-coder:7b",
+      "avg_score_delta": -0.02,
+      "pass_rate_delta": -0.004
+    }
+  ],
+  "benchmark_delta": {
+    "discrimination_delta": -0.002,
+    "dead_case_rate_delta": -0.008
+  }
+}

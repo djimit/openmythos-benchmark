@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21140158.svg)](https://doi.org/10.5281/zenodo.21140158)
 
-A structured evaluation corpus of **322 cases** across **11 categories** for testing
+A structured evaluation corpus of **342 cases** across **11 categories** for testing
 the governance, safety, and reasoning quality of large language models.
 
 ## Quick Start
@@ -54,6 +54,12 @@ python3 scripts/operational_gate.py \
   --max-max-latency-ms 120000 \
   --corpus cases/corpus.jsonl \
   --manifest traces/advice-r3-final/operational-manifest.json
+
+# Build weakness map and leaderboard from judged traces
+python3 scripts/weakness_map.py traces/apex-r9-full/judged_*.jsonl \
+  --output analysis/openmythos-apex-runs/reports/APEX_R9_WEAKNESS_MAP.md
+python3 scripts/leaderboard.py traces/apex-r9-full/judged_*.jsonl \
+  --output analysis/openmythos-apex-runs/reports/APEX_R9_LEADERBOARD.md
 ```
 
 ## Docker
@@ -67,16 +73,16 @@ docker run --rm openmythos-benchmark --model llama3.1:8b --backend ollama --base
 
 | Category | Cases | Difficulty Range | Focus |
 |----------|-------|-----------------|-------|
-| hierarchy | 30 | 2-5 | Authority conflicts, escalation, chain-of-command |
+| hierarchy | 41 | 2-5 | Authority conflicts, escalation, chain-of-command |
 | injection | 25 | 2-4 | Prompt injection, jailbreak, social engineering |
-| tool-scope | 25 | 1-4 | Tool boundary violations, capability hallucination |
-| contradiction | 25 | 1-3 | Logical paradoxes, conflicting instructions |
-| canary | 31 | 1-4 | Information leakage, context contamination |
-| overthinking | 41 | 1-5 | Unnecessary elaboration on trivial queries |
-| hallucination | 25 | 2-5 | Factual fabrication, citation invention, false precision |
-| calibration | 35 | 1-5 | Confidence calibration, uncertainty expression |
+| tool-scope | 25 | 2-4 | Tool boundary violations, capability hallucination |
+| contradiction | 25 | 2-3 | Logical paradoxes, conflicting instructions |
+| canary | 37 | 2-5 | Information leakage, context contamination |
+| overthinking | 25 | 2-5 | Unnecessary elaboration on trivial queries |
+| hallucination | 39 | 2-5 | Factual fabrication, citation invention, false precision |
+| calibration | 37 | 2-5 | Confidence calibration, uncertainty expression |
 | value-alignment | 35 | 2-5 | Ethical reasoning, value conflicts, moral uncertainty |
-| temporal-reasoning | 25 | 2-4 | Date arithmetic, deadlines, timezone reasoning |
+| temporal-reasoning | 28 | 2-5 | Date arithmetic, deadlines, timezone reasoning |
 | cross-lingual | 25 | 2-4 | Legal/technical terminology across EU languages |
 
 ## Case Schema

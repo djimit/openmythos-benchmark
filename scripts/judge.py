@@ -266,6 +266,7 @@ def main():
         action="store_true",
         help="Also write a short judge_reason field",
     )
+    parser.add_argument("--resume", action="store_true", help="Append and skip case_ids already judged in output")
     parser.add_argument(
         "--demo", action="store_true", help="Run a no-network self-check"
     )
@@ -293,11 +294,20 @@ def main():
         if args.output
         else trace_path.parent / f"judged_{trace_path.name}"
     )
+    done_ids = set()
+    if args.resume and output_path.exists():
+        with output_path.open() as existing:
+            for line in existing:
+                if line.strip():
+                    done_ids.add(json.loads(line)["case_id"])
+        results = [row for row in results if row.get("case_id", row.get("id")) not in done_ids]
     model_name = trace_path.stem.replace("eval_v1_", "")
 
     print(
         f"Judging {len(results)} responses from {model_name} using {args.judge_model}..."
     )
+    if done_ids:
+        print(f"  resume: skipped {len(done_ids)} existing case(s)")
 
     scores = []
     prompt_template = (
@@ -307,7 +317,8 @@ def main():
         if args.strict
         else JUDGE_PROMPT
     )
-    with open(output_path, "w") as f:
+    mode = "a" if args.resume else "w"
+    with open(output_path, mode, buffering=1) as f:
         for i, r in enumerate(results):
             case_id = r.get("case_id", r.get("id", "?"))
             case = corpus.get(case_id, {})
@@ -326,7 +337,7 @@ def main():
                     difficulty=r.get("difficulty", case.get("difficulty", "?")),
                     prompt=r.get("prompt", "")[:500],
                     expected_behavior=expected_behavior,
-                    failure_mode=case.get("failure_mode", "?"),
+                    failure_mode=failure_mode,
                     response=r["response"][:1000],
                 )
                 try:
@@ -365,6 +376,7 @@ def main():
                 r, score, args.judge_model, reason if args.judge_reason else None
             )
             f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+            f.flush()
 
             if (i + 1) % 10 == 0:
                 avg = sum(scores) / len(scores)

@@ -22,18 +22,25 @@ def load_corpus(path: Path = CORPUS_PATH) -> list[dict]:
 
 
 def call_ollama(
-    prompt: str, model: str, base_url: str = "http://localhost:11434"
+    prompt: str,
+    model: str,
+    base_url: str = "http://localhost:11434",
+    num_predict: int | None = None,
+    timeout: int = 120,
 ) -> dict:
     """Call Ollama API."""
     import urllib.request
 
     url = f"{base_url}/api/generate"
-    payload = json.dumps({"model": model, "prompt": prompt, "stream": False}).encode()
+    body = {"model": model, "prompt": prompt, "stream": False}
+    if num_predict:
+        body["options"] = {"num_predict": num_predict}
+    payload = json.dumps(body).encode()
     req = urllib.request.Request(
         url, data=payload, headers={"Content-Type": "application/json"}
     )
     start = time.time()
-    with urllib.request.urlopen(req, timeout=120) as resp:
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
         result = json.loads(resp.read())
     elapsed = time.time() - start
     return {
@@ -179,6 +186,9 @@ def main():
     parser.add_argument("--output", default=None, help="Output JSONL path")
     parser.add_argument("--corpus", type=Path, default=CORPUS_PATH, help="Corpus JSONL path")
     parser.add_argument("--limit", type=int, default=None, help="Limit number of cases")
+    parser.add_argument("--resume", action="store_true", help="Append and skip case_ids already present in output")
+    parser.add_argument("--num-predict", type=int, default=None, help="Ollama num_predict output cap")
+    parser.add_argument("--timeout", type=int, default=120, help="HTTP timeout per case in seconds")
     parser.add_argument(
         "--categories", nargs="+", default=None, help="Filter categories"
     )
@@ -196,10 +206,20 @@ def main():
         else REPO_ROOT / "traces" / f"{args.model.replace(':', '_')}.jsonl"
     )
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    done_ids = set()
+    if args.resume and output_path.exists():
+        with output_path.open() as existing:
+            for line in existing:
+                if line.strip():
+                    done_ids.add(json.loads(line)["case_id"])
+        cases = [c for c in cases if c["id"] not in done_ids]
 
     print(f"Running {len(cases)} cases against {args.model} ({args.backend})...")
+    if done_ids:
+        print(f"  resume: skipped {len(done_ids)} existing case(s)")
 
-    with open(output_path, "w") as f:
+    mode = "a" if args.resume else "w"
+    with open(output_path, mode, buffering=1) as f:
         for i, case in enumerate(cases):
             try:
                 if args.backend == "ollama":
@@ -207,6 +227,8 @@ def main():
                         case["prompt"],
                         args.model,
                         args.base_url or "http://localhost:11434",
+                        args.num_predict,
+                        args.timeout,
                     )
                 elif args.backend == "anthropic":
                     result = call_anthropic(case["prompt"], args.model)
@@ -230,6 +252,7 @@ def main():
                 "backend": args.backend,
             }
             f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+            f.flush()
 
             if (i + 1) % 25 == 0:
                 print(f"  [{i + 1}/{len(cases)}] done")

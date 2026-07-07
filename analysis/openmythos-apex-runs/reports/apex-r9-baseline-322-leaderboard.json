@@ -1,0 +1,146 @@
+{
+  "models": [
+    {
+      "model": "qwen2.5:32b-instruct-q4_K_M",
+      "trace": "traces/judged_full_qwen.jsonl",
+      "cases": 322,
+      "judged_cases": 322,
+      "avg_score": 2.786,
+      "pass_rate": 0.457,
+      "errors": 0,
+      "avg_latency_ms": 7553.4,
+      "avg_tokens": 194.3,
+      "categories": {
+        "calibration": {
+          "cases": 35,
+          "avg_score": 3.0,
+          "pass_rate": 0.514
+        },
+        "canary": {
+          "cases": 31,
+          "avg_score": 2.839,
+          "pass_rate": 0.548
+        },
+        "contradiction": {
+          "cases": 25,
+          "avg_score": 2.6,
+          "pass_rate": 0.44
+        },
+        "cross-lingual": {
+          "cases": 25,
+          "avg_score": 2.48,
+          "pass_rate": 0.36
+        },
+        "hallucination": {
+          "cases": 25,
+          "avg_score": 2.76,
+          "pass_rate": 0.48
+        },
+        "hierarchy": {
+          "cases": 30,
+          "avg_score": 2.8,
+          "pass_rate": 0.4
+        },
+        "injection": {
+          "cases": 25,
+          "avg_score": 2.92,
+          "pass_rate": 0.52
+        },
+        "overthinking": {
+          "cases": 41,
+          "avg_score": 2.878,
+          "pass_rate": 0.463
+        },
+        "temporal-reasoning": {
+          "cases": 25,
+          "avg_score": 2.36,
+          "pass_rate": 0.36
+        },
+        "tool-scope": {
+          "cases": 25,
+          "avg_score": 2.48,
+          "pass_rate": 0.36
+        },
+        "value-alignment": {
+          "cases": 35,
+          "avg_score": 3.2,
+          "pass_rate": 0.514
+        }
+      }
+    },
+    {
+      "model": "llama3.1:8b",
+      "trace": "traces/judged_full_llama.jsonl",
+      "cases": 322,
+      "judged_cases": 322,
+      "avg_score": 2.36,
+      "pass_rate": 0.335,
+      "errors": 0,
+      "avg_latency_ms": 2997.2,
+      "avg_tokens": 198.0,
+      "categories": {
+        "calibration": {
+          "cases": 35,
+          "avg_score": 2.343,
+          "pass_rate": 0.286
+        },
+        "canary": {
+          "cases": 31,
+          "avg_score": 2.226,
+          "pass_rate": 0.387
+        },
+        "contradiction": {
+          "cases": 25,
+          "avg_score": 1.32,
+          "pass_rate": 0.04
+        },
+        "cross-lingual": {
+          "cases": 25,
+          "avg_score": 1.4,
+          "pass_rate": 0.04
+        },
+        "hallucination": {
+          "cases": 25,
+          "avg_score": 2.28,
+          "pass_rate": 0.4
+        },
+        "hierarchy": {
+          "cases": 30,
+          "avg_score": 2.467,
+          "pass_rate": 0.3
+        },
+        "injection": {
+          "cases": 25,
+          "avg_score": 2.72,
+          "pass_rate": 0.48
+        },
+        "overthinking": {
+          "cases": 41,
+          "avg_score": 2.146,
+          "pass_rate": 0.317
+        },
+        "temporal-reasoning": {
+          "cases": 25,
+          "avg_score": 2.68,
+          "pass_rate": 0.44
+        },
+        "tool-scope": {
+          "cases": 25,
+          "avg_score": 2.72,
+          "pass_rate": 0.44
+        },
+        "value-alignment": {
+          "cases": 35,
+          "avg_score": 3.4,
+          "pass_rate": 0.514
+        }
+      }
+    }
+  ],
+  "benchmark": {
+    "common_cases": 322,
+    "discrimination": 0.425,
+    "dead_case_rate": 0.478,
+    "avg_case_spread": 1.239
+  }
+}
