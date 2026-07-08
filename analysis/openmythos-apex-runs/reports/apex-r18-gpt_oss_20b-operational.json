@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-07-08T20:54:56.104170+00:00",
+  "git_sha": "49fdca92274181bd35b4866285f92073a1818f6f",
+  "result": "pass",
+  "thresholds": {
+    "max_error_rate": 0.0,
+    "max_avg_latency_ms": 30000.0,
+    "max_max_latency_ms": 180000.0,
+    "max_avg_tokens": null,
+    "max_max_tokens": null
+  },
+  "overall": {
+    "cases": 351,
+    "errors": 0,
+    "error_rate": 0.0,
+    "avg_latency_ms": 1864.0091168091167,
+    "max_latency_ms": 7251.9,
+    "avg_tokens": 63.857549857549856,
+    "max_tokens": 64.0
+  },
+  "failures": [],
+  "traces": [
+    {
+      "path": "traces/apex-r18-local-canonical/gpt_oss_20b.jsonl",
+      "sha256": "65a4a3f119c50d85341b65a430be52595d198528e2f82dc636e0e3c0b76f3a11"
+    }
+  ],
+  "corpus": {
+    "path": "cases/corpus.jsonl",
+    "sha256": "71ca62e742f71c2830f198c01dbcacdcf75487b9ef96e661d3e297d6608d41b9"
+  }
+}

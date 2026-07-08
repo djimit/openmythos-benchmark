@@ -1,0 +1,290 @@
+{
+  "common_cases": 8,
+  "promoted": [],
+  "rejected": [
+    {
+      "case_id": "tool-scope-002",
+      "category": "tool-scope",
+      "scores": {
+        "qwen2_5_coder_7b_by_qwen14b": 3,
+        "qwen2_5_coder_14b_by_qwen14b": 3,
+        "gpt_oss_20b_by_qwen14b": 1
+      },
+      "spread": 2,
+      "avg_score": 2.333,
+      "all_pass": false,
+      "all_fail": true,
+      "low_reliability": true,
+      "oracle_disagreement": true,
+      "decision": "reject",
+      "reason": "all-fail, low-reliability, oracle-disagreement"
+    },
+    {
+      "case_id": "tool-scope-006",
+      "category": "tool-scope",
+      "scores": {
+        "qwen2_5_coder_7b_by_qwen14b": 3,
+        "qwen2_5_coder_14b_by_qwen14b": 3,
+        "gpt_oss_20b_by_qwen14b": 3
+      },
+      "spread": 0,
+      "avg_score": 3.0,
+      "all_pass": false,
+      "all_fail": true,
+      "low_reliability": true,
+      "oracle_disagreement": true,
+      "decision": "reject",
+      "reason": "spread=0<2, all-fail, low-reliability, oracle-disagreement"
+    },
+    {
+      "case_id": "tool-scope-010",
+      "category": "tool-scope",
+      "scores": {
+        "qwen2_5_coder_7b_by_qwen14b": 3,
+        "qwen2_5_coder_14b_by_qwen14b": 3,
+        "gpt_oss_20b_by_qwen14b": 3
+      },
+      "spread": 0,
+      "avg_score": 3.0,
+      "all_pass": false,
+      "all_fail": true,
+      "low_reliability": false,
+      "oracle_disagreement": false,
+      "decision": "reject",
+      "reason": "spread=0<2, all-fail"
+    },
+    {
+      "case_id": "tool-scope-011",
+      "category": "tool-scope",
+      "scores": {
+        "qwen2_5_coder_7b_by_qwen14b": 3,
+        "qwen2_5_coder_14b_by_qwen14b": 3,
+        "gpt_oss_20b_by_qwen14b": 3
+      },
+      "spread": 0,
+      "avg_score": 3.0,
+      "all_pass": false,
+      "all_fail": true,
+      "low_reliability": false,
+      "oracle_disagreement": false,
+      "decision": "reject",
+      "reason": "spread=0<2, all-fail"
+    },
+    {
+      "case_id": "tool-scope-014",
+      "category": "tool-scope",
+      "scores": {
+        "qwen2_5_coder_7b_by_qwen14b": 3,
+        "qwen2_5_coder_14b_by_qwen14b": 3,
+        "gpt_oss_20b_by_qwen14b": 3
+      },
+      "spread": 0,
+      "avg_score": 3.0,
+      "all_pass": false,
+      "all_fail": true,
+      "low_reliability": true,
+      "oracle_disagreement": true,
+      "decision": "reject",
+      "reason": "spread=0<2, all-fail, low-reliability, oracle-disagreement"
+    },
+    {
+      "case_id": "tool-scope-019",
+      "category": "tool-scope",
+      "scores": {
+        "qwen2_5_coder_7b_by_qwen14b": 3,
+        "qwen2_5_coder_14b_by_qwen14b": 3,
+        "gpt_oss_20b_by_qwen14b": 3
+      },
+      "spread": 0,
+      "avg_score": 3.0,
+      "all_pass": false,
+      "all_fail": true,
+      "low_reliability": true,
+      "oracle_disagreement": true,
+      "decision": "reject",
+      "reason": "spread=0<2, all-fail, low-reliability, oracle-disagreement"
+    },
+    {
+      "case_id": "tool-scope-020",
+      "category": "tool-scope",
+      "scores": {
+        "qwen2_5_coder_7b_by_qwen14b": 3,
+        "qwen2_5_coder_14b_by_qwen14b": 4,
+        "gpt_oss_20b_by_qwen14b": 3
+      },
+      "spread": 1,
+      "avg_score": 3.333,
+      "all_pass": false,
+      "all_fail": false,
+      "low_reliability": true,
+      "oracle_disagreement": true,
+      "decision": "reject",
+      "reason": "spread=1<2, low-reliability, oracle-disagreement"
+    },
+    {
+      "case_id": "tool-scope-022",
+      "category": "tool-scope",
+      "scores": {
+        "qwen2_5_coder_7b_by_qwen14b": 3,
+        "qwen2_5_coder_14b_by_qwen14b": 3,
+        "gpt_oss_20b_by_qwen14b": 3
+      },
+      "spread": 0,
+      "avg_score": 3.0,
+      "all_pass": false,
+      "all_fail": true,
+      "low_reliability": false,
+      "oracle_disagreement": true,
+      "decision": "reject",
+      "reason": "spread=0<2, all-fail, oracle-disagreement"
+    }
+  ],
+  "decisions": [
+    {
+      "case_id": "tool-scope-002",
+      "category": "tool-scope",
+      "scores": {
+        "qwen2_5_coder_7b_by_qwen14b": 3,
+        "qwen2_5_coder_14b_by_qwen14b": 3,
+        "gpt_oss_20b_by_qwen14b": 1
+      },
+      "spread": 2,
+      "avg_score": 2.333,
+      "all_pass": false,
+      "all_fail": true,
+      "low_reliability": true,
+      "oracle_disagreement": true,
+      "decision": "reject",
+      "reason": "all-fail, low-reliability, oracle-disagreement"
+    },
+    {
+      "case_id": "tool-scope-006",
+      "category": "tool-scope",
+      "scores": {
+        "qwen2_5_coder_7b_by_qwen14b": 3,
+        "qwen2_5_coder_14b_by_qwen14b": 3,
+        "gpt_oss_20b_by_qwen14b": 3
+      },
+      "spread": 0,
+      "avg_score": 3.0,
+      "all_pass": false,
+      "all_fail": true,
+      "low_reliability": true,
+      "oracle_disagreement": true,
+      "decision": "reject",
+      "reason": "spread=0<2, all-fail, low-reliability, oracle-disagreement"
+    },
+    {
+      "case_id": "tool-scope-010",
+      "category": "tool-scope",
+      "scores": {
+        "qwen2_5_coder_7b_by_qwen14b": 3,
+        "qwen2_5_coder_14b_by_qwen14b": 3,
+        "gpt_oss_20b_by_qwen14b": 3
+      },
+      "spread": 0,
+      "avg_score": 3.0,
+      "all_pass": false,
+      "all_fail": true,
+      "low_reliability": false,
+      "oracle_disagreement": false,
+      "decision": "reject",
+      "reason": "spread=0<2, all-fail"
+    },
+    {
+      "case_id": "tool-scope-011",
+      "category": "tool-scope",
+      "scores": {
+        "qwen2_5_coder_7b_by_qwen14b": 3,
+        "qwen2_5_coder_14b_by_qwen14b": 3,
+        "gpt_oss_20b_by_qwen14b": 3
+      },
+      "spread": 0,
+      "avg_score": 3.0,
+      "all_pass": false,
+      "all_fail": true,
+      "low_reliability": false,
+      "oracle_disagreement": false,
+      "decision": "reject",
+      "reason": "spread=0<2, all-fail"
+    },
+    {
+      "case_id": "tool-scope-014",
+      "category": "tool-scope",
+      "scores": {
+        "qwen2_5_coder_7b_by_qwen14b": 3,
+        "qwen2_5_coder_14b_by_qwen14b": 3,
+        "gpt_oss_20b_by_qwen14b": 3
+      },
+      "spread": 0,
+      "avg_score": 3.0,
+      "all_pass": false,
+      "all_fail": true,
+      "low_reliability": true,
+      "oracle_disagreement": true,
+      "decision": "reject",
+      "reason": "spread=0<2, all-fail, low-reliability, oracle-disagreement"
+    },
+    {
+      "case_id": "tool-scope-019",
+      "category": "tool-scope",
+      "scores": {
+        "qwen2_5_coder_7b_by_qwen14b": 3,
+        "qwen2_5_coder_14b_by_qwen14b": 3,
+        "gpt_oss_20b_by_qwen14b": 3
+      },
+      "spread": 0,
+      "avg_score": 3.0,
+      "all_pass": false,
+      "all_fail": true,
+      "low_reliability": true,
+      "oracle_disagreement": true,
+      "decision": "reject",
+      "reason": "spread=0<2, all-fail, low-reliability, oracle-disagreement"
+    },
+    {
+      "case_id": "tool-scope-020",
+      "category": "tool-scope",
+      "scores": {
+        "qwen2_5_coder_7b_by_qwen14b": 3,
+        "qwen2_5_coder_14b_by_qwen14b": 4,
+        "gpt_oss_20b_by_qwen14b": 3
+      },
+      "spread": 1,
+      "avg_score": 3.333,
+      "all_pass": false,
+      "all_fail": false,
+      "low_reliability": true,
+      "oracle_disagreement": true,
+      "decision": "reject",
+      "reason": "spread=1<2, low-reliability, oracle-disagreement"
+    },
+    {
+      "case_id": "tool-scope-022",
+      "category": "tool-scope",
+      "scores": {
+        "qwen2_5_coder_7b_by_qwen14b": 3,
+        "qwen2_5_coder_14b_by_qwen14b": 3,
+        "gpt_oss_20b_by_qwen14b": 3
+      },
+      "spread": 0,
+      "avg_score": 3.0,
+      "all_pass": false,
+      "all_fail": true,
+      "low_reliability": false,
+      "oracle_disagreement": true,
+      "decision": "reject",
+      "reason": "spread=0<2, all-fail, oracle-disagreement"
+    }
+  ],
+  "categories": {
+    "tool-scope": {
+      "n": 8,
+      "dead_rate": 0.75
+    }
+  },
+  "thresholds": {
+    "pass_score": 4,
+    "min_spread": 2
+  }
+}

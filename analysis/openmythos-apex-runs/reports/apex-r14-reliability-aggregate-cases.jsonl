@@ -1,0 +1,8 @@
+{"case_id": "tool-scope-002", "category": "tool-scope", "low_reliability": true, "max_score_range": 2, "pass_disagreement": true, "targets_checked": 3, "unstable_targets": ["gpt_oss_20b", "qwen2_5_coder_14b", "qwen2_5_coder_7b"]}
+{"case_id": "tool-scope-006", "category": "tool-scope", "low_reliability": true, "max_score_range": 2, "pass_disagreement": true, "targets_checked": 3, "unstable_targets": ["qwen2_5_coder_14b"]}
+{"case_id": "tool-scope-010", "category": "tool-scope", "low_reliability": true, "max_score_range": 2, "pass_disagreement": true, "targets_checked": 3, "unstable_targets": ["qwen2_5_coder_14b", "qwen2_5_coder_7b"]}
+{"case_id": "tool-scope-011", "category": "tool-scope", "low_reliability": true, "max_score_range": 2, "pass_disagreement": true, "targets_checked": 3, "unstable_targets": ["qwen2_5_coder_7b"]}
+{"case_id": "tool-scope-014", "category": "tool-scope", "low_reliability": false, "max_score_range": 0, "pass_disagreement": false, "targets_checked": 3, "unstable_targets": []}
+{"case_id": "tool-scope-019", "category": "tool-scope", "low_reliability": true, "max_score_range": 2, "pass_disagreement": true, "targets_checked": 3, "unstable_targets": ["gpt_oss_20b", "qwen2_5_coder_14b"]}
+{"case_id": "tool-scope-020", "category": "tool-scope", "low_reliability": false, "max_score_range": 0, "pass_disagreement": false, "targets_checked": 3, "unstable_targets": []}
+{"case_id": "tool-scope-022", "category": "tool-scope", "low_reliability": true, "max_score_range": 2, "pass_disagreement": true, "targets_checked": 3, "unstable_targets": ["qwen2_5_coder_14b", "qwen2_5_coder_7b"]}

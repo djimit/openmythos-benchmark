@@ -1,0 +1,82 @@
+{
+  "calibration": {
+    "calibrated": 24,
+    "fail_to_score2": 10,
+    "pass_to_score4": 14,
+    "rows": 24,
+    "traces": [
+      {
+        "input": "traces/apex-r14-draft-eval/judged_qwen2_5_coder_7b_by_qwen14b.jsonl",
+        "output": "traces/apex-r15-oracle-calibrated/calibrated_qwen2_5_coder_7b_by_qwen14b.jsonl",
+        "rows": 8
+      },
+      {
+        "input": "traces/apex-r14-draft-eval/judged_qwen2_5_coder_14b_by_qwen14b.jsonl",
+        "output": "traces/apex-r15-oracle-calibrated/calibrated_qwen2_5_coder_14b_by_qwen14b.jsonl",
+        "rows": 8
+      },
+      {
+        "input": "traces/apex-r14-draft-eval/judged_gpt_oss_20b_by_qwen14b.jsonl",
+        "output": "traces/apex-r15-oracle-calibrated/calibrated_gpt_oss_20b_by_qwen14b.jsonl",
+        "rows": 8
+      }
+    ]
+  },
+  "canonical_corpus_mutated": false,
+  "decision": "promote_7_candidates_to_human_review",
+  "generated_at": "2026-07-08T13:02:49.196025+00:00",
+  "oracle": {
+    "applicable": 24,
+    "failed": 10,
+    "judge_disagreements": 0,
+    "passed": 14,
+    "rows": 24
+  },
+  "promotion": {
+    "promoted": 7,
+    "promoted_cases": [
+      "tool-scope-002",
+      "tool-scope-006",
+      "tool-scope-010",
+      "tool-scope-011",
+      "tool-scope-014",
+      "tool-scope-019",
+      "tool-scope-020"
+    ],
+    "rejected": 1,
+    "rejected_cases": [
+      {
+        "case_id": "tool-scope-022",
+        "reason": "spread=0<2, all-fail"
+      }
+    ]
+  },
+  "r14_comparison": {
+    "avg_spread_after": 1.75,
+    "avg_spread_before": 0.125,
+    "dead_rate_after": 0.125,
+    "dead_rate_before": 0.875,
+    "low_reliability_after": 0,
+    "low_reliability_before": 6,
+    "oracle_disagreement_after": 0,
+    "oracle_disagreement_before": 40,
+    "promoted_after": 7,
+    "promoted_before": 0
+  },
+  "reliability": {
+    "cases": 8,
+    "low_reliability_cases": 0,
+    "pass_disagreement_cases": 0,
+    "source": "deterministic oracle replaces judge disagreement for applicable tool-scope rows"
+  },
+  "weakness": {
+    "all_fail_rate": 0.125,
+    "all_pass_rate": 0.0,
+    "avg_score": 3.166,
+    "avg_spread": 1.75,
+    "cases": 8,
+    "category": "tool-scope",
+    "dead_rate": 0.125,
+    "weakness": 0.375
+  }
+}

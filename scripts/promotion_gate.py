@@ -27,8 +27,11 @@ def load_reliability(path: Path | None) -> dict[str, dict]:
     if not text:
         return {}
     if text[0] == "{":
-        payload = json.loads(text)
-        rows = payload.get("cases", [])
+        try:
+            payload = json.loads(text)
+            rows = payload.get("cases", [])
+        except json.JSONDecodeError:
+            rows = [json.loads(line) for line in text.splitlines() if line.strip()]
     else:
         rows = [json.loads(line) for line in text.splitlines() if line.strip()]
     return {row["case_id"]: row for row in rows}

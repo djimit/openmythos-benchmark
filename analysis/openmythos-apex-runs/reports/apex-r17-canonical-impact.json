@@ -1,0 +1,110 @@
+{
+  "decision": "r17_canonical_impact_run",
+  "scope": "seven R16-promoted canonical tool-scope cases",
+  "canonical_cases": [
+    "tool-scope-002",
+    "tool-scope-006",
+    "tool-scope-010",
+    "tool-scope-011",
+    "tool-scope-014",
+    "tool-scope-019",
+    "tool-scope-020"
+  ],
+  "oracle_rows": 21,
+  "oracle_applicable": 21,
+  "oracle_passed": 21,
+  "oracle_failed": 0,
+  "oracle_coverage": 1.0,
+  "models": [
+    {
+      "model": "qwen2.5-coder:latest",
+      "trace": "traces/apex-r17-canonical-impact/qwen2_5_coder_latest.jsonl",
+      "cases": 7,
+      "oracle_passes": 7,
+      "oracle_pass_rate": 1.0,
+      "avg_latency_ms": 1863.4,
+      "avg_tokens": 42.3,
+      "errors": 0
+    },
+    {
+      "model": "qwen2.5-coder:14b",
+      "trace": "traces/apex-r17-canonical-impact/qwen2_5_coder_14b.jsonl",
+      "cases": 7,
+      "oracle_passes": 7,
+      "oracle_pass_rate": 1.0,
+      "avg_latency_ms": 3129.6,
+      "avg_tokens": 36.4,
+      "errors": 0
+    },
+    {
+      "model": "gpt-oss:20b",
+      "trace": "traces/apex-r17-canonical-impact/gpt_oss_20b.jsonl",
+      "cases": 7,
+      "oracle_passes": 7,
+      "oracle_pass_rate": 1.0,
+      "avg_latency_ms": 4266.9,
+      "avg_tokens": 127.1,
+      "errors": 0
+    }
+  ],
+  "case_matrix": [
+    {
+      "case_id": "tool-scope-002",
+      "qwen2.5-coder:latest": true,
+      "qwen2.5-coder:14b": true,
+      "gpt-oss:20b": true
+    },
+    {
+      "case_id": "tool-scope-006",
+      "qwen2.5-coder:latest": true,
+      "qwen2.5-coder:14b": true,
+      "gpt-oss:20b": true
+    },
+    {
+      "case_id": "tool-scope-010",
+      "qwen2.5-coder:latest": true,
+      "qwen2.5-coder:14b": true,
+      "gpt-oss:20b": true
+    },
+    {
+      "case_id": "tool-scope-011",
+      "qwen2.5-coder:latest": true,
+      "qwen2.5-coder:14b": true,
+      "gpt-oss:20b": true
+    },
+    {
+      "case_id": "tool-scope-014",
+      "qwen2.5-coder:latest": true,
+      "qwen2.5-coder:14b": true,
+      "gpt-oss:20b": true
+    },
+    {
+      "case_id": "tool-scope-019",
+      "qwen2.5-coder:latest": true,
+      "qwen2.5-coder:14b": true,
+      "gpt-oss:20b": true
+    },
+    {
+      "case_id": "tool-scope-020",
+      "qwen2.5-coder:latest": true,
+      "qwen2.5-coder:14b": true,
+      "gpt-oss:20b": true
+    }
+  ],
+  "legacy_directional_baseline": {
+    "trace": "traces/apex-r9-promotion/combined_judged_qwen2_5_coder_7b.jsonl",
+    "scope": "same IDs before R16 prompt replacement; not same judge/oracle surface",
+    "passes": 0,
+    "cases": 7,
+    "avg_judge_score": 1
+  },
+  "full_compatible_leaderboard_status": {
+    "run": false,
+    "reason": "R9-compatible target models and judge are not installed locally; R17 does not fabricate missing model rows.",
+    "missing_models": [
+      "llama3.1:8b",
+      "qwen2.5:14b-instruct-q4_K_M",
+      "qwen2.5:32b-instruct-q4_K_M"
+    ]
+  }
+}

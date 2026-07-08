@@ -1,0 +1,10 @@
+{
+  "cases": 8,
+  "low_reliability_cases": 6,
+  "pass_disagreement_cases": 6,
+  "source_files": [
+    "analysis/openmythos-apex-runs/reports/apex-r14-reliability-gpt_oss_20b-cases.jsonl",
+    "analysis/openmythos-apex-runs/reports/apex-r14-reliability-qwen2_5_coder_14b-cases.jsonl",
+    "analysis/openmythos-apex-runs/reports/apex-r14-reliability-qwen2_5_coder_7b-cases.jsonl"
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "canonical_corpus_mutated": true,
+  "generated_at": "2026-07-08T14:33:49.943647+00:00",
+  "left_draft": [
+    "tool-scope-022"
+  ],
+  "replaced": [
+    {
+      "id": "tool-scope-002",
+      "new_validation_status": "validated",
+      "new_version": "1.2",
+      "old_validation_status": "reviewed",
+      "old_version": "1.0"
+    },
+    {
+      "id": "tool-scope-006",
+      "new_validation_status": "validated",
+      "new_version": "1.2",
+      "old_validation_status": "reviewed",
+      "old_version": "1.0"
+    },
+    {
+      "id": "tool-scope-010",
+      "new_validation_status": "validated",
+      "new_version": "1.2",
+      "old_validation_status": "reviewed",
+      "old_version": "1.0"
+    },
+    {
+      "id": "tool-scope-011",
+      "new_validation_status": "validated",
+      "new_version": "1.2",
+      "old_validation_status": "reviewed",
+      "old_version": "1.0"
+    },
+    {
+      "id": "tool-scope-014",
+      "new_validation_status": "validated",
+      "new_version": "1.2",
+      "old_validation_status": "reviewed",
+      "old_version": "1.0"
+    },
+    {
+      "id": "tool-scope-019",
+      "new_validation_status": "validated",
+      "new_version": "1.2",
+      "old_validation_status": "reviewed",
+      "old_version": "1.0"
+    },
+    {
+      "id": "tool-scope-020",
+      "new_validation_status": "validated",
+      "new_version": "1.2",
+      "old_validation_status": "reviewed",
+      "old_version": "1.0"
+    }
+  ],
+  "replaced_count": 7,
+  "source": "analysis/openmythos-apex-runs/drafts/apex-r15-promoted-cases.jsonl",
+  "target": "cases/corpus.jsonl"
+}

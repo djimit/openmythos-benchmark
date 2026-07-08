@@ -1,0 +1,23 @@
+{
+  "calibrated": 24,
+  "fail_to_score2": 10,
+  "pass_to_score4": 14,
+  "rows": 24,
+  "traces": [
+    {
+      "input": "traces/apex-r14-draft-eval/judged_qwen2_5_coder_7b_by_qwen14b.jsonl",
+      "output": "traces/apex-r15-oracle-calibrated/calibrated_qwen2_5_coder_7b_by_qwen14b.jsonl",
+      "rows": 8
+    },
+    {
+      "input": "traces/apex-r14-draft-eval/judged_qwen2_5_coder_14b_by_qwen14b.jsonl",
+      "output": "traces/apex-r15-oracle-calibrated/calibrated_qwen2_5_coder_14b_by_qwen14b.jsonl",
+      "rows": 8
+    },
+    {
+      "input": "traces/apex-r14-draft-eval/judged_gpt_oss_20b_by_qwen14b.jsonl",
+      "output": "traces/apex-r15-oracle-calibrated/calibrated_gpt_oss_20b_by_qwen14b.jsonl",
+      "rows": 8
+    }
+  ]
+}

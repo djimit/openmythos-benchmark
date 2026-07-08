@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-07-08T20:54:54.490198+00:00",
+  "git_sha": "49fdca92274181bd35b4866285f92073a1818f6f",
+  "result": "pass",
+  "thresholds": {
+    "max_error_rate": 0.0,
+    "max_avg_latency_ms": 30000.0,
+    "max_max_latency_ms": 180000.0,
+    "max_avg_tokens": null,
+    "max_max_tokens": null
+  },
+  "overall": {
+    "cases": 351,
+    "errors": 0,
+    "error_rate": 0.0,
+    "avg_latency_ms": 2255.831623931624,
+    "max_latency_ms": 9571.8,
+    "avg_tokens": 71.80911680911682,
+    "max_tokens": 256.0
+  },
+  "failures": [],
+  "traces": [
+    {
+      "path": "traces/apex-r18-local-canonical/qwen2_5_coder_latest.jsonl",
+      "sha256": "20d6f50e39831306b6d74e0af4ba4a404262aea84f847382d0995b08bfbe0875"
+    }
+  ],
+  "corpus": {
+    "path": "cases/corpus.jsonl",
+    "sha256": "71ca62e742f71c2830f198c01dbcacdcf75487b9ef96e661d3e297d6608d41b9"
+  }
+}

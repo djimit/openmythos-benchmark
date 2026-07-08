@@ -1,0 +1,6 @@
+{
+  "cases": 8,
+  "low_reliability_cases": 0,
+  "pass_disagreement_cases": 0,
+  "source": "deterministic oracle replaces judge disagreement for applicable tool-scope rows"
+}

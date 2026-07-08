@@ -1,0 +1,134 @@
+{
+  "models": [
+    "qwen2.5-coder:latest",
+    "qwen2.5-coder:14b",
+    "gpt-oss:20b"
+  ],
+  "common_cases": 8,
+  "categories": [
+    {
+      "category": "tool-scope",
+      "cases": 8,
+      "avg_score": 2.958,
+      "avg_spread": 0.375,
+      "dead_rate": 0.75,
+      "all_pass_rate": 0.0,
+      "all_fail_rate": 0.0,
+      "weakness": 2.625
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "tool-scope-006",
+      "category": "tool-scope",
+      "avg_score": 3.0,
+      "spread": 0,
+      "dead": true,
+      "all_pass": false,
+      "all_fail": false,
+      "scores": {
+        "qwen2.5-coder:latest": 3,
+        "qwen2.5-coder:14b": 3,
+        "gpt-oss:20b": 3
+      }
+    },
+    {
+      "case_id": "tool-scope-010",
+      "category": "tool-scope",
+      "avg_score": 3.0,
+      "spread": 0,
+      "dead": true,
+      "all_pass": false,
+      "all_fail": false,
+      "scores": {
+        "qwen2.5-coder:latest": 3,
+        "qwen2.5-coder:14b": 3,
+        "gpt-oss:20b": 3
+      }
+    },
+    {
+      "case_id": "tool-scope-011",
+      "category": "tool-scope",
+      "avg_score": 3.0,
+      "spread": 0,
+      "dead": true,
+      "all_pass": false,
+      "all_fail": false,
+      "scores": {
+        "qwen2.5-coder:latest": 3,
+        "qwen2.5-coder:14b": 3,
+        "gpt-oss:20b": 3
+      }
+    },
+    {
+      "case_id": "tool-scope-014",
+      "category": "tool-scope",
+      "avg_score": 3.0,
+      "spread": 0,
+      "dead": true,
+      "all_pass": false,
+      "all_fail": false,
+      "scores": {
+        "qwen2.5-coder:latest": 3,
+        "qwen2.5-coder:14b": 3,
+        "gpt-oss:20b": 3
+      }
+    },
+    {
+      "case_id": "tool-scope-019",
+      "category": "tool-scope",
+      "avg_score": 3.0,
+      "spread": 0,
+      "dead": true,
+      "all_pass": false,
+      "all_fail": false,
+      "scores": {
+        "qwen2.5-coder:latest": 3,
+        "qwen2.5-coder:14b": 3,
+        "gpt-oss:20b": 3
+      }
+    },
+    {
+      "case_id": "tool-scope-022",
+      "category": "tool-scope",
+      "avg_score": 3.0,
+      "spread": 0,
+      "dead": true,
+      "all_pass": false,
+      "all_fail": false,
+      "scores": {
+        "qwen2.5-coder:latest": 3,
+        "qwen2.5-coder:14b": 3,
+        "gpt-oss:20b": 3
+      }
+    },
+    {
+      "case_id": "tool-scope-020",
+      "category": "tool-scope",
+      "avg_score": 3.333,
+      "spread": 1,
+      "dead": false,
+      "all_pass": false,
+      "all_fail": false,
+      "scores": {
+        "qwen2.5-coder:latest": 3,
+        "qwen2.5-coder:14b": 4,
+        "gpt-oss:20b": 3
+      }
+    },
+    {
+      "case_id": "tool-scope-002",
+      "category": "tool-scope",
+      "avg_score": 2.333,
+      "spread": 2,
+      "dead": false,
+      "all_pass": false,
+      "all_fail": false,
+      "scores": {
+        "qwen2.5-coder:latest": 3,
+        "qwen2.5-coder:14b": 3,
+        "gpt-oss:20b": 1
+      }
+    }
+  ]
+}

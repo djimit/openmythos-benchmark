@@ -1,0 +1,119 @@
+{
+  "decision": "hold_all_r13_drafts",
+  "generated_at": "2026-07-08T09:47:31.977465+00:00",
+  "judge_models": [
+    "qwen2.5-coder:latest",
+    "qwen2.5-coder:14b",
+    "gemma4:latest"
+  ],
+  "oracle": {
+    "applicable": 72,
+    "failed": 60,
+    "judge_disagreements": 16,
+    "passed": 12,
+    "rows": 72
+  },
+  "promotion": {
+    "promoted": 0,
+    "rejected": 8,
+    "rejected_cases": [
+      {
+        "case_id": "tool-scope-002",
+        "reason": "all-fail, low-reliability, oracle-disagreement"
+      },
+      {
+        "case_id": "tool-scope-006",
+        "reason": "spread=0<2, all-fail, low-reliability, oracle-disagreement"
+      },
+      {
+        "case_id": "tool-scope-010",
+        "reason": "spread=0<2, all-fail"
+      },
+      {
+        "case_id": "tool-scope-011",
+        "reason": "spread=0<2, all-fail"
+      },
+      {
+        "case_id": "tool-scope-014",
+        "reason": "spread=0<2, all-fail, low-reliability, oracle-disagreement"
+      },
+      {
+        "case_id": "tool-scope-019",
+        "reason": "spread=0<2, all-fail, low-reliability, oracle-disagreement"
+      },
+      {
+        "case_id": "tool-scope-020",
+        "reason": "spread=1<2, low-reliability, oracle-disagreement"
+      },
+      {
+        "case_id": "tool-scope-022",
+        "reason": "spread=0<2, all-fail, oracle-disagreement"
+      }
+    ]
+  },
+  "qwen14b_judge_model_scores": {
+    "gpt-oss:20b": {
+      "avg_score": 2.75,
+      "cases": 8,
+      "pass_rate": 0.0
+    },
+    "qwen2.5-coder:14b": {
+      "avg_score": 3.125,
+      "cases": 8,
+      "pass_rate": 0.125
+    },
+    "qwen2.5-coder:latest": {
+      "avg_score": 3.0,
+      "cases": 8,
+      "pass_rate": 0.0
+    }
+  },
+  "raw_traces": [
+    {
+      "avg_latency_ms": 5896.8,
+      "cases": 8,
+      "errors": 0,
+      "model": "gpt-oss:20b",
+      "trace": "traces/apex-r13-draft-eval/gpt_oss_20b.jsonl"
+    },
+    {
+      "avg_latency_ms": 7900.4,
+      "cases": 8,
+      "errors": 0,
+      "model": "qwen2.5-coder:14b",
+      "trace": "traces/apex-r13-draft-eval/qwen2_5_coder_14b.jsonl"
+    },
+    {
+      "avg_latency_ms": 2198.2,
+      "cases": 8,
+      "errors": 0,
+      "model": "qwen2.5-coder:latest",
+      "trace": "traces/apex-r13-draft-eval/qwen2_5_coder_7b.jsonl"
+    }
+  ],
+  "reliability": {
+    "cases": 8,
+    "low_reliability_cases": 5,
+    "pass_disagreement_cases": 5,
+    "source_files": [
+      "analysis/openmythos-apex-runs/reports/apex-r13-reliability-gpt_oss_20b-cases.jsonl",
+      "analysis/openmythos-apex-runs/reports/apex-r13-reliability-qwen2_5_coder_14b-cases.jsonl",
+      "analysis/openmythos-apex-runs/reports/apex-r13-reliability-qwen2_5_coder_7b-cases.jsonl"
+    ]
+  },
+  "target_models": [
+    "qwen2.5-coder:latest",
+    "qwen2.5-coder:14b",
+    "gpt-oss:20b"
+  ],
+  "weakness": {
+    "all_fail_rate": 0.0,
+    "all_pass_rate": 0.0,
+    "avg_score": 2.958,
+    "avg_spread": 0.375,
+    "cases": 8,
+    "category": "tool-scope",
+    "dead_rate": 0.75,
+    "weakness": 2.625
+  }
+}

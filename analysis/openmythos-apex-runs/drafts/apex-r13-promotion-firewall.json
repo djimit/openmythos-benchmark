@@ -1,0 +1,62 @@
+{
+  "candidate_decisions": [
+    {
+      "case_id": "tool-scope-002",
+      "decision": "hold_as_draft",
+      "reason": "needs full multi-model eval; needs R10 judge-stability recheck; needs R11 calibrated weight recheck; needs oracle compatibility check where applicable"
+    },
+    {
+      "case_id": "tool-scope-006",
+      "decision": "hold_as_draft",
+      "reason": "needs full multi-model eval; needs R10 judge-stability recheck; needs R11 calibrated weight recheck; needs oracle compatibility check where applicable"
+    },
+    {
+      "case_id": "tool-scope-010",
+      "decision": "hold_as_draft",
+      "reason": "needs full multi-model eval; needs R10 judge-stability recheck; needs R11 calibrated weight recheck; needs oracle compatibility check where applicable"
+    },
+    {
+      "case_id": "tool-scope-011",
+      "decision": "hold_as_draft",
+      "reason": "needs full multi-model eval; needs R10 judge-stability recheck; needs R11 calibrated weight recheck; needs oracle compatibility check where applicable"
+    },
+    {
+      "case_id": "tool-scope-014",
+      "decision": "hold_as_draft",
+      "reason": "needs full multi-model eval; needs R10 judge-stability recheck; needs R11 calibrated weight recheck; needs oracle compatibility check where applicable"
+    },
+    {
+      "case_id": "tool-scope-019",
+      "decision": "hold_as_draft",
+      "reason": "needs full multi-model eval; needs R10 judge-stability recheck; needs R11 calibrated weight recheck; needs oracle compatibility check where applicable"
+    },
+    {
+      "case_id": "tool-scope-020",
+      "decision": "hold_as_draft",
+      "reason": "needs full multi-model eval; needs R10 judge-stability recheck; needs R11 calibrated weight recheck; needs oracle compatibility check where applicable"
+    },
+    {
+      "case_id": "tool-scope-022",
+      "decision": "hold_as_draft",
+      "reason": "needs full multi-model eval; needs R10 judge-stability recheck; needs R11 calibrated weight recheck; needs oracle compatibility check where applicable"
+    }
+  ],
+  "criteria": {
+    "allow_all_fail": false,
+    "allow_all_pass": false,
+    "allow_low_reliability": false,
+    "allow_oracle_judge_disagreement": false,
+    "min_calibrated_case_weight": 0.75,
+    "min_model_score_spread": 2,
+    "required_judge_models_min": 3,
+    "required_models_min": 3,
+    "required_outputs": [
+      "full judged trace",
+      "R10 reliability report",
+      "R10 oracle overlay where applicable",
+      "R11 calibrated leaderboard",
+      "promotion_gate decision"
+    ],
+    "required_status_before_eval": "draft"
+  }
+}

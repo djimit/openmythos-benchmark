@@ -1,0 +1,315 @@
+{
+  "decision": "r18_full_local_canonical_oracle_leaderboard",
+  "scope": {
+    "corpus_cases_per_model": 351,
+    "target_models": [
+      "qwen2.5-coder:latest",
+      "qwen2.5-coder:14b",
+      "gpt-oss:20b"
+    ],
+    "total_model_outputs": 1053,
+    "scoring": "deterministic oracle on mechanically checkable cases",
+    "oracle_common_cases": 96,
+    "oracle_rows": 1053,
+    "oracle_applicable": 288,
+    "oracle_coverage": 0.274
+  },
+  "leaderboard": {
+    "models": [
+      {
+        "model": "qwen2.5-coder:latest",
+        "trace": "traces/apex-r18-local-canonical/oracle_judged_qwen2_5_coder_latest.jsonl",
+        "cases": 96,
+        "judged_cases": 96,
+        "avg_score": 3.042,
+        "pass_rate": 0.51,
+        "errors": 0,
+        "avg_latency_ms": 1743.0,
+        "avg_tokens": 47.5,
+        "categories": {
+          "canary": {
+            "cases": 37,
+            "avg_score": 3.919,
+            "pass_rate": 0.73
+          },
+          "contradiction": {
+            "cases": 2,
+            "avg_score": 1.0,
+            "pass_rate": 0.0
+          },
+          "cross-lingual": {
+            "cases": 6,
+            "avg_score": 1.0,
+            "pass_rate": 0.0
+          },
+          "hallucination": {
+            "cases": 11,
+            "avg_score": 1.727,
+            "pass_rate": 0.182
+          },
+          "overthinking": {
+            "cases": 24,
+            "avg_score": 2.333,
+            "pass_rate": 0.333
+          },
+          "temporal-reasoning": {
+            "cases": 2,
+            "avg_score": 1.0,
+            "pass_rate": 0.0
+          },
+          "tool-scope": {
+            "cases": 14,
+            "avg_score": 4.429,
+            "pass_rate": 0.857
+          }
+        }
+      },
+      {
+        "model": "qwen2.5-coder:14b",
+        "trace": "traces/apex-r18-local-canonical/oracle_judged_qwen2_5_coder_14b.jsonl",
+        "cases": 96,
+        "judged_cases": 96,
+        "avg_score": 2.958,
+        "pass_rate": 0.49,
+        "errors": 0,
+        "avg_latency_ms": 2378.1,
+        "avg_tokens": 37.6,
+        "categories": {
+          "canary": {
+            "cases": 37,
+            "avg_score": 3.703,
+            "pass_rate": 0.676
+          },
+          "contradiction": {
+            "cases": 2,
+            "avg_score": 1.0,
+            "pass_rate": 0.0
+          },
+          "cross-lingual": {
+            "cases": 6,
+            "avg_score": 1.0,
+            "pass_rate": 0.0
+          },
+          "hallucination": {
+            "cases": 11,
+            "avg_score": 1.727,
+            "pass_rate": 0.182
+          },
+          "overthinking": {
+            "cases": 24,
+            "avg_score": 2.333,
+            "pass_rate": 0.333
+          },
+          "temporal-reasoning": {
+            "cases": 2,
+            "avg_score": 1.0,
+            "pass_rate": 0.0
+          },
+          "tool-scope": {
+            "cases": 14,
+            "avg_score": 4.429,
+            "pass_rate": 0.857
+          }
+        }
+      },
+      {
+        "model": "gpt-oss:20b",
+        "trace": "traces/apex-r18-local-canonical/oracle_judged_gpt_oss_20b.jsonl",
+        "cases": 96,
+        "judged_cases": 96,
+        "avg_score": 2.625,
+        "pass_rate": 0.406,
+        "errors": 0,
+        "avg_latency_ms": 1850.1,
+        "avg_tokens": 63.7,
+        "categories": {
+          "canary": {
+            "cases": 37,
+            "avg_score": 5.0,
+            "pass_rate": 1.0
+          },
+          "contradiction": {
+            "cases": 2,
+            "avg_score": 1.0,
+            "pass_rate": 0.0
+          },
+          "cross-lingual": {
+            "cases": 6,
+            "avg_score": 1.0,
+            "pass_rate": 0.0
+          },
+          "hallucination": {
+            "cases": 11,
+            "avg_score": 1.0,
+            "pass_rate": 0.0
+          },
+          "overthinking": {
+            "cases": 24,
+            "avg_score": 1.333,
+            "pass_rate": 0.083
+          },
+          "temporal-reasoning": {
+            "cases": 2,
+            "avg_score": 1.0,
+            "pass_rate": 0.0
+          },
+          "tool-scope": {
+            "cases": 14,
+            "avg_score": 1.0,
+            "pass_rate": 0.0
+          }
+        }
+      }
+    ],
+    "benchmark": {
+      "common_cases": 96,
+      "discrimination": 0.417,
+      "dead_case_rate": 0.594,
+      "avg_case_spread": 1.625
+    }
+  },
+  "weakest_categories": [
+    {
+      "category": "contradiction",
+      "cases": 2,
+      "avg_score": 1.0,
+      "avg_spread": 0.0,
+      "dead_rate": 1.0,
+      "all_pass_rate": 0.0,
+      "all_fail_rate": 1.0,
+      "weakness": 4.5
+    },
+    {
+      "category": "cross-lingual",
+      "cases": 6,
+      "avg_score": 1.0,
+      "avg_spread": 0.0,
+      "dead_rate": 1.0,
+      "all_pass_rate": 0.0,
+      "all_fail_rate": 1.0,
+      "weakness": 4.5
+    },
+    {
+      "category": "temporal-reasoning",
+      "cases": 2,
+      "avg_score": 1.0,
+      "avg_spread": 0.0,
+      "dead_rate": 1.0,
+      "all_pass_rate": 0.0,
+      "all_fail_rate": 1.0,
+      "weakness": 4.5
+    },
+    {
+      "category": "hallucination",
+      "cases": 11,
+      "avg_score": 1.485,
+      "avg_spread": 1.091,
+      "dead_rate": 0.727,
+      "all_pass_rate": 0.0,
+      "all_fail_rate": 0.727,
+      "weakness": 2.591
+    },
+    {
+      "category": "canary",
+      "cases": 37,
+      "avg_score": 4.207,
+      "avg_spread": 1.405,
+      "dead_rate": 0.649,
+      "all_pass_rate": 0.649,
+      "all_fail_rate": 0.0,
+      "weakness": 2.041
+    },
+    {
+      "category": "overthinking",
+      "cases": 24,
+      "avg_score": 2.0,
+      "avg_spread": 1.667,
+      "dead_rate": 0.583,
+      "all_pass_rate": 0.083,
+      "all_fail_rate": 0.5,
+      "weakness": 1.75
+    },
+    {
+      "category": "tool-scope",
+      "cases": 14,
+      "avg_score": 3.286,
+      "avg_spread": 3.714,
+      "dead_rate": 0.071,
+      "all_pass_rate": 0.0,
+      "all_fail_rate": 0.071,
+      "weakness": 0.214
+    }
+  ],
+  "oracle_coverage_by_type": {
+    "tool_scope_boundary": {
+      "rows": 42,
+      "passed": 24
+    },
+    "exact_scalar": {
+      "rows": 87,
+      "passed": 14
+    },
+    "canary_absence": {
+      "rows": 111,
+      "passed": 89
+    },
+    "no_fabricated_legal_authority": {
+      "rows": 21,
+      "passed": 2
+    },
+    "exact_csv": {
+      "rows": 9,
+      "passed": 3
+    },
+    "exact_json": {
+      "rows": 12,
+      "passed": 1
+    },
+    "no_fabricated_doi": {
+      "rows": 3,
+      "passed": 2
+    },
+    "no_fabricated_metrics": {
+      "rows": 3,
+      "passed": 0
+    }
+  },
+  "operational": {
+    "qwen2.5-coder:latest": {
+      "result": "pass",
+      "cases": 351,
+      "errors": 0,
+      "avg_latency_ms": 2255.8,
+      "max_latency_ms": 9571.8,
+      "avg_tokens": 71.8,
+      "max_tokens": 256.0,
+      "trace_sha256": "20d6f50e39831306b6d74e0af4ba4a404262aea84f847382d0995b08bfbe0875"
+    },
+    "qwen2.5-coder:14b": {
+      "result": "pass",
+      "cases": 351,
+      "errors": 0,
+      "avg_latency_ms": 2906.4,
+      "max_latency_ms": 10374.1,
+      "avg_tokens": 47.8,
+      "max_tokens": 96.0,
+      "trace_sha256": "a3ef809780dd761c318eea5ec6dd7ec9611056a81247fd57a24ea1b1db0c4eb5"
+    },
+    "gpt-oss:20b": {
+      "result": "pass",
+      "cases": 351,
+      "errors": 0,
+      "avg_latency_ms": 1864.0,
+      "max_latency_ms": 7251.9,
+      "avg_tokens": 63.9,
+      "max_tokens": 64.0,
+      "trace_sha256": "65a4a3f119c50d85341b65a430be52595d198528e2f82dc636e0e3c0b76f3a11"
+    }
+  },
+  "boundaries": [
+    "Leaderboard is oracle-slice, not full LLM-as-judge scoring.",
+    "Output caps were bounded for local practicality, so latency/token values are not comparable with uncapped historical runs.",
+    "Raw traces live under ignored traces/apex-r18-local-canonical/; commit-safe summaries live in analysis reports."
+  ],
+  "next_best_step": "R19 should target exact-output and hallucination deterministic failures, especially all-fail cross-lingual, contradiction, temporal-reasoning, and legal/metrics hallucination cases."
+}

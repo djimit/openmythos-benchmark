@@ -67,6 +67,15 @@ python3 scripts/calibrated_leaderboard.py traces/apex-r9-promotion/combined_judg
 # R12: turn R9/R10/R11 evidence into a Djimitflo active-evolution goal batch
 python3 scripts/active_evolution_queue.py
 
+# R13: turn the active queue into draft replacements, oracle anchors, and a promotion firewall
+python3 scripts/targeted_evolution_executor.py
+
+# R14: refine failed R13 tool-scope drafts into stricter oracle-aligned drafts
+python3 scripts/r14_tool_scope_refine.py
+
+# R15: calibrate judged draft traces with deterministic oracle evidence
+python3 scripts/oracle_calibrate_traces.py traces/apex-r14-draft-eval/judged_*_by_qwen14b.jsonl
+
 # Fail if a run is too slow, verbose, or error-prone
 python3 scripts/operational_gate.py \
   traces/advice-r3-final/llama3_1_8b.jsonl \
