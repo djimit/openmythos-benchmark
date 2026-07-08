@@ -58,6 +58,15 @@ python3 scripts/reliability_gate.py \
 python3 scripts/oracle_score.py traces/apex-r10-reliability/judged_*.jsonl \
   --output analysis/openmythos-apex-runs/reports/apex-r10-oracle-overlay.jsonl
 
+# R11: build gold anchors, judge calibration, and a reliability-weighted leaderboard
+python3 scripts/calibrated_leaderboard.py traces/apex-r9-promotion/combined_judged_*.jsonl \
+  --oracle analysis/openmythos-apex-runs/reports/apex-r10-oracle-overlay.jsonl \
+  --reliability analysis/openmythos-apex-runs/reports/apex-r10-judge-reliability-cases.jsonl \
+  --output analysis/openmythos-apex-runs/reports/APEX_R11_CALIBRATED_LEADERBOARD.md
+
+# R12: turn R9/R10/R11 evidence into a Djimitflo active-evolution goal batch
+python3 scripts/active_evolution_queue.py
+
 # Fail if a run is too slow, verbose, or error-prone
 python3 scripts/operational_gate.py \
   traces/advice-r3-final/llama3_1_8b.jsonl \

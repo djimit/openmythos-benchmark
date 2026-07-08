@@ -1,0 +1,70 @@
+{
+  "change": "openmythos-apex-r12-djimitflo-active-evolution",
+  "total": 5,
+  "valid": 5,
+  "blocked": 0,
+  "items": [
+    {
+      "id": "om-r12-01-stabilize-low-reliability-categories",
+      "objective": "Turn R10 instability evidence into category-level remediation rules for tool-scope, contradiction, hallucination.",
+      "risk_class": "medium",
+      "target_ref": "openmythos-benchmark/scripts/reliability_gate.py",
+      "acceptance_criteria": [
+        "The R10 unstable categories remain excluded from canonical promotion until stability improves.",
+        "The R12 report records instability drivers and affected case IDs.",
+        "A rerun can compare instability_rate before and after remediation."
+      ],
+      "blocked_reasons": []
+    },
+    {
+      "id": "om-r12-02-expand-oracle-anchor-coverage",
+      "objective": "Add reliable oracle or gold-anchor coverage for top evidence gaps: contradiction, temporal-reasoning, value-alignment, overthinking.",
+      "risk_class": "medium",
+      "target_ref": "openmythos-benchmark/scripts/oracle_score.py",
+      "acceptance_criteria": [
+        "Each selected category has explicit anchor evidence or a documented reason deterministic checks are unsafe.",
+        "Temporal checks are deterministic where date/timezone facts are structurally available.",
+        "Non-deterministic categories use curated gold anchors rather than fragile regex scoring."
+      ],
+      "blocked_reasons": []
+    },
+    {
+      "id": "om-r12-03-rewrite-dead-or-nondiscriminating-cases",
+      "objective": "Replace or revise low-signal cases in tool-scope, contradiction, temporal-reasoning, value-alignment; initial queue: tool-scope-002, tool-scope-006, tool-scope-010, tool-scope-011, tool-scope-014, tool-scope-019, tool-scope-020, tool-scope-022.",
+      "risk_class": "medium",
+      "target_ref": "openmythos-benchmark/cases/corpus.jsonl",
+      "acceptance_criteria": [
+        "Rewritten cases increase model spread without becoming judge-unstable.",
+        "All case mutations pass corpus validation and preserve schema requirements.",
+        "Promotion remains draft until R10 reliability and R11 calibrated weighting agree."
+      ],
+      "blocked_reasons": []
+    },
+    {
+      "id": "om-r12-04-close-calibration-bias-loop",
+      "objective": "Use R11 anchor agreement and strictness bias to quarantine weak judge/category pairs before leaderboard or promotion decisions.",
+      "risk_class": "medium",
+      "target_ref": "openmythos-benchmark/scripts/calibrated_leaderboard.py",
+      "acceptance_criteria": [
+        "Judge/category pairs below the calibration floor are marked as discounted or quarantined.",
+        "The calibrated leaderboard reports calibration drivers that affected weights.",
+        "At least one before/after report proves the weighting changed only evidence-backed cases."
+      ],
+      "blocked_reasons": []
+    },
+    {
+      "id": "om-r12-05-promotion-firewall",
+      "objective": "Require discrimination, judge stability, oracle compatibility, and calibrated case weight before a draft case can become canonical.",
+      "risk_class": "low",
+      "target_ref": "openmythos-benchmark/scripts/promotion_gate.py",
+      "acceptance_criteria": [
+        "A case with low reliability cannot be promoted even if it discriminates.",
+        "A case with oracle disagreement cannot be promoted without explicit review evidence.",
+        "The gate emits machine-readable reasons for every accepted and rejected case."
+      ],
+      "blocked_reasons": []
+    }
+  ],
+  "errors": [],
+  "writes": 0
+}

@@ -1,0 +1,342 @@
+{
+  "category_priorities": [
+    {
+      "anchor_count": 9,
+      "avg_spread": 1.429,
+      "calibration_gap": 0.75,
+      "cases": 28,
+      "category": "tool-scope",
+      "drivers": [
+        "judge-instability",
+        "weak-category",
+        "calibration-gap"
+      ],
+      "instability_rate": 1.0,
+      "min_calibration_agreement": 0.0,
+      "oracle_gap": 0.0,
+      "priority": 6.822,
+      "promotion_dead_rate": 0.0,
+      "weakness": 1.536
+    },
+    {
+      "anchor_count": 0,
+      "avg_spread": 1.654,
+      "calibration_gap": 1.0,
+      "cases": 26,
+      "category": "contradiction",
+      "drivers": [
+        "judge-instability",
+        "oracle-gap",
+        "weak-category",
+        "dead-or-nondiscriminating-cases",
+        "calibration-gap"
+      ],
+      "instability_rate": 0.5,
+      "min_calibration_agreement": 0.0,
+      "oracle_gap": 1.0,
+      "priority": 6.433,
+      "promotion_dead_rate": 0.5,
+      "weakness": 1.154
+    },
+    {
+      "anchor_count": 0,
+      "avg_spread": 2.071,
+      "calibration_gap": 1.0,
+      "cases": 28,
+      "category": "temporal-reasoning",
+      "drivers": [
+        "oracle-gap",
+        "weak-category",
+        "dead-or-nondiscriminating-cases",
+        "calibration-gap"
+      ],
+      "instability_rate": 0.0,
+      "min_calibration_agreement": 0.0,
+      "oracle_gap": 1.0,
+      "priority": 4.876,
+      "promotion_dead_rate": 0.357,
+      "weakness": 1.179
+    },
+    {
+      "anchor_count": 0,
+      "avg_spread": 1.343,
+      "calibration_gap": 1.0,
+      "cases": 35,
+      "category": "value-alignment",
+      "drivers": [
+        "oracle-gap",
+        "weak-category",
+        "dead-or-nondiscriminating-cases",
+        "calibration-gap"
+      ],
+      "instability_rate": 0.0,
+      "min_calibration_agreement": 0.0,
+      "oracle_gap": 1.0,
+      "priority": 4.757,
+      "promotion_dead_rate": 0.257,
+      "weakness": 1.157
+    },
+    {
+      "anchor_count": 0,
+      "avg_spread": 2.24,
+      "calibration_gap": 1.0,
+      "cases": 25,
+      "category": "overthinking",
+      "drivers": [
+        "oracle-gap",
+        "weak-category",
+        "dead-or-nondiscriminating-cases",
+        "calibration-gap"
+      ],
+      "instability_rate": 0.0,
+      "min_calibration_agreement": 0.0,
+      "oracle_gap": 1.0,
+      "priority": 4.49,
+      "promotion_dead_rate": 0.32,
+      "weakness": 1.0
+    },
+    {
+      "anchor_count": 9,
+      "avg_spread": 1.595,
+      "calibration_gap": 0.083,
+      "cases": 42,
+      "category": "hallucination",
+      "drivers": [
+        "judge-instability",
+        "weak-category",
+        "dead-or-nondiscriminating-cases"
+      ],
+      "instability_rate": 0.5,
+      "min_calibration_agreement": 0.667,
+      "oracle_gap": 0.0,
+      "priority": 4.008,
+      "promotion_dead_rate": 0.25,
+      "weakness": 1.119
+    },
+    {
+      "anchor_count": 0,
+      "avg_spread": 1.622,
+      "calibration_gap": 1.0,
+      "cases": 37,
+      "category": "calibration",
+      "drivers": [
+        "oracle-gap",
+        "calibration-gap"
+      ],
+      "instability_rate": 0.0,
+      "min_calibration_agreement": 0.0,
+      "oracle_gap": 1.0,
+      "priority": 3.872,
+      "promotion_dead_rate": 0.216,
+      "weakness": 0.73
+    },
+    {
+      "anchor_count": 0,
+      "avg_spread": 1.512,
+      "calibration_gap": 1.0,
+      "cases": 41,
+      "category": "hierarchy",
+      "drivers": [
+        "oracle-gap",
+        "calibration-gap"
+      ],
+      "instability_rate": 0.0,
+      "min_calibration_agreement": 0.0,
+      "oracle_gap": 1.0,
+      "priority": 3.799,
+      "promotion_dead_rate": 0.244,
+      "weakness": 0.683
+    },
+    {
+      "anchor_count": 0,
+      "avg_spread": 2.04,
+      "calibration_gap": 1.0,
+      "cases": 25,
+      "category": "injection",
+      "drivers": [
+        "oracle-gap",
+        "calibration-gap"
+      ],
+      "instability_rate": 0.0,
+      "min_calibration_agreement": 0.0,
+      "oracle_gap": 1.0,
+      "priority": 3.76,
+      "promotion_dead_rate": 0.2,
+      "weakness": 0.68
+    },
+    {
+      "anchor_count": 0,
+      "avg_spread": 2.08,
+      "calibration_gap": 1.0,
+      "cases": 25,
+      "category": "cross-lingual",
+      "drivers": [
+        "oracle-gap",
+        "calibration-gap"
+      ],
+      "instability_rate": 0.0,
+      "min_calibration_agreement": 0.0,
+      "oracle_gap": 1.0,
+      "priority": 3.57,
+      "promotion_dead_rate": 0.16,
+      "weakness": 0.6
+    },
+    {
+      "anchor_count": 12,
+      "avg_spread": 1.513,
+      "calibration_gap": 0.0,
+      "cases": 39,
+      "category": "canary",
+      "drivers": [
+        "weak-category",
+        "dead-or-nondiscriminating-cases"
+      ],
+      "instability_rate": 0.0,
+      "min_calibration_agreement": 0.75,
+      "oracle_gap": 0.0,
+      "priority": 2.65,
+      "promotion_dead_rate": 0.25,
+      "weakness": 1.231
+    }
+  ],
+  "dead_or_low_spread_cases": [
+    "tool-scope-002",
+    "tool-scope-006",
+    "tool-scope-010",
+    "tool-scope-011",
+    "tool-scope-014",
+    "tool-scope-019",
+    "tool-scope-020",
+    "tool-scope-022",
+    "tool-scope-024",
+    "tool-scope-025",
+    "tool-scope-027",
+    "tool-scope-028"
+  ],
+  "djimitflo_goals": [
+    {
+      "api": {
+        "body": {
+          "acceptance_criteria": [
+            "The R10 unstable categories remain excluded from canonical promotion until stability improves.",
+            "The R12 report records instability drivers and affected case IDs.",
+            "A rerun can compare instability_rate before and after remediation."
+          ],
+          "metadata": {
+            "recommended_loop": "openmythos-r12-active-evolution"
+          },
+          "objective": "Turn R10 instability evidence into category-level remediation rules for tool-scope, contradiction, hallucination.",
+          "risk_class": "medium"
+        }
+      },
+      "key": "om-r12-01-stabilize-low-reliability-categories",
+      "risk": "medium",
+      "target": "openmythos-benchmark/scripts/reliability_gate.py",
+      "title": "Stabilize low-reliability judge categories"
+    },
+    {
+      "api": {
+        "body": {
+          "acceptance_criteria": [
+            "Each selected category has explicit anchor evidence or a documented reason deterministic checks are unsafe.",
+            "Temporal checks are deterministic where date/timezone facts are structurally available.",
+            "Non-deterministic categories use curated gold anchors rather than fragile regex scoring."
+          ],
+          "metadata": {
+            "recommended_loop": "openmythos-r12-active-evolution"
+          },
+          "objective": "Add reliable oracle or gold-anchor coverage for top evidence gaps: contradiction, temporal-reasoning, value-alignment, overthinking.",
+          "risk_class": "medium"
+        }
+      },
+      "depends_on": [
+        "om-r12-01-stabilize-low-reliability-categories"
+      ],
+      "key": "om-r12-02-expand-oracle-anchor-coverage",
+      "risk": "medium",
+      "target": "openmythos-benchmark/scripts/oracle_score.py",
+      "title": "Expand oracle and gold-anchor coverage"
+    },
+    {
+      "api": {
+        "body": {
+          "acceptance_criteria": [
+            "Rewritten cases increase model spread without becoming judge-unstable.",
+            "All case mutations pass corpus validation and preserve schema requirements.",
+            "Promotion remains draft until R10 reliability and R11 calibrated weighting agree."
+          ],
+          "metadata": {
+            "recommended_loop": "openmythos-r12-active-evolution"
+          },
+          "objective": "Replace or revise low-signal cases in tool-scope, contradiction, temporal-reasoning, value-alignment; initial queue: tool-scope-002, tool-scope-006, tool-scope-010, tool-scope-011, tool-scope-014, tool-scope-019, tool-scope-020, tool-scope-022.",
+          "risk_class": "medium"
+        }
+      },
+      "depends_on": [
+        "om-r12-02-expand-oracle-anchor-coverage"
+      ],
+      "key": "om-r12-03-rewrite-dead-or-nondiscriminating-cases",
+      "risk": "medium",
+      "target": "openmythos-benchmark/cases/corpus.jsonl",
+      "title": "Rewrite dead or nondiscriminating cases"
+    },
+    {
+      "api": {
+        "body": {
+          "acceptance_criteria": [
+            "Judge/category pairs below the calibration floor are marked as discounted or quarantined.",
+            "The calibrated leaderboard reports calibration drivers that affected weights.",
+            "At least one before/after report proves the weighting changed only evidence-backed cases."
+          ],
+          "metadata": {
+            "recommended_loop": "openmythos-r12-active-evolution"
+          },
+          "objective": "Use R11 anchor agreement and strictness bias to quarantine weak judge/category pairs before leaderboard or promotion decisions.",
+          "risk_class": "medium"
+        }
+      },
+      "depends_on": [
+        "om-r12-02-expand-oracle-anchor-coverage"
+      ],
+      "key": "om-r12-04-close-calibration-bias-loop",
+      "risk": "medium",
+      "target": "openmythos-benchmark/scripts/calibrated_leaderboard.py",
+      "title": "Close calibration bias loop"
+    },
+    {
+      "api": {
+        "body": {
+          "acceptance_criteria": [
+            "A case with low reliability cannot be promoted even if it discriminates.",
+            "A case with oracle disagreement cannot be promoted without explicit review evidence.",
+            "The gate emits machine-readable reasons for every accepted and rejected case."
+          ],
+          "metadata": {
+            "recommended_loop": "openmythos-r12-active-evolution"
+          },
+          "objective": "Require discrimination, judge stability, oracle compatibility, and calibrated case weight before a draft case can become canonical.",
+          "risk_class": "low"
+        }
+      },
+      "depends_on": [
+        "om-r12-01-stabilize-low-reliability-categories",
+        "om-r12-03-rewrite-dead-or-nondiscriminating-cases",
+        "om-r12-04-close-calibration-bias-loop"
+      ],
+      "key": "om-r12-05-promotion-firewall",
+      "risk": "low",
+      "target": "openmythos-benchmark/scripts/promotion_gate.py",
+      "title": "Add active-evolution promotion firewall"
+    }
+  ],
+  "generated_at": "2026-07-07T23:06:52.102959+00:00",
+  "inputs": {
+    "common_cases": 351,
+    "gold_anchors": 30,
+    "min_anchor_count": 6,
+    "r10_promoted_cases": 0,
+    "r10_rejected_cases": 16,
+    "r10_unstable_cases": 8,
+    "weighted_discrimination": 0.506
+  }
+}

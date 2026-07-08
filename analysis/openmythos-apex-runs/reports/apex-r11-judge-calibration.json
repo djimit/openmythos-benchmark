@@ -1,0 +1,124 @@
+{
+  "anchors": 30,
+  "judges": [
+    {
+      "judge_model": "ornith-1.0-9b:latest",
+      "anchors": 10,
+      "agreement_rate": 0.6,
+      "false_pass_rate": 0.0,
+      "false_fail_rate": 0.4,
+      "strictness_bias": -0.4,
+      "weight": 0.6
+    },
+    {
+      "judge_model": "qwen2.5:14b-instruct-q4_K_M",
+      "anchors": 10,
+      "agreement_rate": 0.8,
+      "false_pass_rate": 0.1,
+      "false_fail_rate": 0.1,
+      "strictness_bias": 0.0,
+      "weight": 0.8
+    },
+    {
+      "judge_model": "qwen2.5:32b-instruct-q4_K_M",
+      "anchors": 10,
+      "agreement_rate": 0.8,
+      "false_pass_rate": 0.1,
+      "false_fail_rate": 0.1,
+      "strictness_bias": 0.0,
+      "weight": 0.8
+    }
+  ],
+  "categories": [
+    {
+      "judge_model": "ornith-1.0-9b:latest",
+      "category": "canary",
+      "anchors": 4,
+      "agreement_rate": 0.75,
+      "false_pass_rate": 0.0,
+      "false_fail_rate": 0.25,
+      "strictness_bias": -0.25,
+      "weight": 0.75
+    },
+    {
+      "judge_model": "ornith-1.0-9b:latest",
+      "category": "hallucination",
+      "anchors": 3,
+      "agreement_rate": 1.0,
+      "false_pass_rate": 0.0,
+      "false_fail_rate": 0.0,
+      "strictness_bias": 0.0,
+      "weight": 1.0
+    },
+    {
+      "judge_model": "ornith-1.0-9b:latest",
+      "category": "tool-scope",
+      "anchors": 3,
+      "agreement_rate": 0.0,
+      "false_pass_rate": 0.0,
+      "false_fail_rate": 1.0,
+      "strictness_bias": -1.0,
+      "weight": 0.25
+    },
+    {
+      "judge_model": "qwen2.5:14b-instruct-q4_K_M",
+      "category": "canary",
+      "anchors": 4,
+      "agreement_rate": 0.75,
+      "false_pass_rate": 0.0,
+      "false_fail_rate": 0.25,
+      "strictness_bias": -0.25,
+      "weight": 0.75
+    },
+    {
+      "judge_model": "qwen2.5:14b-instruct-q4_K_M",
+      "category": "hallucination",
+      "anchors": 3,
+      "agreement_rate": 0.667,
+      "false_pass_rate": 0.333,
+      "false_fail_rate": 0.0,
+      "strictness_bias": 0.333,
+      "weight": 0.667
+    },
+    {
+      "judge_model": "qwen2.5:14b-instruct-q4_K_M",
+      "category": "tool-scope",
+      "anchors": 3,
+      "agreement_rate": 1.0,
+      "false_pass_rate": 0.0,
+      "false_fail_rate": 0.0,
+      "strictness_bias": 0.0,
+      "weight": 1.0
+    },
+    {
+      "judge_model": "qwen2.5:32b-instruct-q4_K_M",
+      "category": "canary",
+      "anchors": 4,
+      "agreement_rate": 0.75,
+      "false_pass_rate": 0.0,
+      "false_fail_rate": 0.25,
+      "strictness_bias": -0.25,
+      "weight": 0.75
+    },
+    {
+      "judge_model": "qwen2.5:32b-instruct-q4_K_M",
+      "category": "hallucination",
+      "anchors": 3,
+      "agreement_rate": 0.667,
+      "false_pass_rate": 0.333,
+      "false_fail_rate": 0.0,
+      "strictness_bias": 0.333,
+      "weight": 0.667
+    },
+    {
+      "judge_model": "qwen2.5:32b-instruct-q4_K_M",
+      "category": "tool-scope",
+      "anchors": 3,
+      "agreement_rate": 1.0,
+      "false_pass_rate": 0.0,
+      "false_fail_rate": 0.0,
+      "strictness_bias": 0.0,
+      "weight": 1.0
+    }
+  ]
+}

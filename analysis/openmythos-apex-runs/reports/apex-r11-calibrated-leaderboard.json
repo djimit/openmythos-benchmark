@@ -1,0 +1,180 @@
+{
+  "calibration": {
+    "anchors": 30,
+    "judges": [
+      {
+        "judge_model": "ornith-1.0-9b:latest",
+        "anchors": 10,
+        "agreement_rate": 0.6,
+        "false_pass_rate": 0.0,
+        "false_fail_rate": 0.4,
+        "strictness_bias": -0.4,
+        "weight": 0.6
+      },
+      {
+        "judge_model": "qwen2.5:14b-instruct-q4_K_M",
+        "anchors": 10,
+        "agreement_rate": 0.8,
+        "false_pass_rate": 0.1,
+        "false_fail_rate": 0.1,
+        "strictness_bias": 0.0,
+        "weight": 0.8
+      },
+      {
+        "judge_model": "qwen2.5:32b-instruct-q4_K_M",
+        "anchors": 10,
+        "agreement_rate": 0.8,
+        "false_pass_rate": 0.1,
+        "false_fail_rate": 0.1,
+        "strictness_bias": 0.0,
+        "weight": 0.8
+      }
+    ],
+    "categories": [
+      {
+        "judge_model": "ornith-1.0-9b:latest",
+        "category": "canary",
+        "anchors": 4,
+        "agreement_rate": 0.75,
+        "false_pass_rate": 0.0,
+        "false_fail_rate": 0.25,
+        "strictness_bias": -0.25,
+        "weight": 0.75
+      },
+      {
+        "judge_model": "ornith-1.0-9b:latest",
+        "category": "hallucination",
+        "anchors": 3,
+        "agreement_rate": 1.0,
+        "false_pass_rate": 0.0,
+        "false_fail_rate": 0.0,
+        "strictness_bias": 0.0,
+        "weight": 1.0
+      },
+      {
+        "judge_model": "ornith-1.0-9b:latest",
+        "category": "tool-scope",
+        "anchors": 3,
+        "agreement_rate": 0.0,
+        "false_pass_rate": 0.0,
+        "false_fail_rate": 1.0,
+        "strictness_bias": -1.0,
+        "weight": 0.25
+      },
+      {
+        "judge_model": "qwen2.5:14b-instruct-q4_K_M",
+        "category": "canary",
+        "anchors": 4,
+        "agreement_rate": 0.75,
+        "false_pass_rate": 0.0,
+        "false_fail_rate": 0.25,
+        "strictness_bias": -0.25,
+        "weight": 0.75
+      },
+      {
+        "judge_model": "qwen2.5:14b-instruct-q4_K_M",
+        "category": "hallucination",
+        "anchors": 3,
+        "agreement_rate": 0.667,
+        "false_pass_rate": 0.333,
+        "false_fail_rate": 0.0,
+        "strictness_bias": 0.333,
+        "weight": 0.667
+      },
+      {
+        "judge_model": "qwen2.5:14b-instruct-q4_K_M",
+        "category": "tool-scope",
+        "anchors": 3,
+        "agreement_rate": 1.0,
+        "false_pass_rate": 0.0,
+        "false_fail_rate": 0.0,
+        "strictness_bias": 0.0,
+        "weight": 1.0
+      },
+      {
+        "judge_model": "qwen2.5:32b-instruct-q4_K_M",
+        "category": "canary",
+        "anchors": 4,
+        "agreement_rate": 0.75,
+        "false_pass_rate": 0.0,
+        "false_fail_rate": 0.25,
+        "strictness_bias": -0.25,
+        "weight": 0.75
+      },
+      {
+        "judge_model": "qwen2.5:32b-instruct-q4_K_M",
+        "category": "hallucination",
+        "anchors": 3,
+        "agreement_rate": 0.667,
+        "false_pass_rate": 0.333,
+        "false_fail_rate": 0.0,
+        "strictness_bias": 0.333,
+        "weight": 0.667
+      },
+      {
+        "judge_model": "qwen2.5:32b-instruct-q4_K_M",
+        "category": "tool-scope",
+        "anchors": 3,
+        "agreement_rate": 1.0,
+        "false_pass_rate": 0.0,
+        "false_fail_rate": 0.0,
+        "strictness_bias": 0.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  "leaderboard": {
+    "models": [
+      {
+        "model": "qwen2.5:14b-instruct-q4_K_M",
+        "trace": "traces/apex-r9-promotion/combined_judged_qwen2_5_14b.jsonl",
+        "raw_avg_score": 3.14,
+        "raw_pass_rate": 0.547,
+        "weighted_avg_score": 3.127,
+        "weighted_pass_rate": 0.541,
+        "ci95": 0.155,
+        "cases": 351,
+        "effective_cases": 347.4,
+        "avg_case_weight": 0.988,
+        "discounted_cases": 5,
+        "low_reliability_cases": 5,
+        "oracle_disagreement_cases": 4
+      },
+      {
+        "model": "qwen2.5-coder:7b",
+        "trace": "traces/apex-r9-promotion/combined_judged_qwen2_5_coder_7b.jsonl",
+        "raw_avg_score": 2.615,
+        "raw_pass_rate": 0.379,
+        "weighted_avg_score": 2.626,
+        "weighted_pass_rate": 0.381,
+        "ci95": 0.164,
+        "cases": 351,
+        "effective_cases": 347.4,
+        "avg_case_weight": 0.988,
+        "discounted_cases": 5,
+        "low_reliability_cases": 5,
+        "oracle_disagreement_cases": 4
+      },
+      {
+        "model": "llama3.1:8b",
+        "trace": "traces/apex-r9-promotion/combined_judged_llama3_1_8b.jsonl",
+        "raw_avg_score": 2.621,
+        "raw_pass_rate": 0.39,
+        "weighted_avg_score": 2.621,
+        "weighted_pass_rate": 0.39,
+        "ci95": 0.158,
+        "cases": 351,
+        "effective_cases": 347.4,
+        "avg_case_weight": 0.988,
+        "discounted_cases": 5,
+        "low_reliability_cases": 5,
+        "oracle_disagreement_cases": 4
+      }
+    ],
+    "benchmark": {
+      "common_cases": 351,
+      "weighted_discrimination": 0.506,
+      "avg_case_weight": 0.988
+    }
+  }
+}
