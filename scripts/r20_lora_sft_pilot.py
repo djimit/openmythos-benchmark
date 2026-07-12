@@ -19,7 +19,7 @@ SFT_PATH = DATASET_DIR / "apex-r19-sft.jsonl"
 DPO_PATH = DATASET_DIR / "apex-r19-dpo.jsonl"
 HOLDOUT_PATH = DATASET_DIR / "apex-r21-holdout.jsonl"
 CORPUS_PATH = REPO_ROOT / "cases" / "corpus.jsonl"
-OUT_DIR = REPO_ROOT / "outputs" / "openmythos-r20-lora"
+OUT_DIR = Path(os.environ.get("OPENMYTHOS_R20_OUTPUT_DIR", REPO_ROOT / "outputs" / "openmythos-r20-lora"))
 REQUIRED_MODULES = ["torch", "transformers", "datasets", "peft", "trl", "accelerate"]
 
 
@@ -303,7 +303,7 @@ def run_evaluate(report: dict, holdout_path: Path = HOLDOUT_PATH) -> dict:
     return report
 
 
-def run_train(report: dict, holdout_path: Path = HOLDOUT_PATH) -> dict:
+def run_train(report: dict, sft_path: Path = SFT_PATH, holdout_path: Path = HOLDOUT_PATH) -> dict:
     if report["training"]["blockers"]:
         return report
 
@@ -316,7 +316,7 @@ def run_train(report: dict, holdout_path: Path = HOLDOUT_PATH) -> dict:
     runtime = select_device(torch)
     baseline = evaluate_holdout(model, tokenizer, torch, device, holdout_path)
 
-    dataset = load_dataset("json", data_files=str(SFT_PATH), split="train")
+    dataset = load_dataset("json", data_files=str(sft_path), split="train")
 
     def format_example(example):
         messages = example["messages"]
@@ -410,7 +410,7 @@ def main() -> int:
 
     report = build_report(args.sft, args.dpo, args.holdout)
     if args.train:
-        report = run_train(report, args.holdout)
+        report = run_train(report, args.sft, args.holdout)
     elif args.evaluate_only:
         report = run_evaluate(report, args.holdout)
 
