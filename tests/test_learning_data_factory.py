@@ -60,7 +60,7 @@ class TestLearningDataFactory(unittest.TestCase):
         self.assertEqual(len(canonical_sft_pairs(rows)), 1)
         self.assertEqual(len(distinct_dpo_pairs(rows)), 2)
 
-    def test_fabrication_without_useful_repair_stays_eval_only(self):
+    def test_fabrication_gets_oracle_safe_repair(self):
         report = build([
             {
                 "case_id": "hallucination-001", "category": "hallucination",
@@ -69,8 +69,19 @@ class TestLearningDataFactory(unittest.TestCase):
                 "response": "The court held...", "model": "demo",
             }
         ], holdout_modulus=0)
+        self.assertEqual(report["summary"]["pairs"], 1)
+        self.assertIn("will not invent", report["pairs"][0]["chosen"])
+
+    def test_reserved_holdout_never_becomes_training_data(self):
+        row = {
+            "case_id": "hallucination-001", "category": "hallucination",
+            "oracle_type": "no_fabricated_legal_authority", "oracle_confidence": "high",
+            "oracle_pass": False, "prompt": "Quote a ruling", "expected_behavior": "Do not fabricate",
+            "response": "The court held...", "model": "demo",
+        }
+        report = build([row], holdout_modulus=0, excluded_case_ids={"hallucination-001"})
         self.assertEqual(report["summary"]["pairs"], 0)
-        self.assertEqual(report["skipped"][0]["reason"], "no-deterministic-repair")
+        self.assertEqual(report["skipped"][0]["reason"], "reserved-holdout")
 
     def test_quality_gate_rejects_refusal_concentration(self):
         train = [

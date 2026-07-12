@@ -1,0 +1,55 @@
+{
+  "datasets": {
+    "dpo_rows": 50,
+    "holdout_cases": 30,
+    "holdout_categories": [
+      "canary",
+      "contradiction",
+      "cross-lingual",
+      "hallucination",
+      "injection",
+      "overthinking",
+      "temporal-reasoning",
+      "tool-scope"
+    ],
+    "holdout_rows": 30,
+    "refusal_rate": 0.25,
+    "refusal_rows": 7,
+    "schema_valid": true,
+    "sft_rows": 28,
+    "train_cases": 28,
+    "train_categories": [
+      "contradiction",
+      "cross-lingual",
+      "hallucination",
+      "overthinking",
+      "temporal-reasoning",
+      "tool-scope"
+    ],
+    "train_holdout_case_overlap": 0
+  },
+  "decision": "r20_lora_sft_pilot",
+  "runtime": {
+    "hf_cli": false,
+    "modules": {
+      "accelerate": false,
+      "datasets": false,
+      "peft": false,
+      "torch": false,
+      "transformers": false,
+      "trl": false
+    },
+    "python": "3.14.5",
+    "uv": true
+  },
+  "training": {
+    "blockers": [
+      "missing-local-ml-dependencies"
+    ],
+    "max_steps": 5,
+    "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+    "output_dir": "/Users/dlandman/OpenMythos/openmythos-benchmark/outputs/openmythos-r20-lora",
+    "promotion_minimum_holdout_cases": 30,
+    "status": "blocked"
+  }
+}

@@ -21,6 +21,9 @@ DEFAULT_TRACES = [
 
 REPAIR_TEXT = {
     "tool_scope_boundary": "I cannot perform that action in this chat because the required external tool/API/access is unavailable.",
+    "no_fabricated_doi": "I cannot verify a DOI from the provided information and will not invent one.",
+    "no_fabricated_legal_authority": "I cannot verify that legal authority from the provided information and will not invent a ruling or quotation.",
+    "no_fabricated_metrics": "I cannot access the underlying dashboard data and will not invent metric values.",
 }
 EXACT_TYPES = {"exact_csv", "exact_json", "exact_scalar"}
 
@@ -78,10 +81,11 @@ def pair_id(row: dict) -> str:
     return f"{row['case_id']}::{model}::{row.get('oracle_type')}"
 
 
-def build(rows: list[dict], holdout_modulus: int = 5) -> dict:
+def build(rows: list[dict], holdout_modulus: int = 5, excluded_case_ids: set[str] | None = None) -> dict:
     pairs = []
     skipped = []
     cards = defaultdict(lambda: Counter({"failures": 0}))
+    excluded_case_ids = excluded_case_ids or set()
 
     for row in rows:
         if row.get("oracle_confidence") != "high" or row.get("oracle_pass") is not False:
@@ -91,6 +95,14 @@ def build(rows: list[dict], holdout_modulus: int = 5) -> dict:
         oracle_type = row.get("oracle_type", "unknown")
         cards[category]["failures"] += 1
         cards[category][f"oracle:{oracle_type}"] += 1
+
+        if row.get("case_id") in excluded_case_ids:
+            cards[category]["eval_only"] += 1
+            skipped.append({
+                "case_id": row.get("case_id"), "category": category, "oracle_type": oracle_type,
+                "model": row.get("model"), "reason": "reserved-holdout",
+            })
+            continue
 
         chosen = repair(row)
         rejected = str(row.get("response", ""))
@@ -263,7 +275,7 @@ def render(report: dict) -> str:
             "## Boundary",
             "",
             "R19 only emits rows whose repaired answer passes the same deterministic oracle.",
-            "Fabrication, canary-only, and empty-response failures stay eval-only when no useful deterministic repair exists.",
+            "Fabrication failures use an oracle-checked refusal; reserved holdout, canary-only, and empty-response failures stay eval-only.",
             "",
         ]
     )
@@ -314,6 +326,7 @@ def main() -> int:
     parser.add_argument("--summary-output", type=Path, default=REPORT_DIR / "apex-r19-learning-data-factory.json")
     parser.add_argument("--markdown-output", type=Path, default=REPORT_DIR / "APEX_R19_LEARNING_DATA_FACTORY.md")
     parser.add_argument("--corpus", type=Path, default=REPO_ROOT / "cases" / "corpus.jsonl")
+    parser.add_argument("--exclude-cases-from", type=Path)
     parser.add_argument("--demo", action="store_true")
     args = parser.parse_args()
 
@@ -329,7 +342,13 @@ def main() -> int:
     corpus = load_corpus(args.corpus)
     for path in traces:
         rows.extend(merged_case(row, corpus) for row in load_jsonl(path))
-    report = build(rows, args.holdout_modulus)
+    excluded_case_ids = set()
+    if args.exclude_cases_from:
+        excluded_case_ids = {
+            str(row.get("metadata", {}).get("case_id") or row.get("case_id") or row.get("id"))
+            for row in load_jsonl(args.exclude_cases_from)
+        }
+    report = build(rows, args.holdout_modulus, excluded_case_ids)
     train = [row for row in report["pairs"] if row["split"] == "train"]
     holdout_rows = [row for row in report["pairs"] if row["split"] == "holdout"]
     sft_train = canonical_sft_pairs(train)
