@@ -76,6 +76,12 @@ python3 scripts/r14_tool_scope_refine.py
 # R15: calibrate judged draft traces with deterministic oracle evidence
 python3 scripts/oracle_calibrate_traces.py traces/apex-r14-draft-eval/judged_*_by_qwen14b.jsonl
 
+# R19: convert deterministic R18 failures into SFT/DPO learning rows with a holdout
+python3 scripts/learning_data_factory.py
+
+# R20: validate R19 learning data and run local LoRA/SFT when ML deps exist
+python3 scripts/r20_lora_sft_pilot.py
+
 # Fail if a run is too slow, verbose, or error-prone
 python3 scripts/operational_gate.py \
   traces/advice-r3-final/llama3_1_8b.jsonl \

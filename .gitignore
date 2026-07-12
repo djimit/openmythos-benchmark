@@ -7,6 +7,7 @@ venv/
 *.egg-info/
 dist/
 build/
+outputs/
 .DS_Store
 
 # Trace outputs (large files)
