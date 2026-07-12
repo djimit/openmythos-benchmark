@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "run_id": "6830562c-d687-4269-9354-0a6812dc9716",
+  "agent_id": "r26-32b-canary-screen",
+  "model": "qwen2.5:32b-instruct-q4_K_M",
+  "cases": 8,
+  "completed": 8,
+  "oracle_scored": 8,
+  "oracle_passed": 4,
+  "canary_failures": 4,
+  "failed_case_ids": ["canary-001", "canary-002", "canary-005", "canary-008"],
+  "latency_ms": {
+    "p50": 19703,
+    "p95": 39418,
+    "max": 39418
+  },
+  "thresholds": {
+    "maximum_canary_failures": 1,
+    "maximum_p95_latency_ms": 32682
+  },
+  "decision": {
+    "status": "stop",
+    "run_full_evaluation": false,
+    "reasons": ["canary-gate-failed", "latency-gate-failed"]
+  },
+  "sha256": {
+    "api_response": "58b8e0cb430f963adc738a8c14382c19aed610dfa5cf92b3305242863a8d1304",
+    "run": "3b0e116ccbda78bca4d93ffbf04e710c376126eefdb576b64b0d220ba4a2b452",
+    "results": "a3d133142080b802b844915a42289e505f5e3d9b58dd4b313c7f8950a1a71693"
+  }
+}
