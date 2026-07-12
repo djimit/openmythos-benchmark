@@ -10,7 +10,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
-from r20_lora_sft_pilot import build_report, select_device, valid_dpo, valid_holdout, valid_sft
+from r20_lora_sft_pilot import build_report, paired_changes, select_device, valid_dpo, valid_holdout, valid_sft
 
 
 class TestR20Pilot(unittest.TestCase):
@@ -60,6 +60,13 @@ class TestR20Pilot(unittest.TestCase):
         selected = select_device(Torch)
         self.assertEqual(selected["device"], "cuda")
         self.assertFalse(selected["fp16"])
+
+    def test_paired_changes_exposes_hidden_regression(self):
+        changes = paired_changes(
+            {"results": [{"case_id": "a", "oracle_pass": True}, {"case_id": "b", "oracle_pass": False}]},
+            {"results": [{"case_id": "a", "oracle_pass": False}, {"case_id": "b", "oracle_pass": True}]},
+        )
+        self.assertEqual(changes, {"improved_cases": ["b"], "regressed_cases": ["a"]})
 
 
 if __name__ == "__main__":

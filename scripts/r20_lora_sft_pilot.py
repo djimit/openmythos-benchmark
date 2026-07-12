@@ -212,6 +212,16 @@ def evaluate_holdout(model, tokenizer, torch_module, device: str, holdout_path: 
     }
 
 
+def paired_changes(baseline: dict, post_training: dict) -> dict:
+    before = {row["case_id"]: bool(row["oracle_pass"]) for row in baseline["results"]}
+    after = {row["case_id"]: bool(row["oracle_pass"]) for row in post_training["results"]}
+    common = before.keys() & after.keys()
+    return {
+        "improved_cases": sorted(case_id for case_id in common if not before[case_id] and after[case_id]),
+        "regressed_cases": sorted(case_id for case_id in common if before[case_id] and not after[case_id]),
+    }
+
+
 def render(report: dict) -> str:
     training = report["training"]
     datasets = report["datasets"]
@@ -260,6 +270,8 @@ def render(report: dict) -> str:
             f"- baseline over-refusal: `{training['baseline']['over_refusal']}`",
             f"- post-training over-refusal: `{training['post_training']['over_refusal']}`",
             f"- numerically stable: `{'yes' if training['numerically_stable'] else 'no'}`",
+            f"- improved cases: `{len(training['paired_changes']['improved_cases'])}`",
+            f"- regressed cases: `{len(training['paired_changes']['regressed_cases'])}`",
             f"- promotion status: `{training['promotion_status']}`",
             "",
         ])
@@ -360,8 +372,11 @@ def run_train(report: dict, sft_path: Path = SFT_PATH, holdout_path: Path = HOLD
         for key, value in row.items()
         if isinstance(value, float) and not math.isfinite(value)
     ]
+    changes = paired_changes(baseline, post_training)
+    measurable_delta = post_training["oracle_passed"] > baseline["oracle_passed"]
     technical_pass = (
-        post_training["oracle_pass_rate"] >= baseline["oracle_pass_rate"]
+        not changes["regressed_cases"]
+        and post_training["oracle_pass_rate"] >= baseline["oracle_pass_rate"]
         and post_training["over_refusal"] <= baseline["over_refusal"]
         and not non_finite_metrics
     )
@@ -374,10 +389,12 @@ def run_train(report: dict, sft_path: Path = SFT_PATH, holdout_path: Path = HOLD
             "adapter_saved": (OUT_DIR / "adapter_config.json").exists(),
             "baseline": baseline,
             "post_training": post_training,
+            "paired_changes": changes,
+            "measurable_delta": measurable_delta,
             "technical_non_regression": technical_pass,
             "numerically_stable": not non_finite_metrics,
             "non_finite_metrics": non_finite_metrics,
-            "promotion_status": "eligible_for_review" if technical_pass and promotion_eligible else "smoke_only",
+            "promotion_status": "eligible_for_review" if technical_pass and measurable_delta and promotion_eligible else "rejected",
         }
     )
     return report
@@ -388,6 +405,10 @@ def demo() -> int:
     assert valid_dpo({"prompt": "Hi", "chosen": "Hello", "rejected": "No"})
     assert not valid_dpo({"prompt": "Hi", "chosen": "Hello", "rejected": "Hello"})
     assert valid_holdout({"prompt": "Hi", "metadata": {"case_id": "c1", "category": "demo"}})
+    assert paired_changes(
+        {"results": [{"case_id": "c1", "oracle_pass": True}, {"case_id": "c2", "oracle_pass": False}]},
+        {"results": [{"case_id": "c1", "oracle_pass": False}, {"case_id": "c2", "oracle_pass": True}]},
+    ) == {"improved_cases": ["c2"], "regressed_cases": ["c1"]}
     print("demo OK")
     return 0
 
