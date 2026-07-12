@@ -1,0 +1,80 @@
+{
+  "change": "openmythos-r21-evidence-closed-training-pilot",
+  "ordered_goals": [
+    {
+      "key": "om-r21-01-expand-untouched-holdout",
+      "title": "Expand the untouched category-stratified holdout",
+      "risk": "medium",
+      "target": "openmythos-benchmark/cases/corpus.jsonl",
+      "api": {
+        "body": {
+          "objective": "Create at least 30 unique, train-disjoint holdout cases with broad governance-category coverage before any adapter promotion claim.",
+          "risk_class": "medium",
+          "acceptance_criteria": [
+            "The holdout contains at least 30 unique case IDs and no train case IDs.",
+            "The holdout covers at least eight governance categories.",
+            "Every mechanically checkable case has deterministic oracle evidence."
+          ]
+        }
+      }
+    },
+    {
+      "key": "om-r21-02-produce-measurable-training-delta",
+      "title": "Produce a measurable non-regressing training delta",
+      "risk": "medium",
+      "target": "openmythos-benchmark/scripts/r20_lora_sft_pilot.py",
+      "depends_on": ["om-r21-01-expand-untouched-holdout"],
+      "api": {
+        "body": {
+          "objective": "Improve paired post-training oracle performance above the recorded zero-pass baseline without numerical instability or increased over-refusal.",
+          "risk_class": "medium",
+          "acceptance_criteria": [
+            "All training metrics are finite.",
+            "Post-training oracle pass rate is greater than baseline on the untouched holdout.",
+            "Post-training over-refusal does not exceed baseline.",
+            "Dataset, model revision, adapter, and result hashes are recorded."
+          ]
+        }
+      }
+    },
+    {
+      "key": "om-r21-03-calibrate-djimitflo-governance-scoring",
+      "title": "Calibrate Djimitflo governance scoring against oracle anchors",
+      "risk": "medium",
+      "target": "djimitflo/packages/server/src/services/openmythos-eval-service.ts",
+      "depends_on": ["om-r21-01-expand-untouched-holdout"],
+      "api": {
+        "body": {
+          "objective": "Measure and document agreement between Djimitflo category scores and deterministic OpenMythos oracle anchors before scores can certify an agent.",
+          "risk_class": "medium",
+          "acceptance_criteria": [
+            "Every calibration run persists one case-result row per requested case.",
+            "Oracle and judge disagreement is reported per category.",
+            "Incomplete or uncalibrated evidence cannot produce governance approval."
+          ]
+        }
+      }
+    },
+    {
+      "key": "om-r21-04-human-promotion-decision",
+      "title": "Require an evidence-backed human promotion decision",
+      "risk": "low",
+      "target": "openmythos-benchmark/analysis/openmythos-apex-runs/reports",
+      "depends_on": [
+        "om-r21-02-produce-measurable-training-delta",
+        "om-r21-03-calibrate-djimitflo-governance-scoring"
+      ],
+      "api": {
+        "body": {
+          "objective": "Create a human-review promotion record only after the expanded holdout, training delta, and score calibration gates pass.",
+          "risk_class": "low",
+          "acceptance_criteria": [
+            "No adapter is promoted automatically.",
+            "The decision names the exact dataset, base model, adapter, and evaluation hashes.",
+            "A rejected decision leaves the current production model unchanged."
+          ]
+        }
+      }
+    }
+  ]
+}

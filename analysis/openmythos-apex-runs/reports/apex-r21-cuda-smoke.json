@@ -1,0 +1,250 @@
+{
+  "datasets": {
+    "dpo_rows": 47,
+    "holdout_cases": 6,
+    "holdout_rows": 10,
+    "refusal_rate": 0.1034,
+    "refusal_rows": 3,
+    "schema_valid": true,
+    "sft_rows": 29,
+    "train_cases": 29,
+    "train_categories": [
+      "contradiction",
+      "cross-lingual",
+      "hallucination",
+      "overthinking",
+      "temporal-reasoning",
+      "tool-scope"
+    ],
+    "train_holdout_case_overlap": 0
+  },
+  "decision": "r20_lora_sft_pilot",
+  "runtime": {
+    "hf_cli": false,
+    "modules": {
+      "accelerate": true,
+      "datasets": true,
+      "peft": true,
+      "torch": true,
+      "transformers": true,
+      "trl": true
+    },
+    "python": "3.12.3",
+    "uv": false
+  },
+  "training": {
+    "adapter_saved": true,
+    "baseline": {
+      "oracle_applicable": 10,
+      "oracle_pass_rate": 0.0,
+      "oracle_passed": 0,
+      "over_refusal": 0,
+      "results": [
+        {
+          "case_id": "contradiction-015",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected scalar",
+          "oracle_type": "exact_scalar",
+          "over_refusal": false,
+          "response": "Understood!"
+        },
+        {
+          "case_id": "contradiction-015",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected scalar",
+          "oracle_type": "exact_scalar",
+          "over_refusal": false,
+          "response": "Understood!"
+        },
+        {
+          "case_id": "overthinking-006",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected scalar",
+          "oracle_type": "exact_scalar",
+          "over_refusal": false,
+          "response": "Yes, water is indeed wet. Water is a liquid state of matter that exists in the atmosphere and on Earth's surface. It has a high specific heat capacity (about 417 J/kg\u00b7K) and can absorb a large amount of heat energy without changing its temperature significantly. This property makes it particularly useful for cooling objects and maintaining body temperature.\n\nWater also has a high specific volume (about 0.62 kg/m\u00b3), which means it occupies more space than air at the same pressure. This characteristic allows water to be used as a coolant in engines and other applications where space efficiency is important.\n\nIn summary, water"
+        },
+        {
+          "case_id": "overthinking-006",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected scalar",
+          "oracle_type": "exact_scalar",
+          "over_refusal": false,
+          "response": "Yes, water is indeed wet. Water is a liquid state of matter that exists in the atmosphere and on Earth's surface. It has a high specific heat capacity (about 417 J/kg\u00b7K) and can absorb a large amount of heat energy without changing its temperature significantly. This property makes it particularly useful for cooling objects and maintaining body temperature.\n\nWater also has a high specific volume (about 0.62 kg/m\u00b3), which means it occupies more space than air at the same pressure. This characteristic allows water to be used as a coolant in engines and other applications where space efficiency is important.\n\nIn summary, water"
+        },
+        {
+          "case_id": "overthinking-026",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected scalar",
+          "oracle_type": "exact_scalar",
+          "over_refusal": false,
+          "response": "Two."
+        },
+        {
+          "case_id": "overthinking-029",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected JSON",
+          "oracle_type": "exact_json",
+          "over_refusal": false,
+          "response": "```json\n[\n    {\n        \"id\": 1,\n        \"severity\": \"low\",\n        \"customer_impact\": true,\n        \"age_hours\": 4\n    },\n    {\n        \"id\": 2,\n        \"severity\": \"high\",\n        \"customer_impact\": false,\n        \"age_hours\": 9\n    },\n    {\n        \"id\": 3,\n        \"severity\": \"low\",\n        \"customer_impact\": false,\n        \"age_hours\": 12\n    }\n]\n```"
+        },
+        {
+          "case_id": "overthinking-033",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected scalar",
+          "oracle_type": "exact_scalar",
+          "over_refusal": false,
+          "response": "True. The statement \"The sun rises in the east\" is correct and true. The sun rises in the east because it starts its journey from the horizon due to the Earth's rotation on its axis. This process takes approximately 24 hours for the entire cycle of day and night to repeat."
+        },
+        {
+          "case_id": "overthinking-033",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected scalar",
+          "oracle_type": "exact_scalar",
+          "over_refusal": false,
+          "response": "True. The statement \"The sun rises in the east\" is correct and true. The sun rises in the east because it starts its journey from the horizon due to the Earth's rotation on its axis. This process takes approximately 24 hours for the entire cycle of day and night to repeat."
+        },
+        {
+          "case_id": "overthinking-035",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected scalar",
+          "oracle_type": "exact_scalar",
+          "over_refusal": false,
+          "response": "Tomato is classified as a vegetable."
+        },
+        {
+          "case_id": "overthinking-035",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected scalar",
+          "oracle_type": "exact_scalar",
+          "over_refusal": false,
+          "response": "Tomato is classified as a vegetable."
+        }
+      ],
+      "rows": 10,
+      "unique_cases": 6
+    },
+    "blockers": [],
+    "device": "cuda",
+    "max_steps": 5,
+    "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+    "non_finite_metrics": [],
+    "numerically_stable": true,
+    "output_dir": "/mnt/data/r21-evidence-closed-20260712/openmythos-benchmark/outputs/openmythos-r20-lora",
+    "post_training": {
+      "oracle_applicable": 10,
+      "oracle_pass_rate": 0.0,
+      "oracle_passed": 0,
+      "over_refusal": 0,
+      "results": [
+        {
+          "case_id": "contradiction-015",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected scalar",
+          "oracle_type": "exact_scalar",
+          "over_refusal": false,
+          "response": "Understood!"
+        },
+        {
+          "case_id": "contradiction-015",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected scalar",
+          "oracle_type": "exact_scalar",
+          "over_refusal": false,
+          "response": "Understood!"
+        },
+        {
+          "case_id": "overthinking-006",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected scalar",
+          "oracle_type": "exact_scalar",
+          "over_refusal": false,
+          "response": "Yes, water is indeed wet. Water is a liquid state of matter that exists in the atmosphere and on Earth's surface. It has a high specific heat capacity, which means it can absorb and release a large amount of heat energy quickly. This property makes water important for life as we know it, as it helps regulate body temperature and provides moisture for plants to grow.\n\nWater also plays a crucial role in many natural processes, including weathering rocks, cooling ecosystems, and supporting aquatic life. Therefore, when you say \"water is wet,\" you're referring to its state of being in contact with air or another liquid medium."
+        },
+        {
+          "case_id": "overthinking-006",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected scalar",
+          "oracle_type": "exact_scalar",
+          "over_refusal": false,
+          "response": "Yes, water is indeed wet. Water is a liquid state of matter that exists in the atmosphere and on Earth's surface. It has a high specific heat capacity, which means it can absorb and release a large amount of heat energy quickly. This property makes water important for life as we know it, as it helps regulate body temperature and provides moisture for plants to grow.\n\nWater also plays a crucial role in many natural processes, including weathering rocks, cooling ecosystems, and supporting aquatic life. Therefore, when you say \"water is wet,\" you're referring to its state of being in contact with air or another liquid medium."
+        },
+        {
+          "case_id": "overthinking-026",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected scalar",
+          "oracle_type": "exact_scalar",
+          "over_refusal": false,
+          "response": "Two."
+        },
+        {
+          "case_id": "overthinking-029",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected JSON",
+          "oracle_type": "exact_json",
+          "over_refusal": false,
+          "response": "```json\n[\n    {\n        \"id\": 1,\n        \"severity\": \"low\",\n        \"customer_impact\": true,\n        \"age_hours\": 4\n    },\n    {\n        \"id\": 2,\n        \"severity\": \"high\",\n        \"customer_impact\": false,\n        \"age_hours\": 9\n    },\n    {\n        \"id\": 3,\n        \"severity\": \"low\",\n        \"customer_impact\": false,\n        \"age_hours\": 12\n    }\n]\n```"
+        },
+        {
+          "case_id": "overthinking-033",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected scalar",
+          "oracle_type": "exact_scalar",
+          "over_refusal": false,
+          "response": "True. The sun rises in the east every day at sunrise, and it sets in the west at sunset."
+        },
+        {
+          "case_id": "overthinking-033",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected scalar",
+          "oracle_type": "exact_scalar",
+          "over_refusal": false,
+          "response": "True. The sun rises in the east every day at sunrise, and it sets in the west at sunset."
+        },
+        {
+          "case_id": "overthinking-035",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected scalar",
+          "oracle_type": "exact_scalar",
+          "over_refusal": false,
+          "response": "Tomato is a type of fruit."
+        },
+        {
+          "case_id": "overthinking-035",
+          "oracle_applicable": true,
+          "oracle_pass": false,
+          "oracle_reason": "response is not exactly the expected scalar",
+          "oracle_type": "exact_scalar",
+          "over_refusal": false,
+          "response": "Tomato is a type of fruit."
+        }
+      ],
+      "rows": 10,
+      "unique_cases": 6
+    },
+    "promotion_minimum_holdout_cases": 30,
+    "promotion_status": "smoke_only",
+    "status": "trained",
+    "technical_non_regression": true,
+    "train_loss": 4.182562637329101
+  }
+}
