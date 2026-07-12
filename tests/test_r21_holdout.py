@@ -8,7 +8,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
-from r21_holdout import build
+from r21_holdout import CONFIRMATORY_CASES, build
 
 
 class TestR21Holdout(unittest.TestCase):
@@ -19,6 +19,15 @@ class TestR21Holdout(unittest.TestCase):
         self.assertEqual(len(rows), len(ids))
         self.assertGreaterEqual(len(ids), 30)
         self.assertGreaterEqual(len(categories), 8)
+
+    def test_confirmatory_fold_is_disjoint(self):
+        development = build()
+        confirmatory = build(cases=CONFIRMATORY_CASES, split="confirmatory_holdout")
+        development_ids = {row["metadata"]["case_id"] for row in development}
+        confirmatory_ids = {row["metadata"]["case_id"] for row in confirmatory}
+        self.assertFalse(development_ids & confirmatory_ids)
+        self.assertEqual(len(confirmatory_ids), 30)
+        self.assertGreaterEqual(len({row["metadata"]["category"] for row in confirmatory}), 8)
 
 
 if __name__ == "__main__":

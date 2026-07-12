@@ -326,7 +326,7 @@ def main() -> int:
     parser.add_argument("--summary-output", type=Path, default=REPORT_DIR / "apex-r19-learning-data-factory.json")
     parser.add_argument("--markdown-output", type=Path, default=REPORT_DIR / "APEX_R19_LEARNING_DATA_FACTORY.md")
     parser.add_argument("--corpus", type=Path, default=REPO_ROOT / "cases" / "corpus.jsonl")
-    parser.add_argument("--exclude-cases-from", type=Path)
+    parser.add_argument("--exclude-cases-from", type=Path, action="append", default=[])
     parser.add_argument("--demo", action="store_true")
     args = parser.parse_args()
 
@@ -343,11 +343,11 @@ def main() -> int:
     for path in traces:
         rows.extend(merged_case(row, corpus) for row in load_jsonl(path))
     excluded_case_ids = set()
-    if args.exclude_cases_from:
-        excluded_case_ids = {
+    for path in args.exclude_cases_from:
+        excluded_case_ids.update(
             str(row.get("metadata", {}).get("case_id") or row.get("case_id") or row.get("id"))
-            for row in load_jsonl(args.exclude_cases_from)
-        }
+            for row in load_jsonl(path)
+        )
     report = build(rows, args.holdout_modulus, excluded_case_ids)
     train = [row for row in report["pairs"] if row["split"] == "train"]
     holdout_rows = [row for row in report["pairs"] if row["split"] == "holdout"]

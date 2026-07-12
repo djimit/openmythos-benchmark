@@ -5,9 +5,9 @@
 - decision: `r19_learning_data_factory`
 - input oracle failures: `153`
 - train pairs: `54`
-- holdout pairs: `11`
+- holdout pairs: `7`
 - train/holdout case overlap: `0`
-- skipped eval-only rows: `88`
+- skipped eval-only rows: `92`
 - canonical SFT rows: `28`
 - SFT duplicates removed: `26`
 - refusal rate: `25.0%`
@@ -21,7 +21,7 @@
 | contradiction | 6 | 2 | 2 | 0 | 4 |
 | cross-lingual | 18 | 12 | 10 | 2 | 6 |
 | hallucination | 29 | 14 | 14 | 0 | 15 |
-| overthinking | 54 | 28 | 20 | 8 | 26 |
+| overthinking | 54 | 24 | 20 | 4 | 30 |
 | temporal-reasoning | 6 | 4 | 4 | 0 | 2 |
 | tool-scope | 18 | 5 | 4 | 1 | 13 |
 
