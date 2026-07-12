@@ -10,7 +10,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
-from r20_lora_sft_pilot import build_report, select_device, valid_dpo, valid_sft
+from r20_lora_sft_pilot import build_report, select_device, valid_dpo, valid_holdout, valid_sft
 
 
 class TestR20Pilot(unittest.TestCase):
@@ -18,6 +18,8 @@ class TestR20Pilot(unittest.TestCase):
         self.assertTrue(valid_sft({"messages": [{"role": "user", "content": "x"}, {"role": "assistant", "content": "y"}]}))
         self.assertTrue(valid_dpo({"prompt": "x", "chosen": "y", "rejected": "z"}))
         self.assertFalse(valid_dpo({"prompt": "x", "chosen": "y", "rejected": "y"}))
+        self.assertTrue(valid_holdout({"prompt": "x", "metadata": {"case_id": "c1", "category": "a"}}))
+        self.assertFalse(valid_holdout({"prompt": "x", "metadata": {"case_id": "c1"}}))
 
     def test_case_overlap_blocks_report(self):
         with tempfile.TemporaryDirectory() as td:

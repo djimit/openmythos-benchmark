@@ -17,7 +17,7 @@ DATASET_DIR = REPO_ROOT / "analysis" / "openmythos-apex-runs" / "datasets"
 REPORT_DIR = REPO_ROOT / "analysis" / "openmythos-apex-runs" / "reports"
 SFT_PATH = DATASET_DIR / "apex-r19-sft.jsonl"
 DPO_PATH = DATASET_DIR / "apex-r19-dpo.jsonl"
-HOLDOUT_PATH = DATASET_DIR / "apex-r19-holdout-dpo.jsonl"
+HOLDOUT_PATH = DATASET_DIR / "apex-r21-holdout.jsonl"
 CORPUS_PATH = REPO_ROOT / "cases" / "corpus.jsonl"
 OUT_DIR = REPO_ROOT / "outputs" / "openmythos-r20-lora"
 REQUIRED_MODULES = ["torch", "transformers", "datasets", "peft", "trl", "accelerate"]
@@ -53,6 +53,17 @@ def valid_dpo(row: dict) -> bool:
     return all(isinstance(row.get(key), str) and row.get(key).strip() for key in ("prompt", "chosen", "rejected")) and row["chosen"].strip() != row["rejected"].strip()
 
 
+def valid_holdout(row: dict) -> bool:
+    metadata = row.get("metadata")
+    return (
+        isinstance(row.get("prompt"), str)
+        and bool(row["prompt"].strip())
+        and isinstance(metadata, dict)
+        and bool(metadata.get("case_id"))
+        and bool(metadata.get("category"))
+    )
+
+
 def case_ids(rows: list[dict]) -> set[str]:
     out = set()
     for row in rows:
@@ -73,6 +84,10 @@ def build_report(sft_path: Path, dpo_path: Path, holdout_path: Path) -> dict:
     modules = module_status()
     train_cases = case_ids(dpo)
     holdout_cases = case_ids(holdout)
+    holdout_categories = sorted({
+        str(row.get("metadata", {}).get("category"))
+        for row in holdout if row.get("metadata", {}).get("category")
+    })
     sft_cases = case_ids(sft)
     train_categories = sorted({
         str(row.get("metadata", {}).get("category"))
@@ -90,7 +105,7 @@ def build_report(sft_path: Path, dpo_path: Path, holdout_path: Path) -> dict:
         blockers.append("invalid-sft-row")
     if any(not valid_dpo(row) for row in dpo):
         blockers.append("invalid-dpo-row")
-    if any(not valid_dpo(row) for row in holdout):
+    if any(not valid_holdout(row) for row in holdout):
         blockers.append("invalid-holdout-row")
     if train_cases & holdout_cases:
         blockers.append("train-holdout-case-overlap")
@@ -98,8 +113,10 @@ def build_report(sft_path: Path, dpo_path: Path, holdout_path: Path) -> dict:
         blockers.append("duplicate-sft-case")
     if len(train_categories) < 4:
         blockers.append("insufficient-train-category-coverage")
-    if len(holdout_cases) < 5:
+    if len(holdout_cases) < 30:
         blockers.append("insufficient-holdout-cases")
+    if len(holdout_categories) < 8:
+        blockers.append("insufficient-holdout-category-coverage")
     if refusal_rate > 0.25:
         blockers.append("excessive-refusal-concentration")
     missing_modules = [name for name, ok in modules.items() if not ok]
@@ -114,6 +131,7 @@ def build_report(sft_path: Path, dpo_path: Path, holdout_path: Path) -> dict:
             "holdout_rows": len(holdout),
             "train_cases": len(train_cases),
             "holdout_cases": len(holdout_cases),
+            "holdout_categories": holdout_categories,
             "train_holdout_case_overlap": len(train_cases & holdout_cases),
             "train_categories": train_categories,
             "refusal_rows": refusal_rows,
@@ -167,8 +185,11 @@ def evaluate_holdout(model, tokenizer, torch_module, device: str, holdout_path: 
             )
         input_length = inputs["input_ids"].shape[1]
         response = tokenizer.decode(output[0][input_length:], skip_special_tokens=True).strip()
-        oracle = score(merged_case({"case_id": row["metadata"]["case_id"], "response": response}, corpus))
-        over_refusal = bool(str(oracle.get("oracle_type", "")).startswith("exact_") and has_refusal(response))
+        oracle = score(merged_case({**row, "case_id": row["metadata"]["case_id"], "response": response}, corpus))
+        over_refusal = bool(
+            (str(oracle.get("oracle_type", "")).startswith("exact_") or oracle.get("oracle_type") == "required_text")
+            and has_refusal(response)
+        )
         results.append({
             "case_id": row["metadata"]["case_id"],
             "oracle_type": oracle.get("oracle_type"),
@@ -229,7 +250,7 @@ def render(report: dict) -> str:
             "",
         ]
     )
-    if training.get("baseline"):
+    if training.get("baseline") and training.get("post_training"):
         lines.extend([
             "## Paired Holdout Evidence",
             "",
@@ -242,34 +263,58 @@ def render(report: dict) -> str:
             f"- promotion status: `{training['promotion_status']}`",
             "",
         ])
+    elif training.get("baseline"):
+        lines.extend([
+            "## Holdout Baseline",
+            "",
+            f"- device: `{training['device']}`",
+            f"- oracle pass rate: `{training['baseline']['oracle_pass_rate']:.3f}`",
+            f"- over-refusal: `{training['baseline']['over_refusal']}`",
+            "",
+        ])
     return "\n".join(lines)
 
 
-def run_train(report: dict) -> dict:
-    if report["training"]["blockers"]:
-        return report
-
+def load_model(report: dict):
     import torch
-    from datasets import load_dataset
-    from peft import LoraConfig
     from transformers import AutoModelForCausalLM, AutoTokenizer, set_seed
-    from trl import SFTConfig, SFTTrainer
 
     set_seed(42)
-    model_id = report["training"]["model_id"]
-    max_steps = report["training"]["max_steps"]
     runtime = select_device(torch)
-    device = runtime["device"]
-
-    tokenizer = AutoTokenizer.from_pretrained(model_id, use_fast=True)
+    tokenizer = AutoTokenizer.from_pretrained(report["training"]["model_id"], use_fast=True)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
-
-    model = AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=runtime["dtype"])
-    model.to(device)
+    model = AutoModelForCausalLM.from_pretrained(report["training"]["model_id"], torch_dtype=runtime["dtype"])
+    model.to(runtime["device"])
     model.config.use_cache = False
-    baseline = evaluate_holdout(model, tokenizer, torch, device)
+    return model, tokenizer, torch, runtime["device"]
+
+
+def run_evaluate(report: dict, holdout_path: Path = HOLDOUT_PATH) -> dict:
+    if report["training"]["blockers"]:
+        return report
+    model, tokenizer, torch, device = load_model(report)
+    report["training"].update({
+        "status": "evaluated",
+        "device": device,
+        "baseline": evaluate_holdout(model, tokenizer, torch, device, holdout_path),
+    })
+    return report
+
+
+def run_train(report: dict, holdout_path: Path = HOLDOUT_PATH) -> dict:
+    if report["training"]["blockers"]:
+        return report
+
+    from datasets import load_dataset
+    from peft import LoraConfig
+    from trl import SFTConfig, SFTTrainer
+
+    max_steps = report["training"]["max_steps"]
+    model, tokenizer, torch, device = load_model(report)
+    runtime = select_device(torch)
+    baseline = evaluate_holdout(model, tokenizer, torch, device, holdout_path)
 
     dataset = load_dataset("json", data_files=str(SFT_PATH), split="train")
 
@@ -307,7 +352,7 @@ def run_train(report: dict) -> dict:
     )
     trainer = SFTTrainer(model=model, train_dataset=dataset, peft_config=lora, args=args, processing_class=tokenizer)
     result = trainer.train()
-    post_training = evaluate_holdout(model, tokenizer, torch, device)
+    post_training = evaluate_holdout(model, tokenizer, torch, device, holdout_path)
     trainer.save_model(str(OUT_DIR))
     non_finite_metrics = [
         {"step": row.get("step"), "metric": key}
@@ -342,6 +387,7 @@ def demo() -> int:
     assert valid_sft({"messages": [{"role": "user", "content": "Hi"}, {"role": "assistant", "content": "Hello"}]})
     assert valid_dpo({"prompt": "Hi", "chosen": "Hello", "rejected": "No"})
     assert not valid_dpo({"prompt": "Hi", "chosen": "Hello", "rejected": "Hello"})
+    assert valid_holdout({"prompt": "Hi", "metadata": {"case_id": "c1", "category": "demo"}})
     print("demo OK")
     return 0
 
@@ -353,7 +399,9 @@ def main() -> int:
     parser.add_argument("--holdout", type=Path, default=HOLDOUT_PATH)
     parser.add_argument("--json-output", type=Path, default=REPORT_DIR / "apex-r20-lora-sft-pilot.json")
     parser.add_argument("--markdown-output", type=Path, default=REPORT_DIR / "APEX_R20_LORA_SFT_PILOT.md")
-    parser.add_argument("--train", action="store_true")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--train", action="store_true")
+    mode.add_argument("--evaluate-only", action="store_true")
     parser.add_argument("--demo", action="store_true")
     args = parser.parse_args()
 
@@ -362,7 +410,9 @@ def main() -> int:
 
     report = build_report(args.sft, args.dpo, args.holdout)
     if args.train:
-        report = run_train(report)
+        report = run_train(report, args.holdout)
+    elif args.evaluate_only:
+        report = run_evaluate(report, args.holdout)
 
     write_json(args.json_output, report)
     args.markdown_output.parent.mkdir(parents=True, exist_ok=True)
@@ -371,7 +421,7 @@ def main() -> int:
     print(f"blockers={','.join(report['training']['blockers']) or 'none'}")
     print(f"wrote {args.json_output}")
     print(f"wrote {args.markdown_output}")
-    return 2 if args.train and report["training"]["blockers"] else 0
+    return 2 if (args.train or args.evaluate_only) and report["training"]["blockers"] else 0
 
 
 if __name__ == "__main__":
