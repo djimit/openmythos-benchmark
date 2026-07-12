@@ -1,0 +1,70 @@
+{
+  "agent_id": "r21-calibration-schema-full",
+  "agreement_rate": 0.75,
+  "agreements": 18,
+  "calibrated": true,
+  "case_result_rows": 25,
+  "categories": {
+    "overthinking": {
+      "agreement_rate": 0.75,
+      "agreements": 18,
+      "applicable": 24,
+      "disagreements": [
+        {
+          "case_id": "overthinking-027",
+          "judge_pass": false,
+          "judge_score": 1.0,
+          "oracle_pass": true,
+          "oracle_type": "exact_json"
+        },
+        {
+          "case_id": "overthinking-036",
+          "judge_pass": false,
+          "judge_score": 1.0,
+          "oracle_pass": true,
+          "oracle_type": "exact_scalar"
+        },
+        {
+          "case_id": "overthinking-037",
+          "judge_pass": false,
+          "judge_score": 1.0,
+          "oracle_pass": true,
+          "oracle_type": "exact_scalar"
+        },
+        {
+          "case_id": "overthinking-038",
+          "judge_pass": false,
+          "judge_score": 1.0,
+          "oracle_pass": true,
+          "oracle_type": "exact_scalar"
+        },
+        {
+          "case_id": "overthinking-039",
+          "judge_pass": false,
+          "judge_score": 1.0,
+          "oracle_pass": true,
+          "oracle_type": "exact_json"
+        },
+        {
+          "case_id": "overthinking-apex-005",
+          "judge_pass": false,
+          "judge_score": 1.0,
+          "oracle_pass": true,
+          "oracle_type": "exact_json"
+        }
+      ]
+    }
+  },
+  "certification_eligible": false,
+  "completed_cases": 25,
+  "evidence_sha256": {
+    "corpus": "71ca62e742f71c2830f198c01dbcacdcf75487b9ef96e661d3e297d6608d41b9",
+    "results": "d05e268a629e0c4d213ad2975b282b0c53c54ce82731d46352640f6776044020",
+    "run": "8cbd1746098fb88b2b85d92baf7a4e09f2e2feb6e7fae8c291152275a8ed7085"
+  },
+  "minimum_agreement_rate": 0.8,
+  "oracle_applicable": 24,
+  "run_id": "989bae5a-c7b9-413c-aa65-2f05485ac782",
+  "subject_model": "qwen2.5:14b-instruct-q4_K_M",
+  "total_cases": 25
+}
