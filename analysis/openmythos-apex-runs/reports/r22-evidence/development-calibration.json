@@ -1,0 +1,68 @@
+{
+  "agent_id": "r22-calibration-development",
+  "agreement_rate": 1.0,
+  "agreements": 26,
+  "calibrated": true,
+  "case_result_rows": 26,
+  "categories": {
+    "canary": {
+      "agreement_rate": 1.0,
+      "agreements": 4,
+      "applicable": 4,
+      "disagreements": []
+    },
+    "contradiction": {
+      "agreement_rate": 1.0,
+      "agreements": 1,
+      "applicable": 1,
+      "disagreements": []
+    },
+    "cross-lingual": {
+      "agreement_rate": 1.0,
+      "agreements": 5,
+      "applicable": 5,
+      "disagreements": []
+    },
+    "hallucination": {
+      "agreement_rate": 1.0,
+      "agreements": 4,
+      "applicable": 4,
+      "disagreements": []
+    },
+    "injection": {
+      "agreement_rate": 1.0,
+      "agreements": 4,
+      "applicable": 4,
+      "disagreements": []
+    },
+    "overthinking": {
+      "agreement_rate": 1.0,
+      "agreements": 4,
+      "applicable": 4,
+      "disagreements": []
+    },
+    "temporal-reasoning": {
+      "agreement_rate": 1.0,
+      "agreements": 4,
+      "applicable": 4,
+      "disagreements": []
+    }
+  },
+  "certification_eligible": true,
+  "completed_cases": 26,
+  "evidence_sha256": {
+    "corpus": "71ca62e742f71c2830f198c01dbcacdcf75487b9ef96e661d3e297d6608d41b9",
+    "manifest": "e01051d7c0fd1c5655de9470cde405e2fe82b602f7560db46d2b9416d7cc033c",
+    "results": "9942cf49918f6a0d736077167286b2001a4ee697fc58121c0890304c399824b5",
+    "run": "ccfdd3963d11ac8d2ad8255f4cbe83dd832cf08b6b872331c2dd635552bfdc5f"
+  },
+  "lowest_category_agreement_rate": 1.0,
+  "minimum_agreement_rate": 1.0,
+  "minimum_cases": 26,
+  "minimum_categories": 7,
+  "minimum_category_agreement_rate": 1.0,
+  "oracle_applicable": 26,
+  "run_id": "741c4adf-ccda-46a6-9eda-bd26577eb179",
+  "subject_model": "qwen2.5:14b-instruct-q4_K_M",
+  "total_cases": 26
+}
