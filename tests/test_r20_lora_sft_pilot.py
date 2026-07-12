@@ -55,7 +55,9 @@ class TestR20Pilot(unittest.TestCase):
             backends = type("Backends", (), {"mps": Unavailable()})()
             float16 = "fp16"
             float32 = "fp32"
-        self.assertEqual(select_device(Torch)["device"], "cuda")
+        selected = select_device(Torch)
+        self.assertEqual(selected["device"], "cuda")
+        self.assertFalse(selected["fp16"])
 
 
 if __name__ == "__main__":

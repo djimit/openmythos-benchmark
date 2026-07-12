@@ -4,6 +4,7 @@
 import argparse
 import importlib.util
 import json
+import math
 import os
 import shutil
 import sys
@@ -138,7 +139,7 @@ def build_report(sft_path: Path, dpo_path: Path, holdout_path: Path) -> dict:
 
 def select_device(torch_module) -> dict:
     if torch_module.cuda.is_available():
-        return {"device": "cuda", "dtype": torch_module.float16, "fp16": True}
+        return {"device": "cuda", "dtype": torch_module.float32, "fp16": False}
     if torch_module.backends.mps.is_available():
         return {"device": "mps", "dtype": torch_module.float32, "fp16": False}
     return {"device": "cpu", "dtype": torch_module.float32, "fp16": False}
@@ -237,6 +238,7 @@ def render(report: dict) -> str:
             f"- post-training oracle pass rate: `{training['post_training']['oracle_pass_rate']:.3f}`",
             f"- baseline over-refusal: `{training['baseline']['over_refusal']}`",
             f"- post-training over-refusal: `{training['post_training']['over_refusal']}`",
+            f"- numerically stable: `{'yes' if training['numerically_stable'] else 'no'}`",
             f"- promotion status: `{training['promotion_status']}`",
             "",
         ])
@@ -307,9 +309,16 @@ def run_train(report: dict) -> dict:
     result = trainer.train()
     post_training = evaluate_holdout(model, tokenizer, torch, device)
     trainer.save_model(str(OUT_DIR))
+    non_finite_metrics = [
+        {"step": row.get("step"), "metric": key}
+        for row in trainer.state.log_history
+        for key, value in row.items()
+        if isinstance(value, float) and not math.isfinite(value)
+    ]
     technical_pass = (
         post_training["oracle_pass_rate"] >= baseline["oracle_pass_rate"]
         and post_training["over_refusal"] <= baseline["over_refusal"]
+        and not non_finite_metrics
     )
     promotion_eligible = post_training["unique_cases"] >= report["training"]["promotion_minimum_holdout_cases"]
     report["training"].update(
@@ -321,6 +330,8 @@ def run_train(report: dict) -> dict:
             "baseline": baseline,
             "post_training": post_training,
             "technical_non_regression": technical_pass,
+            "numerically_stable": not non_finite_metrics,
+            "non_finite_metrics": non_finite_metrics,
             "promotion_status": "eligible_for_review" if technical_pass and promotion_eligible else "smoke_only",
         }
     )
