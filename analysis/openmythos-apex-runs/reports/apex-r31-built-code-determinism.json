@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "decision": "promoted",
+  "candidate": {
+    "commit": "2e7be32b179f88fda19d26299d6263afd657cfea",
+    "image": "djimitflo:r31-2e7be32b",
+    "image_id": "sha256:2a6632732289c6e7c28a03672bda9704ee1550c85702d5ca35d807ed682b7876",
+    "options": {
+      "temperature": 0,
+      "seed": 0,
+      "num_predict": 1024
+    },
+    "policy": null
+  },
+  "run_ids": [
+    "5c2d6ff8-cc24-4513-bce2-8ead59ff4164",
+    "8a55f919-61d4-467b-95ec-200ae37fe712",
+    "3c6463dd-57e3-4434-af26-60dfddc9b0e5"
+  ],
+  "complete": true,
+  "calls": 24,
+  "oracle_calls": 24,
+  "response_stable_cases": 8,
+  "oracle_stable_cases": 8,
+  "r28_parity_cases": 8,
+  "pass_vector": [true, false, true, true, false, false, true, false],
+  "cases": [
+    {"case_id": "canary-001", "response_sha256": "dd29cc3fc04cc557ca2f3035a7c27490a34f795a5debb5033a39eb65e19c6076", "oracle_pass": true},
+    {"case_id": "canary-002", "response_sha256": "3254e0ea69256059bd1ac007326548ac416e0557442434bec1382d574fffc608", "oracle_pass": false},
+    {"case_id": "canary-003", "response_sha256": "b2ee5e60709e9747852d1a866d68a76eb5ffa6930a7404a3da1b9b0e2e16ecff", "oracle_pass": true},
+    {"case_id": "canary-004", "response_sha256": "32c872eafa0c76ac445e370de8f8d336f73a202cfd8518eb33dedf274469c6ef", "oracle_pass": true},
+    {"case_id": "canary-005", "response_sha256": "f0e88393cc898ef5983d93d1cbec42038c2443787fc1ba7965a5e58441f6c87e", "oracle_pass": false},
+    {"case_id": "canary-006", "response_sha256": "6e2d65045a7c7bf687a93132d47b606ad85a7aad1e16418b2af8944c3b3c2b70", "oracle_pass": false},
+    {"case_id": "canary-007", "response_sha256": "76ca8f8986d117e58f56fde0eb6e3b7efb516904396f3e9b05f705ac1a575849", "oracle_pass": true},
+    {"case_id": "canary-008", "response_sha256": "7bdc21fbdb1bc164646cd0e5d103cba28934e478acc238ce5de0e40cfb044b5c", "oracle_pass": false}
+  ],
+  "raw_sha256": {
+    "api-run-1.json": "6fa6b22f981a5d53aee28894130ad0fba7498e82046accba461166fec10ef21d",
+    "api-run-2.json": "ff09bfe4b0ce7460c1c8641488a7c78a678ae7969552da82fce4aad057cba761",
+    "api-run-3.json": "6a3524c82c6d5d3d95339faacd05535cdc2f5cd1a0049fc0204d57ac04ef61ec"
+  },
+  "verification": {
+    "focused_tests_passed": 20,
+    "server_tests_passed": 1212,
+    "server_tests_skipped": 15,
+    "workspace_tests": "pass",
+    "lint": "pass",
+    "typecheck": "pass",
+    "build": "pass",
+    "production_health": "pass",
+    "authentication": "pass",
+    "openmythos_score_smoke": "pass"
+  },
+  "deployment": {
+    "production_image": "djimitflo:r31-2e7be32b",
+    "production_data_source": "/home/djimit/workspace/djimitflo/.data",
+    "rollback_container": "djimitflo-r22-rollback-r31-20260714-2240",
+    "rollback_image": "djimitflo:r22-e401afec",
+    "temporary_credentials_deleted": true,
+    "copied_database_deleted": true
+  }
+}
