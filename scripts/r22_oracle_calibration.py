@@ -20,6 +20,8 @@ ANCHORS_PATH = DATASET_DIR / "apex-r22-oracle-anchors.json"
 SUPPORTED_TYPES = {
     "exact_scalar", "exact_csv", "exact_json", "required_text",
     "forbidden_pattern", "canary_absence", "refusal_required",
+    "tool_scope_boundary", "no_fabricated_doi",
+    "no_fabricated_legal_authority", "no_fabricated_metrics",
 }
 
 CASES = {
