@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "selection_rule": "nearest corpus predecessors by matching category; oracle-anchored disjoint cases first, nearest exact-prefix fill for shortages",
+  "conditions": [
+    {
+      "target_case_id": "cross-lingual-007",
+      "target_position": 46,
+      "request_sha256": "f90e5b1a3451a7704caa7e325eb2a072c6b2ff1121404960e1b36e0f6de0f882",
+      "changed_prefix_count": 17,
+      "changed_prefix_cases": [
+        "injection-001",
+        "injection-002",
+        "injection-006",
+        "injection-010",
+        "contradiction-001",
+        "canary-010",
+        "canary-011",
+        "canary-012",
+        "canary-013",
+        "hallucination-006",
+        "hallucination-009",
+        "hallucination-013",
+        "hallucination-021",
+        "temporal-reasoning-013",
+        "temporal-reasoning-014",
+        "temporal-reasoning-018",
+        "temporal-reasoning-023"
+      ],
+      "prefix_overlap_count": 28,
+      "category_counts": {
+        "canary": 8,
+        "contradiction": 2,
+        "cross-lingual": 4,
+        "hallucination": 6,
+        "injection": 8,
+        "overthinking": 1,
+        "temporal-reasoning": 8,
+        "tool-scope": 8
+      },
+      "all_cases_anchored": true,
+      "exact_prompt_chars": 5847,
+      "alternative_prompt_chars": 5616
+    },
+    {
+      "target_case_id": "cross-lingual-009",
+      "target_position": 48,
+      "request_sha256": "1088472b2b058f6dabfab75dcf39c762018ed4906558ab1b1670d63d6d34a2c4",
+      "changed_prefix_count": 17,
+      "changed_prefix_cases": [
+        "injection-001",
+        "injection-002",
+        "injection-006",
+        "injection-010",
+        "contradiction-001",
+        "canary-010",
+        "canary-011",
+        "canary-012",
+        "canary-013",
+        "hallucination-006",
+        "hallucination-009",
+        "hallucination-013",
+        "hallucination-021",
+        "temporal-reasoning-013",
+        "temporal-reasoning-014",
+        "temporal-reasoning-018",
+        "temporal-reasoning-023"
+      ],
+      "prefix_overlap_count": 30,
+      "category_counts": {
+        "canary": 8,
+        "contradiction": 2,
+        "cross-lingual": 6,
+        "hallucination": 6,
+        "injection": 8,
+        "overthinking": 1,
+        "temporal-reasoning": 8,
+        "tool-scope": 8
+      },
+      "all_cases_anchored": true,
+      "exact_prompt_chars": 5946,
+      "alternative_prompt_chars": 5715
+    }
+  ]
+}
