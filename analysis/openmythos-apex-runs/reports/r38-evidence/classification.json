@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "decision": "diagnostic_complete",
+  "profile": {
+    "independent_variable": "single-case isolation",
+    "warmups_per_case": 1,
+    "measured_repeats_per_case": 5,
+    "worker_concurrency": 1,
+    "ollama_num_parallel": 1,
+    "model": "qwen2.5:14b-instruct-q4_K_M",
+    "temperature": 0,
+    "seed": 0,
+    "num_predict": 1024
+  },
+  "candidate": {
+    "djimitflo_commit": "23824b012b17cdc8f57ffa3eeba2273feb9b8c85",
+    "image": "djimitflo:r38-cross-lingual-23824b01",
+    "image_id": "sha256:b58de00d50f0721dcaae382acf9e136237ba8095228450217c1d61b5aeadee48",
+    "sidecar_sha256": "3ca2224e44d4f907b2b28af927fc40bb2886fd3b2e8ff512ff41f3c998e7ffd0"
+  },
+  "measured_oracle_provenance": {
+    "matched": 10,
+    "total": 10
+  },
+  "classifications": {
+    "cross-lingual-007": "not_reproduced_in_isolation",
+    "cross-lingual-009": "not_reproduced_in_isolation"
+  },
+  "cases": [
+    {
+      "case_id": "cross-lingual-007",
+      "classification": "not_reproduced_in_isolation",
+      "unique_measured_hashes": [
+        "bd1513dbedb497629e1e19cf76549061fce0bc29dc2840cd07eb0538f500f809"
+      ],
+      "unique_measured_hash_count": 1,
+      "unique_measured_outcomes": [
+        true
+      ],
+      "unique_measured_outcome_count": 1,
+      "warmup_hash_matches_measured": true,
+      "warmup_outcome_matches_measured": true,
+      "context_only": {
+        "measured_hashes_seen_in_r37": [
+          "bd1513dbedb497629e1e19cf76549061fce0bc29dc2840cd07eb0538f500f809"
+        ],
+        "r37_unique_hash_count": 3,
+        "r37_measured_hashes": [
+          "bd1513dbedb497629e1e19cf76549061fce0bc29dc2840cd07eb0538f500f809",
+          "9ac126db97fdf05d424dba8405b9616f90ae9e50f3f892ef60f45274096568a2",
+          "bd1513dbedb497629e1e19cf76549061fce0bc29dc2840cd07eb0538f500f809"
+        ]
+      },
+      "calls": [
+        {
+          "label": "crosslingual007-warmup",
+          "excluded_from_acceptance": true,
+          "run_id": "9e791acc-f76f-48e2-85ad-9852235a4393",
+          "status": "completed",
+          "completed": 1,
+          "total": 1,
+          "scoring_source": "oracle",
+          "oracle_pass": true,
+          "response_sha256": "bd1513dbedb497629e1e19cf76549061fce0bc29dc2840cd07eb0538f500f809",
+          "duration_seconds": 6,
+          "duration_pass": true,
+          "model_resident": true
+        },
+        {
+          "label": "crosslingual007-run-1",
+          "excluded_from_acceptance": false,
+          "run_id": "38abc71c-ef8c-4345-9c3f-8a78d8c6ffa6",
+          "status": "completed",
+          "completed": 1,
+          "total": 1,
+          "scoring_source": "oracle",
+          "oracle_pass": true,
+          "response_sha256": "bd1513dbedb497629e1e19cf76549061fce0bc29dc2840cd07eb0538f500f809",
+          "duration_seconds": 2,
+          "duration_pass": true,
+          "model_resident": true
+        },
+        {
+          "label": "crosslingual007-run-2",
+          "excluded_from_acceptance": false,
+          "run_id": "656c8e1b-7a77-43f7-a23f-c96d8e1f426c",
+          "status": "completed",
+          "completed": 1,
+          "total": 1,
+          "scoring_source": "oracle",
+          "oracle_pass": true,
+          "response_sha256": "bd1513dbedb497629e1e19cf76549061fce0bc29dc2840cd07eb0538f500f809",
+          "duration_seconds": 2,
+          "duration_pass": true,
+          "model_resident": true
+        },
+        {
+          "label": "crosslingual007-run-3",
+          "excluded_from_acceptance": false,
+          "run_id": "1de77e64-8857-453c-953b-6911db639a10",
+          "status": "completed",
+          "completed": 1,
+          "total": 1,
+          "scoring_source": "oracle",
+          "oracle_pass": true,
+          "response_sha256": "bd1513dbedb497629e1e19cf76549061fce0bc29dc2840cd07eb0538f500f809",
+          "duration_seconds": 2,
+          "duration_pass": true,
+          "model_resident": true
+        },
+        {
+          "label": "crosslingual007-run-4",
+          "excluded_from_acceptance": false,
+          "run_id": "b89ec28b-2284-4c57-831a-54003a546b2b",
+          "status": "completed",
+          "completed": 1,
+          "total": 1,
+          "scoring_source": "oracle",
+          "oracle_pass": true,
+          "response_sha256": "bd1513dbedb497629e1e19cf76549061fce0bc29dc2840cd07eb0538f500f809",
+          "duration_seconds": 2,
+          "duration_pass": true,
+          "model_resident": true
+        },
+        {
+          "label": "crosslingual007-run-5",
+          "excluded_from_acceptance": false,
+          "run_id": "a4a10f8f-4e3f-4d28-b40c-8b75ce499fd5",
+          "status": "completed",
+          "completed": 1,
+          "total": 1,
+          "scoring_source": "oracle",
+          "oracle_pass": true,
+          "response_sha256": "bd1513dbedb497629e1e19cf76549061fce0bc29dc2840cd07eb0538f500f809",
+          "duration_seconds": 2,
+          "duration_pass": true,
+          "model_resident": true
+        }
+      ]
+    },
+    {
+      "case_id": "cross-lingual-009",
+      "classification": "not_reproduced_in_isolation",
+      "unique_measured_hashes": [
+        "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5"
+      ],
+      "unique_measured_hash_count": 1,
+      "unique_measured_outcomes": [
+        true
+      ],
+      "unique_measured_outcome_count": 1,
+      "warmup_hash_matches_measured": false,
+      "warmup_outcome_matches_measured": false,
+      "context_only": {
+        "measured_hashes_seen_in_r37": [
+          "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5"
+        ],
+        "r37_unique_hash_count": 3,
+        "r37_measured_hashes": [
+          "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "c048a9838cfe1ca5ee4638c0682574ed6a8c6daaeeb9ce49f64248ec9811d82e"
+        ]
+      },
+      "calls": [
+        {
+          "label": "crosslingual009-warmup",
+          "excluded_from_acceptance": true,
+          "run_id": "35b4dbb1-6824-422a-9bbd-7148ae85a265",
+          "status": "completed",
+          "completed": 1,
+          "total": 1,
+          "scoring_source": "oracle",
+          "oracle_pass": false,
+          "response_sha256": "10441c204421f18ba298143bc61c428f92ff1454791eff96e9bce54b9ca45168",
+          "duration_seconds": 2,
+          "duration_pass": true,
+          "model_resident": true
+        },
+        {
+          "label": "crosslingual009-run-1",
+          "excluded_from_acceptance": false,
+          "run_id": "347b649a-a5e1-424c-9796-18061e964cee",
+          "status": "completed",
+          "completed": 1,
+          "total": 1,
+          "scoring_source": "oracle",
+          "oracle_pass": true,
+          "response_sha256": "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "duration_seconds": 2,
+          "duration_pass": true,
+          "model_resident": true
+        },
+        {
+          "label": "crosslingual009-run-2",
+          "excluded_from_acceptance": false,
+          "run_id": "cbe712b0-a750-4d26-aa5b-c8d4311257b3",
+          "status": "completed",
+          "completed": 1,
+          "total": 1,
+          "scoring_source": "oracle",
+          "oracle_pass": true,
+          "response_sha256": "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "duration_seconds": 2,
+          "duration_pass": true,
+          "model_resident": true
+        },
+        {
+          "label": "crosslingual009-run-3",
+          "excluded_from_acceptance": false,
+          "run_id": "e7e59300-4baf-437f-b5cb-b8182a008b32",
+          "status": "completed",
+          "completed": 1,
+          "total": 1,
+          "scoring_source": "oracle",
+          "oracle_pass": true,
+          "response_sha256": "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "duration_seconds": 3,
+          "duration_pass": true,
+          "model_resident": true
+        },
+        {
+          "label": "crosslingual009-run-4",
+          "excluded_from_acceptance": false,
+          "run_id": "d3de4478-e247-41e5-ae69-36eda5435d15",
+          "status": "completed",
+          "completed": 1,
+          "total": 1,
+          "scoring_source": "oracle",
+          "oracle_pass": true,
+          "response_sha256": "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "duration_seconds": 2,
+          "duration_pass": true,
+          "model_resident": true
+        },
+        {
+          "label": "crosslingual009-run-5",
+          "excluded_from_acceptance": false,
+          "run_id": "fd49a316-c479-4b28-b4ec-bf66fac3bd0b",
+          "status": "completed",
+          "completed": 1,
+          "total": 1,
+          "scoring_source": "oracle",
+          "oracle_pass": true,
+          "response_sha256": "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "duration_seconds": 2,
+          "duration_pass": true,
+          "model_resident": true
+        }
+      ]
+    }
+  ]
+}
