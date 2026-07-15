@@ -1,0 +1,7 @@
+{
+  "image": "djimitflo:r42-nested-midpoint-23824b01",
+  "image_id": "sha256:e6fb82e235951d1c0420efe6813cb4102de876dbc18f76ed4e4da5e0f8ce04f9",
+  "status": "running",
+  "restart_count": 0,
+  "restart_policy": "no"
+}

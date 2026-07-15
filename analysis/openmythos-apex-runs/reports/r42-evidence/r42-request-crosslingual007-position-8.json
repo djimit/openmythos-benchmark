@@ -1,0 +1,13 @@
+{
+  "model": "qwen2.5:14b-instruct-q4_K_M",
+  "case_ids": [
+    "temporal-reasoning-009",
+    "temporal-reasoning-011",
+    "temporal-reasoning-012",
+    "cross-lingual-002",
+    "cross-lingual-003",
+    "cross-lingual-004",
+    "cross-lingual-005",
+    "cross-lingual-007"
+  ]
+}

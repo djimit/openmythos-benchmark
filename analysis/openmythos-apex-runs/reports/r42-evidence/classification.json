@@ -1,0 +1,484 @@
+{
+  "schema_version": 1,
+  "decision": "diagnostic_complete",
+  "profile": {
+    "independent_variable": "one nested midpoint inside each R41 support interval",
+    "valid_condition_order": [
+      {
+        "target_case_id": "cross-lingual-007",
+        "target_position": 8
+      },
+      {
+        "target_case_id": "cross-lingual-009",
+        "target_position": 24
+      }
+    ],
+    "warmups_per_condition": 1,
+    "measured_repeats_per_condition": 5,
+    "worker_concurrency": 1,
+    "ollama_num_parallel": 1,
+    "model": "qwen2.5:14b-instruct-q4_K_M",
+    "temperature": 0,
+    "seed": 0,
+    "num_predict": 1024,
+    "request_order_semantics": "case_ids membership filter; corpus order controls execution"
+  },
+  "candidate": {
+    "djimitflo_commit": "23824b012b17cdc8f57ffa3eeba2273feb9b8c85",
+    "image": "djimitflo:r42-nested-midpoint-23824b01",
+    "image_id": "sha256:e6fb82e235951d1c0420efe6813cb4102de876dbc18f76ed4e4da5e0f8ce04f9",
+    "sidecar_sha256": "3ca2224e44d4f907b2b28af927fc40bb2886fd3b2e8ff512ff41f3c998e7ffd0"
+  },
+  "measured_target_oracle_provenance": {
+    "matched": 10,
+    "total": 10
+  },
+  "classifications": {
+    "cross-lingual-007": {
+      "target_position": 8,
+      "within_condition": "stable",
+      "bracket_relation": "matches_upper"
+    },
+    "cross-lingual-009": {
+      "target_position": 24,
+      "within_condition": "variable",
+      "bracket_relation": "matches_neither"
+    }
+  },
+  "support_paths": {
+    "cross-lingual-007": [
+      {
+        "position": 1,
+        "origin": "R38",
+        "response_sha256": [
+          "bd1513dbedb497629e1e19cf76549061fce0bc29dc2840cd07eb0538f500f809"
+        ],
+        "oracle_outcomes": [
+          true
+        ]
+      },
+      {
+        "position": 8,
+        "origin": "R42",
+        "response_sha256": [
+          "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750"
+        ],
+        "oracle_outcomes": [
+          false
+        ]
+      },
+      {
+        "position": 16,
+        "origin": "R41",
+        "response_sha256": [
+          "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750"
+        ],
+        "oracle_outcomes": [
+          false
+        ]
+      }
+    ],
+    "cross-lingual-009": [
+      {
+        "position": 16,
+        "origin": "R41",
+        "response_sha256": [
+          "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5"
+        ],
+        "oracle_outcomes": [
+          true
+        ]
+      },
+      {
+        "position": 24,
+        "origin": "R42",
+        "response_sha256": [
+          "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "c048a9838cfe1ca5ee4638c0682574ed6a8c6daaeeb9ce49f64248ec9811d82e",
+          "10441c204421f18ba298143bc61c428f92ff1454791eff96e9bce54b9ca45168"
+        ],
+        "oracle_outcomes": [
+          true,
+          false
+        ]
+      },
+      {
+        "position": 32,
+        "origin": "R41",
+        "response_sha256": [
+          "10441c204421f18ba298143bc61c428f92ff1454791eff96e9bce54b9ca45168",
+          "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5"
+        ],
+        "oracle_outcomes": [
+          false,
+          true
+        ]
+      }
+    ]
+  },
+  "conditions": [
+    {
+      "target_case_id": "cross-lingual-007",
+      "target_position": 8,
+      "selection": {
+        "target_case_id": "cross-lingual-007",
+        "target_position": 8,
+        "request_file": "r42-request-crosslingual007-position-8.json",
+        "request_sha256": "6992e4fc45f746fc96469bec19a6a3deee8ddb63702c76954d3c1ba070496f0a",
+        "prefix_case_count": 7,
+        "prefix_prompt_chars": 479,
+        "all_cases_anchored": true
+      },
+      "within_condition": "stable",
+      "bracket_relation": "matches_upper",
+      "lower_endpoint_support": {
+        "position": 1,
+        "origin": "R38",
+        "response_sha256": [
+          "bd1513dbedb497629e1e19cf76549061fce0bc29dc2840cd07eb0538f500f809"
+        ],
+        "oracle_outcomes": [
+          true
+        ]
+      },
+      "upper_endpoint_support": {
+        "position": 16,
+        "origin": "R41",
+        "response_sha256": [
+          "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750"
+        ],
+        "oracle_outcomes": [
+          false
+        ]
+      },
+      "unique_measured_hashes": [
+        "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750"
+      ],
+      "unique_measured_hash_count": 1,
+      "unique_measured_outcomes": [
+        false
+      ],
+      "unique_measured_outcome_count": 1,
+      "warmup_hash_matches_measured": true,
+      "warmup_outcome_matches_measured": true,
+      "calls": [
+        {
+          "label": "crosslingual007-position8-warmup",
+          "excluded_from_acceptance": true,
+          "run_id": "c59bbf7b-2257-40dc-bfd9-2c399f783335",
+          "status": "completed",
+          "total": 8,
+          "completed": 8,
+          "result_count": 8,
+          "target_position": 8,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-007",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750",
+          "target_latency_ms": 1471,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 23,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual007-position8-run-1",
+          "excluded_from_acceptance": false,
+          "run_id": "1a706cc3-b7af-458c-8de0-9bbd68b91d98",
+          "status": "completed",
+          "total": 8,
+          "completed": 8,
+          "result_count": 8,
+          "target_position": 8,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-007",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750",
+          "target_latency_ms": 1459,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 19,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual007-position8-run-2",
+          "excluded_from_acceptance": false,
+          "run_id": "25379178-1828-48d3-a5e1-dd1385e6e06d",
+          "status": "completed",
+          "total": 8,
+          "completed": 8,
+          "result_count": 8,
+          "target_position": 8,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-007",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750",
+          "target_latency_ms": 1458,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 18,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual007-position8-run-3",
+          "excluded_from_acceptance": false,
+          "run_id": "0bd0c0b4-b4d9-43a3-97e2-b881970805d1",
+          "status": "completed",
+          "total": 8,
+          "completed": 8,
+          "result_count": 8,
+          "target_position": 8,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-007",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750",
+          "target_latency_ms": 1464,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 19,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual007-position8-run-4",
+          "excluded_from_acceptance": false,
+          "run_id": "818bf555-af0e-487e-8d66-2e58e4e04a77",
+          "status": "completed",
+          "total": 8,
+          "completed": 8,
+          "result_count": 8,
+          "target_position": 8,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-007",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750",
+          "target_latency_ms": 1465,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 19,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual007-position8-run-5",
+          "excluded_from_acceptance": false,
+          "run_id": "c6019a7f-60e9-4681-9f82-7f491488e651",
+          "status": "completed",
+          "total": 8,
+          "completed": 8,
+          "result_count": 8,
+          "target_position": 8,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-007",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750",
+          "target_latency_ms": 1472,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 19,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        }
+      ]
+    },
+    {
+      "target_case_id": "cross-lingual-009",
+      "target_position": 24,
+      "selection": {
+        "target_case_id": "cross-lingual-009",
+        "target_position": 24,
+        "request_file": "r42-request-crosslingual009-position-24.json",
+        "request_sha256": "96f49769a19fa3289763cda15c6b67440e69e3248e719a1fc9920f2464644eb7",
+        "prefix_case_count": 23,
+        "prefix_prompt_chars": 1531,
+        "all_cases_anchored": true
+      },
+      "within_condition": "variable",
+      "bracket_relation": "matches_neither",
+      "lower_endpoint_support": {
+        "position": 16,
+        "origin": "R41",
+        "response_sha256": [
+          "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5"
+        ],
+        "oracle_outcomes": [
+          true
+        ]
+      },
+      "upper_endpoint_support": {
+        "position": 32,
+        "origin": "R41",
+        "response_sha256": [
+          "10441c204421f18ba298143bc61c428f92ff1454791eff96e9bce54b9ca45168",
+          "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5"
+        ],
+        "oracle_outcomes": [
+          false,
+          true
+        ]
+      },
+      "unique_measured_hashes": [
+        "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+        "c048a9838cfe1ca5ee4638c0682574ed6a8c6daaeeb9ce49f64248ec9811d82e",
+        "10441c204421f18ba298143bc61c428f92ff1454791eff96e9bce54b9ca45168"
+      ],
+      "unique_measured_hash_count": 3,
+      "unique_measured_outcomes": [
+        true,
+        false
+      ],
+      "unique_measured_outcome_count": 2,
+      "warmup_hash_matches_measured": true,
+      "warmup_outcome_matches_measured": true,
+      "calls": [
+        {
+          "label": "crosslingual009-position24-warmup",
+          "excluded_from_acceptance": true,
+          "run_id": "9ef0a489-cf39-460d-a8f8-d9f9af1474ec",
+          "status": "completed",
+          "total": 24,
+          "completed": 24,
+          "result_count": 24,
+          "target_position": 24,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-009",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "10441c204421f18ba298143bc61c428f92ff1454791eff96e9bce54b9ca45168",
+          "target_latency_ms": 2258,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 79,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual009-position24-run-1",
+          "excluded_from_acceptance": false,
+          "run_id": "1d71b40a-47c6-4f0b-961b-7c6d6b726abc",
+          "status": "completed",
+          "total": 24,
+          "completed": 24,
+          "result_count": 24,
+          "target_position": 24,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-009",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": true,
+          "target_response_sha256": "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "target_latency_ms": 2393,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 80,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual009-position24-run-2",
+          "excluded_from_acceptance": false,
+          "run_id": "ec89e91d-da6d-4dd0-98c5-64042aef811e",
+          "status": "completed",
+          "total": 24,
+          "completed": 24,
+          "result_count": 24,
+          "target_position": 24,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-009",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "c048a9838cfe1ca5ee4638c0682574ed6a8c6daaeeb9ce49f64248ec9811d82e",
+          "target_latency_ms": 2066,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 142,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual009-position24-run-3",
+          "excluded_from_acceptance": false,
+          "run_id": "0444549e-37a2-4ce6-b226-e29dc96e3deb",
+          "status": "completed",
+          "total": 24,
+          "completed": 24,
+          "result_count": 24,
+          "target_position": 24,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-009",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "10441c204421f18ba298143bc61c428f92ff1454791eff96e9bce54b9ca45168",
+          "target_latency_ms": 2250,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 141,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual009-position24-run-4",
+          "excluded_from_acceptance": false,
+          "run_id": "ced9d58e-0f1d-4231-afcd-5ab2bc010eec",
+          "status": "completed",
+          "total": 24,
+          "completed": 24,
+          "result_count": 24,
+          "target_position": 24,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-009",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": true,
+          "target_response_sha256": "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "target_latency_ms": 8074,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 115,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual009-position24-run-5",
+          "excluded_from_acceptance": false,
+          "run_id": "9e0e1eba-0b5c-4926-9344-8f68194d830b",
+          "status": "completed",
+          "total": 24,
+          "completed": 24,
+          "result_count": 24,
+          "target_position": 24,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-009",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "10441c204421f18ba298143bc61c428f92ff1454791eff96e9bce54b9ca45168",
+          "target_latency_ms": 2272,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 108,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        }
+      ]
+    }
+  ]
+}

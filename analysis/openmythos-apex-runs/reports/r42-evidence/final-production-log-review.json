@@ -1,0 +1,6 @@
+{
+  "fatal_or_uncaught_matches": 0,
+  "database_lock_matches": 1,
+  "handled_heartbeat_lock_matches": 1,
+  "unhandled_lock_matches": 0
+}

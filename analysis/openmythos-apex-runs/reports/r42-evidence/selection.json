@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "selection_rule": "nearest position-minus-one published R41 prefix cases, then target",
+  "conditions": [
+    {
+      "target_case_id": "cross-lingual-007",
+      "target_position": 8,
+      "request_file": "r42-request-crosslingual007-position-8.json",
+      "request_sha256": "6992e4fc45f746fc96469bec19a6a3deee8ddb63702c76954d3c1ba070496f0a",
+      "prefix_case_count": 7,
+      "prefix_prompt_chars": 479,
+      "all_cases_anchored": true
+    },
+    {
+      "target_case_id": "cross-lingual-009",
+      "target_position": 24,
+      "request_file": "r42-request-crosslingual009-position-24.json",
+      "request_sha256": "96f49769a19fa3289763cda15c6b67440e69e3248e719a1fc9920f2464644eb7",
+      "prefix_case_count": 23,
+      "prefix_prompt_chars": 1531,
+      "all_cases_anchored": true
+    }
+  ]
+}
