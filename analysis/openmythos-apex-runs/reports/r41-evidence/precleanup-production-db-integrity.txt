@@ -1,0 +1,5 @@
+agent-catalog.sqlite=ok
+benchmark.sqlite=ok
+djimitflo.sqlite=ok
+r21-canary.sqlite=ok
+r21-production-pre-switch.sqlite=ok

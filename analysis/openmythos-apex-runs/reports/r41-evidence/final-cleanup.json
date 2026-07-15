@@ -1,0 +1,6 @@
+{
+  "candidate_container_absent": true,
+  "candidate_image_tag_absent": true,
+  "temporary_base_absent": true,
+  "detached_worktree_absent": true
+}

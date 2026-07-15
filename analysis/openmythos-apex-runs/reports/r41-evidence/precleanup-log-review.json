@@ -1,0 +1,7 @@
+{
+  "candidate_error_matches": 0,
+  "production_fatal_or_uncaught_matches": 0,
+  "production_database_lock_matches": 5,
+  "production_handled_heartbeat_lock_matches": 5,
+  "unhandled_production_lock_matches": 0
+}

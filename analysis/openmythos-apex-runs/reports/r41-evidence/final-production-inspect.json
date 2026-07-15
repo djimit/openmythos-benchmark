@@ -1,0 +1,7 @@
+{
+  "image": "djimitflo:r35-29ff7eec",
+  "image_id": "sha256:ab1ca6d0bbc4abe23a69b48d60250490551708c0df265cea0e6b97d4773b73e3",
+  "status": "running",
+  "restart_count": 0,
+  "restart_policy": "unless-stopped"
+}

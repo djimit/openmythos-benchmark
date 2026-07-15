@@ -1,0 +1,7 @@
+{
+  "image": "djimitflo:r41-nested-prefix-23824b01",
+  "image_id": "sha256:b58de00d50f0721dcaae382acf9e136237ba8095228450217c1d61b5aeadee48",
+  "status": "running",
+  "restart_count": 0,
+  "restart_policy": "no"
+}

@@ -1,0 +1,3 @@
+agent-catalog.sqlite=ok
+benchmark.sqlite=ok
+djimitflo.sqlite=ok

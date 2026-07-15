@@ -1,0 +1,892 @@
+{
+  "schema_version": 1,
+  "decision": "diagnostic_complete",
+  "profile": {
+    "independent_variable": "nested R39 suffix position sweep",
+    "valid_condition_order": [
+      {
+        "target_case_id": "cross-lingual-007",
+        "target_position": 16
+      },
+      {
+        "target_case_id": "cross-lingual-007",
+        "target_position": 31
+      },
+      {
+        "target_case_id": "cross-lingual-009",
+        "target_position": 16
+      },
+      {
+        "target_case_id": "cross-lingual-009",
+        "target_position": 32
+      }
+    ],
+    "warmups_per_condition": 1,
+    "measured_repeats_per_condition": 5,
+    "worker_concurrency": 1,
+    "ollama_num_parallel": 1,
+    "model": "qwen2.5:14b-instruct-q4_K_M",
+    "temperature": 0,
+    "seed": 0,
+    "num_predict": 1024,
+    "request_order_semantics": "case_ids membership filter; corpus order controls execution"
+  },
+  "candidate": {
+    "djimitflo_commit": "23824b012b17cdc8f57ffa3eeba2273feb9b8c85",
+    "image": "djimitflo:r41-nested-prefix-23824b01",
+    "image_id": "sha256:b58de00d50f0721dcaae382acf9e136237ba8095228450217c1d61b5aeadee48",
+    "sidecar_sha256": "3ca2224e44d4f907b2b28af927fc40bb2886fd3b2e8ff512ff41f3c998e7ffd0"
+  },
+  "measured_target_oracle_provenance": {
+    "matched": 20,
+    "total": 20
+  },
+  "classifications": {
+    "cross-lingual-007": {
+      "16": {
+        "within_condition": "stable",
+        "isolated_relation": "differs",
+        "full_prefix_relation": "matches"
+      },
+      "31": {
+        "within_condition": "stable",
+        "isolated_relation": "differs",
+        "full_prefix_relation": "matches"
+      }
+    },
+    "cross-lingual-009": {
+      "16": {
+        "within_condition": "stable",
+        "isolated_relation": "matches",
+        "full_prefix_relation": "differs"
+      },
+      "32": {
+        "within_condition": "variable",
+        "isolated_relation": "differs",
+        "full_prefix_relation": "matches"
+      }
+    }
+  },
+  "support_paths": {
+    "cross-lingual-007": [
+      {
+        "position": 1,
+        "origin": "R38",
+        "support": {
+          "response_sha256": [
+            "bd1513dbedb497629e1e19cf76549061fce0bc29dc2840cd07eb0538f500f809"
+          ],
+          "oracle_outcomes": [
+            true
+          ]
+        }
+      },
+      {
+        "position": 16,
+        "origin": "R41",
+        "support": {
+          "response_sha256": [
+            "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750"
+          ],
+          "oracle_outcomes": [
+            false
+          ]
+        }
+      },
+      {
+        "position": 31,
+        "origin": "R41",
+        "support": {
+          "response_sha256": [
+            "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750"
+          ],
+          "oracle_outcomes": [
+            false
+          ]
+        }
+      },
+      {
+        "position": 46,
+        "origin": "R39",
+        "support": {
+          "response_sha256": [
+            "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750"
+          ],
+          "oracle_outcomes": [
+            false
+          ]
+        }
+      }
+    ],
+    "cross-lingual-009": [
+      {
+        "position": 1,
+        "origin": "R38",
+        "support": {
+          "response_sha256": [
+            "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5"
+          ],
+          "oracle_outcomes": [
+            true
+          ]
+        }
+      },
+      {
+        "position": 16,
+        "origin": "R41",
+        "support": {
+          "response_sha256": [
+            "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5"
+          ],
+          "oracle_outcomes": [
+            true
+          ]
+        }
+      },
+      {
+        "position": 32,
+        "origin": "R41",
+        "support": {
+          "response_sha256": [
+            "10441c204421f18ba298143bc61c428f92ff1454791eff96e9bce54b9ca45168",
+            "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5"
+          ],
+          "oracle_outcomes": [
+            false,
+            true
+          ]
+        }
+      },
+      {
+        "position": 48,
+        "origin": "R39",
+        "support": {
+          "response_sha256": [
+            "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+            "10441c204421f18ba298143bc61c428f92ff1454791eff96e9bce54b9ca45168"
+          ],
+          "oracle_outcomes": [
+            true,
+            false
+          ]
+        }
+      }
+    ]
+  },
+  "conditions": [
+    {
+      "target_case_id": "cross-lingual-007",
+      "target_position": 16,
+      "selection": {
+        "target_case_id": "cross-lingual-007",
+        "target_position": 16,
+        "request_file": "request-crosslingual007-position-16.json",
+        "request_sha256": "57ba848a03526d81be832b9d7d4930ea69fe8b93057984d2a1d5a89e145d1c36",
+        "prefix_case_count": 15,
+        "prefix_prompt_chars": 1058,
+        "all_cases_anchored": true
+      },
+      "within_condition": "stable",
+      "isolated_relation": "differs",
+      "full_prefix_relation": "matches",
+      "r38_isolated_support": {
+        "response_sha256": [
+          "bd1513dbedb497629e1e19cf76549061fce0bc29dc2840cd07eb0538f500f809"
+        ],
+        "oracle_outcomes": [
+          true
+        ]
+      },
+      "r39_full_prefix_support": {
+        "position": 46,
+        "response_sha256": [
+          "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750"
+        ],
+        "oracle_outcomes": [
+          false
+        ]
+      },
+      "unique_measured_hashes": [
+        "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750"
+      ],
+      "unique_measured_hash_count": 1,
+      "unique_measured_outcomes": [
+        false
+      ],
+      "unique_measured_outcome_count": 1,
+      "warmup_hash_matches_measured": true,
+      "warmup_outcome_matches_measured": true,
+      "calls": [
+        {
+          "label": "crosslingual007-position16-warmup",
+          "excluded_from_acceptance": true,
+          "run_id": "08b7dd59-9372-444b-8ed7-f4f0b44edf21",
+          "status": "completed",
+          "total": 16,
+          "completed": 16,
+          "result_count": 16,
+          "target_position": 16,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-007",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750",
+          "target_latency_ms": 1478,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 58,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual007-position16-run-1",
+          "excluded_from_acceptance": false,
+          "run_id": "06bd3bae-3973-4d7f-847b-eb5d1f1f4b15",
+          "status": "completed",
+          "total": 16,
+          "completed": 16,
+          "result_count": 16,
+          "target_position": 16,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-007",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750",
+          "target_latency_ms": 1469,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 54,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual007-position16-run-2",
+          "excluded_from_acceptance": false,
+          "run_id": "5e51c53c-acee-4cb9-b0cb-c84a228d588b",
+          "status": "completed",
+          "total": 16,
+          "completed": 16,
+          "result_count": 16,
+          "target_position": 16,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-007",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750",
+          "target_latency_ms": 1469,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 55,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual007-position16-run-3",
+          "excluded_from_acceptance": false,
+          "run_id": "f2e37ee9-d58d-4077-9ddb-a3a9ccbf137d",
+          "status": "completed",
+          "total": 16,
+          "completed": 16,
+          "result_count": 16,
+          "target_position": 16,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-007",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750",
+          "target_latency_ms": 1478,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 54,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual007-position16-run-4",
+          "excluded_from_acceptance": false,
+          "run_id": "659f33d4-aed0-41a0-8d95-b193ccbf0df7",
+          "status": "completed",
+          "total": 16,
+          "completed": 16,
+          "result_count": 16,
+          "target_position": 16,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-007",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750",
+          "target_latency_ms": 1471,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 55,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual007-position16-run-5",
+          "excluded_from_acceptance": false,
+          "run_id": "9003f831-6e0c-401b-9841-6c5f9e8ec623",
+          "status": "completed",
+          "total": 16,
+          "completed": 16,
+          "result_count": 16,
+          "target_position": 16,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-007",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750",
+          "target_latency_ms": 1475,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 54,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        }
+      ]
+    },
+    {
+      "target_case_id": "cross-lingual-007",
+      "target_position": 31,
+      "selection": {
+        "target_case_id": "cross-lingual-007",
+        "target_position": 31,
+        "request_file": "request-crosslingual007-position-31.json",
+        "request_sha256": "4847ba174e2f19602af9da5962d7e58a1345793aab4eb9a24cc7831d874d22cd",
+        "prefix_case_count": 30,
+        "prefix_prompt_chars": 1881,
+        "all_cases_anchored": true
+      },
+      "within_condition": "stable",
+      "isolated_relation": "differs",
+      "full_prefix_relation": "matches",
+      "r38_isolated_support": {
+        "response_sha256": [
+          "bd1513dbedb497629e1e19cf76549061fce0bc29dc2840cd07eb0538f500f809"
+        ],
+        "oracle_outcomes": [
+          true
+        ]
+      },
+      "r39_full_prefix_support": {
+        "position": 46,
+        "response_sha256": [
+          "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750"
+        ],
+        "oracle_outcomes": [
+          false
+        ]
+      },
+      "unique_measured_hashes": [
+        "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750"
+      ],
+      "unique_measured_hash_count": 1,
+      "unique_measured_outcomes": [
+        false
+      ],
+      "unique_measured_outcome_count": 1,
+      "warmup_hash_matches_measured": true,
+      "warmup_outcome_matches_measured": true,
+      "calls": [
+        {
+          "label": "crosslingual007-position31-warmup",
+          "excluded_from_acceptance": true,
+          "run_id": "a2aa5e68-a9d8-490e-a9b6-f8fe0a3805c5",
+          "status": "completed",
+          "total": 31,
+          "completed": 31,
+          "result_count": 31,
+          "target_position": 31,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-007",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750",
+          "target_latency_ms": 1472,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 101,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual007-position31-run-1",
+          "excluded_from_acceptance": false,
+          "run_id": "9042e858-b576-4f18-9980-fbc00e11dfc0",
+          "status": "completed",
+          "total": 31,
+          "completed": 31,
+          "result_count": 31,
+          "target_position": 31,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-007",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750",
+          "target_latency_ms": 1475,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 101,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual007-position31-run-2",
+          "excluded_from_acceptance": false,
+          "run_id": "b70c543e-58c5-43e2-8910-2b539d2ff9aa",
+          "status": "completed",
+          "total": 31,
+          "completed": 31,
+          "result_count": 31,
+          "target_position": 31,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-007",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750",
+          "target_latency_ms": 1479,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 100,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual007-position31-run-3",
+          "excluded_from_acceptance": false,
+          "run_id": "38f77acd-8822-4342-8e55-f8030c7694e3",
+          "status": "completed",
+          "total": 31,
+          "completed": 31,
+          "result_count": 31,
+          "target_position": 31,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-007",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750",
+          "target_latency_ms": 1474,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 100,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual007-position31-run-4",
+          "excluded_from_acceptance": false,
+          "run_id": "0eaf0ca6-7653-4957-9bbb-c61b785d8497",
+          "status": "completed",
+          "total": 31,
+          "completed": 31,
+          "result_count": 31,
+          "target_position": 31,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-007",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750",
+          "target_latency_ms": 1481,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 101,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual007-position31-run-5",
+          "excluded_from_acceptance": false,
+          "run_id": "ba7086f5-80b6-406b-b1a8-50b44892c600",
+          "status": "completed",
+          "total": 31,
+          "completed": 31,
+          "result_count": 31,
+          "target_position": 31,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-007",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "0d28ed4397b91b2dea18d3d88cc730294099629374009ba3b7eaa0d54855f750",
+          "target_latency_ms": 1480,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 100,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        }
+      ]
+    },
+    {
+      "target_case_id": "cross-lingual-009",
+      "target_position": 16,
+      "selection": {
+        "target_case_id": "cross-lingual-009",
+        "target_position": 16,
+        "request_file": "request-crosslingual009-position-16.json",
+        "request_sha256": "ba7b54818863afa1ff55c9062c3e81923953642e9ddff04e17d5d313f15120bc",
+        "prefix_case_count": 15,
+        "prefix_prompt_chars": 1038,
+        "all_cases_anchored": true
+      },
+      "within_condition": "stable",
+      "isolated_relation": "matches",
+      "full_prefix_relation": "differs",
+      "r38_isolated_support": {
+        "response_sha256": [
+          "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5"
+        ],
+        "oracle_outcomes": [
+          true
+        ]
+      },
+      "r39_full_prefix_support": {
+        "position": 48,
+        "response_sha256": [
+          "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "10441c204421f18ba298143bc61c428f92ff1454791eff96e9bce54b9ca45168"
+        ],
+        "oracle_outcomes": [
+          true,
+          false
+        ]
+      },
+      "unique_measured_hashes": [
+        "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5"
+      ],
+      "unique_measured_hash_count": 1,
+      "unique_measured_outcomes": [
+        true
+      ],
+      "unique_measured_outcome_count": 1,
+      "warmup_hash_matches_measured": false,
+      "warmup_outcome_matches_measured": false,
+      "calls": [
+        {
+          "label": "crosslingual009-position16-warmup",
+          "excluded_from_acceptance": true,
+          "run_id": "f71daab5-105b-40bf-a4e9-a161322331a6",
+          "status": "completed",
+          "total": 16,
+          "completed": 16,
+          "result_count": 16,
+          "target_position": 16,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-009",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "10441c204421f18ba298143bc61c428f92ff1454791eff96e9bce54b9ca45168",
+          "target_latency_ms": 2263,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 44,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual009-position16-run-1",
+          "excluded_from_acceptance": false,
+          "run_id": "b8d54f3d-2b36-4e5f-9174-0f54150e8ba1",
+          "status": "completed",
+          "total": 16,
+          "completed": 16,
+          "result_count": 16,
+          "target_position": 16,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-009",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": true,
+          "target_response_sha256": "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "target_latency_ms": 2392,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 46,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual009-position16-run-2",
+          "excluded_from_acceptance": false,
+          "run_id": "a5e5779c-d5bc-495b-8d85-8b708b590173",
+          "status": "completed",
+          "total": 16,
+          "completed": 16,
+          "result_count": 16,
+          "target_position": 16,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-009",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": true,
+          "target_response_sha256": "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "target_latency_ms": 2393,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 45,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual009-position16-run-3",
+          "excluded_from_acceptance": false,
+          "run_id": "ddf318cf-1283-4e7b-9bec-244cb6bee49d",
+          "status": "completed",
+          "total": 16,
+          "completed": 16,
+          "result_count": 16,
+          "target_position": 16,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-009",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": true,
+          "target_response_sha256": "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "target_latency_ms": 2398,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 46,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual009-position16-run-4",
+          "excluded_from_acceptance": false,
+          "run_id": "8af71600-4ced-4a48-a4fa-089c08b13f96",
+          "status": "completed",
+          "total": 16,
+          "completed": 16,
+          "result_count": 16,
+          "target_position": 16,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-009",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": true,
+          "target_response_sha256": "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "target_latency_ms": 2396,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 45,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual009-position16-run-5",
+          "excluded_from_acceptance": false,
+          "run_id": "bb211b2d-16b7-4cf3-b200-00f748e51e7d",
+          "status": "completed",
+          "total": 16,
+          "completed": 16,
+          "result_count": 16,
+          "target_position": 16,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-009",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": true,
+          "target_response_sha256": "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "target_latency_ms": 2389,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 46,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        }
+      ]
+    },
+    {
+      "target_case_id": "cross-lingual-009",
+      "target_position": 32,
+      "selection": {
+        "target_case_id": "cross-lingual-009",
+        "target_position": 32,
+        "request_file": "request-crosslingual009-position-32.json",
+        "request_sha256": "ab4412cd8e387a7561c0da5260115d501cff4e4c95d6c75c51f20df5a84ae98c",
+        "prefix_case_count": 31,
+        "prefix_prompt_chars": 1950,
+        "all_cases_anchored": true
+      },
+      "within_condition": "variable",
+      "isolated_relation": "differs",
+      "full_prefix_relation": "matches",
+      "r38_isolated_support": {
+        "response_sha256": [
+          "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5"
+        ],
+        "oracle_outcomes": [
+          true
+        ]
+      },
+      "r39_full_prefix_support": {
+        "position": 48,
+        "response_sha256": [
+          "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "10441c204421f18ba298143bc61c428f92ff1454791eff96e9bce54b9ca45168"
+        ],
+        "oracle_outcomes": [
+          true,
+          false
+        ]
+      },
+      "unique_measured_hashes": [
+        "10441c204421f18ba298143bc61c428f92ff1454791eff96e9bce54b9ca45168",
+        "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5"
+      ],
+      "unique_measured_hash_count": 2,
+      "unique_measured_outcomes": [
+        false,
+        true
+      ],
+      "unique_measured_outcome_count": 2,
+      "warmup_hash_matches_measured": true,
+      "warmup_outcome_matches_measured": true,
+      "calls": [
+        {
+          "label": "crosslingual009-position32-warmup",
+          "excluded_from_acceptance": true,
+          "run_id": "2cddb965-985a-4cd3-a78f-6a2ea701e15d",
+          "status": "completed",
+          "total": 32,
+          "completed": 32,
+          "result_count": 32,
+          "target_position": 32,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-009",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": true,
+          "target_response_sha256": "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "target_latency_ms": 2396,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 101,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual009-position32-run-1",
+          "excluded_from_acceptance": false,
+          "run_id": "5d2d053a-44ed-4d49-87ab-7dda0a3c7289",
+          "status": "completed",
+          "total": 32,
+          "completed": 32,
+          "result_count": 32,
+          "target_position": 32,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-009",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": false,
+          "target_response_sha256": "10441c204421f18ba298143bc61c428f92ff1454791eff96e9bce54b9ca45168",
+          "target_latency_ms": 2282,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 114,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual009-position32-run-2",
+          "excluded_from_acceptance": false,
+          "run_id": "ea35197e-97e8-457c-9b85-6b8468f0672e",
+          "status": "completed",
+          "total": 32,
+          "completed": 32,
+          "result_count": 32,
+          "target_position": 32,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-009",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": true,
+          "target_response_sha256": "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "target_latency_ms": 2411,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 103,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual009-position32-run-3",
+          "excluded_from_acceptance": false,
+          "run_id": "62672af5-8d72-4760-ab8a-643feef5d498",
+          "status": "completed",
+          "total": 32,
+          "completed": 32,
+          "result_count": 32,
+          "target_position": 32,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-009",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": true,
+          "target_response_sha256": "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "target_latency_ms": 2399,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 102,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual009-position32-run-4",
+          "excluded_from_acceptance": false,
+          "run_id": "d94370ce-7e59-4248-b802-59d861a774c8",
+          "status": "completed",
+          "total": 32,
+          "completed": 32,
+          "result_count": 32,
+          "target_position": 32,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-009",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": true,
+          "target_response_sha256": "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "target_latency_ms": 2401,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 101,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        },
+        {
+          "label": "crosslingual009-position32-run-5",
+          "excluded_from_acceptance": false,
+          "run_id": "a0606be5-d5c2-4cf4-a377-9f91ce323cdd",
+          "status": "completed",
+          "total": 32,
+          "completed": 32,
+          "result_count": 32,
+          "target_position": 32,
+          "target_position_verified": true,
+          "target_case_id": "cross-lingual-009",
+          "target_scoring_source": "oracle",
+          "target_oracle_pass": true,
+          "target_response_sha256": "6cb7a5fc0806d8d5e0502f20ff41b823b797dd9afe855781042bf851a199c0a5",
+          "target_latency_ms": 2404,
+          "all_oracle": true,
+          "all_case_latency_pass": true,
+          "duration_seconds": 102,
+          "model_resident": true,
+          "candidate_healthy": true,
+          "production_healthy": true
+        }
+      ]
+    }
+  ]
+}

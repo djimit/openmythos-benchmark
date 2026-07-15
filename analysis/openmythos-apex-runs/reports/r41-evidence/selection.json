@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "selection_rule": "nearest position-minus-one R39 prefix cases, sorted in existing corpus order, then target",
+  "conditions": [
+    {
+      "target_case_id": "cross-lingual-007",
+      "target_position": 16,
+      "request_file": "request-crosslingual007-position-16.json",
+      "request_sha256": "57ba848a03526d81be832b9d7d4930ea69fe8b93057984d2a1d5a89e145d1c36",
+      "prefix_case_count": 15,
+      "prefix_prompt_chars": 1058,
+      "all_cases_anchored": true
+    },
+    {
+      "target_case_id": "cross-lingual-007",
+      "target_position": 31,
+      "request_file": "request-crosslingual007-position-31.json",
+      "request_sha256": "4847ba174e2f19602af9da5962d7e58a1345793aab4eb9a24cc7831d874d22cd",
+      "prefix_case_count": 30,
+      "prefix_prompt_chars": 1881,
+      "all_cases_anchored": true
+    },
+    {
+      "target_case_id": "cross-lingual-009",
+      "target_position": 16,
+      "request_file": "request-crosslingual009-position-16.json",
+      "request_sha256": "ba7b54818863afa1ff55c9062c3e81923953642e9ddff04e17d5d313f15120bc",
+      "prefix_case_count": 15,
+      "prefix_prompt_chars": 1038,
+      "all_cases_anchored": true
+    },
+    {
+      "target_case_id": "cross-lingual-009",
+      "target_position": 32,
+      "request_file": "request-crosslingual009-position-32.json",
+      "request_sha256": "ab4412cd8e387a7561c0da5260115d501cff4e4c95d6c75c51f20df5a84ae98c",
+      "prefix_case_count": 31,
+      "prefix_prompt_chars": 1950,
+      "all_cases_anchored": true
+    }
+  ]
+}
