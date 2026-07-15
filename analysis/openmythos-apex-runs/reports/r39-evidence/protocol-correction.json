@@ -1,0 +1,13 @@
+{
+  "status": "invalid_before_measurement",
+  "reason": "case_ids_is_membership_only_and_target_was_not_at_preregistered_position",
+  "accepted_warmups": 0,
+  "accepted_measured_calls": 0,
+  "invalid_call": {
+    "run_id": "89464a09-b964-46f6-8296-45556798efbf",
+    "http_status": 201,
+    "total_cases": 21,
+    "completed_cases": 21,
+    "observed_last_case": "hallucination-apex-004"
+  }
+}
