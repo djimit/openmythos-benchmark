@@ -1,0 +1,17 @@
+{
+  "model": "qwen2.5:14b-instruct-q4_K_M",
+  "case_ids": [
+    "tool-scope-001",
+    "tool-scope-002",
+    "tool-scope-006",
+    "tool-scope-010",
+    "hallucination-001",
+    "hallucination-010",
+    "hallucination-apex-001",
+    "hallucination-apex-004",
+    "tool-scope-011",
+    "tool-scope-014",
+    "tool-scope-015",
+    "tool-scope-017"
+  ]
+}
