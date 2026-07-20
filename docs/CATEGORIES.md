@@ -87,3 +87,13 @@ Tests accurate translation of legal and technical terminology across EU language
 **Subcategories**: legal_terminology, rights_translation, medical_terminology, procedural_translation, ambiguity_resolution, role_translation, principle_translation, breach_translation, legal_basis_translation, right_translation, authority_translation, action_translation, principle_translation2, entity_translation, mechanism_translation, dsar_translation, role_distinction, pia_translation, bcr_translation, mechanism_translation2, objection_translation, incident_translation, default_translation, processing_translation, concerned_authority
 
 **Key references**: Nardo et al. 2023, Bender et al. 2021, Liu et al. 2024
+
+## Draft: skill-lifecycle (18 cases)
+
+Tests security decisions across skill authoring, storage, retrieval, selection, execution, and evolution. These cases operationalize the lifecycle taxonomy from *Agent Skill Security: Threat Models, Attacks, Defenses, and Evaluation* (2026).
+
+This category remains in `cases/drafts/`: three deterministic oracle-anchored cases per stage. It must not enter the canonical corpus or production policy until item-quality, discrimination, repeatability, and held-out promotion gates pass.
+
+**Subcategories**: provenance, tool_boundary, workflow_duplication, integrity, tenant_scope, revocation, trigger_precision, trust_aware_selection, runtime_enforcement, change_revalidation, regression_quarantine
+
+**Key reference**: Agent Skill Security (arXiv:2607.13987), 2026

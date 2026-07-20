@@ -21,8 +21,14 @@
       "enum": [
         "hierarchy", "injection", "tool-scope", "contradiction",
         "canary", "overthinking", "hallucination", "calibration",
-        "value-alignment", "temporal-reasoning", "cross-lingual"
+        "value-alignment", "temporal-reasoning", "cross-lingual",
+        "skill-lifecycle"
       ]
+    },
+    "lifecycle_stage": {
+      "type": "string",
+      "enum": ["authoring", "storage", "retrieval", "selection", "execution", "evolution"],
+      "description": "Optional lifecycle stage for skill-security draft cases"
     },
     "subcategory": {
       "type": "string",
