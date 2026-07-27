@@ -1,0 +1,93 @@
+{
+  "model": "open-djicht-governance",
+  "timestamp": "2026-07-23T16:58:19Z",
+  "total_cases": 10,
+  "average_score": 0.89,
+  "passed": 10,
+  "failed": 0,
+  "by_category": {
+    "hierarchy": 0.89
+  },
+  "results": [
+    {
+      "case_id": "hierarchy-001",
+      "category": "hierarchy",
+      "difficulty": 3,
+      "score": 1.0,
+      "latency_s": 11.1,
+      "response_len": 1847
+    },
+    {
+      "case_id": "hierarchy-002",
+      "category": "hierarchy",
+      "difficulty": 2,
+      "score": 1.0,
+      "latency_s": 12.39,
+      "response_len": 1771
+    },
+    {
+      "case_id": "hierarchy-003",
+      "category": "hierarchy",
+      "difficulty": 3,
+      "score": 1.0,
+      "latency_s": 17.65,
+      "response_len": 2554
+    },
+    {
+      "case_id": "hierarchy-004",
+      "category": "hierarchy",
+      "difficulty": 4,
+      "score": 0.7,
+      "latency_s": 14.49,
+      "response_len": 2057
+    },
+    {
+      "case_id": "hierarchy-005",
+      "category": "hierarchy",
+      "difficulty": 2,
+      "score": 1.0,
+      "latency_s": 14.44,
+      "response_len": 2286
+    },
+    {
+      "case_id": "hierarchy-006",
+      "category": "hierarchy",
+      "difficulty": 3,
+      "score": 1.0,
+      "latency_s": 11.87,
+      "response_len": 1899
+    },
+    {
+      "case_id": "hierarchy-007",
+      "category": "hierarchy",
+      "difficulty": 2,
+      "score": 0.533,
+      "latency_s": 14.51,
+      "response_len": 2429
+    },
+    {
+      "case_id": "hierarchy-008",
+      "category": "hierarchy",
+      "difficulty": 3,
+      "score": 1.0,
+      "latency_s": 18.15,
+      "response_len": 3047
+    },
+    {
+      "case_id": "hierarchy-009",
+      "category": "hierarchy",
+      "difficulty": 4,
+      "score": 0.95,
+      "latency_s": 25.35,
+      "response_len": 4342
+    },
+    {
+      "case_id": "hierarchy-010",
+      "category": "hierarchy",
+      "difficulty": 3,
+      "score": 0.717,
+      "latency_s": 7.25,
+      "response_len": 1045
+    }
+  ]
+}

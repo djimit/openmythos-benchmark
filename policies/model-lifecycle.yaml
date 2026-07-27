@@ -1,0 +1,121 @@
+# Model Lifecycle Policies — declarative gate configuration
+# Single source of truth for promotion, deprecation, and quarantine decisions.
+
+promotion_gates:
+  artifact_validation:
+    required: true
+    checks:
+      - hash_verification: sha256
+      - license_check: compatible_with_use_case
+      - malware_scan: clean
+      - sbom_present: true
+
+  capability_evaluation:
+    required: true
+    checks:
+      - benchmark_against: golden_eval_set
+      - no_regression_vs: production_model
+      - failure_modes_documented: true
+    thresholds:
+      min_overall_score: 0.65
+      min_category_score: 0.50
+      max_dead_case_rate: 0.10
+
+  safety_and_privacy:
+    required: true
+    checks:
+      - prompt_injection_resistance: tested
+      - jailbreak_resistance: tested
+      - no_pii_leakage: verified
+      - policy_compliance: verified
+
+  regression:
+    required: true
+    checks:
+      - existing_eval_set_pass: true
+      - no_edge_case_degradation: true
+      - fallback_behavior_tested: true
+
+  cost_performance:
+    required: true
+    checks:
+      - latency_within_slo: true
+      - cost_per_outcome_acceptable: true
+      - resource_within_capacity: true
+
+  formal_approval:
+    required: true
+    approvers:
+      - domain_expert
+      - security_owner
+      - policy_owner
+
+
+  spec_compliance:
+    required: true
+    description: "DDD semantic layer artifact completeness (Constitution v1.2.0 Article VI)"
+    checks:
+      - domain_terms_present: true
+      - ubiquitous_language_has_aliases: true
+      - aggregate_specs_have_ears_invariants: true
+      - acl_specs_have_forbidden_concepts: true
+      - cross_bc_isolation_documented: true
+    thresholds:
+      min_ul_terms: 3
+      min_aliases_per_term: 1
+      min_invariants_per_aggregate: 1
+    script: "scripts/spec_compliance_gate.py"
+    blocking: true
+
+# Risk tiers per data classification
+data_class_policies:
+  public:
+    allowed_tiers: [commodity, differentiated, frontier]
+    required_assurance: best_effort
+  internal:
+    allowed_tiers: [differentiated, frontier]
+    required_assurance: validated
+  confidential:
+    allowed_tiers: [frontier]
+    required_assurance: audited
+    hosting_restriction: private_only
+  restricted:
+    allowed_tiers: []
+    required_assurance: certified
+    note: "No AI processing allowed — human only"
+
+# Geopolitical risk levels
+geopolitical_pools:
+  tier_1_trusted:
+    regions: [eu, us_allied]
+    provenance_required: standard
+  tier_2_verified:
+    regions: [global]
+    provenance_required: enhanced
+  tier_3_quarantine:
+    regions: [sanctioned]
+    provenance_required: blocked
+
+# Model lifecycle states
+lifecycle_states:
+  - quarantined
+  - evaluated
+  - validated
+  - staged
+  - production
+  - deprecated
+
+allowed_transitions:
+  quarantined: [evaluated, deprecated]
+  evaluated: [validated, quarantined]
+  validated: [staged, quarantined]
+  staged: [production, quarantined]
+  production: [deprecated, quarantined]
+  deprecated: []  # terminal state
+
+# Quarantine triggers (automatic)
+auto_quarantine:
+  - security_incident: true
+  - regression_detected: true
+  - license_violation: true
+  - geopolitical_sanction: true

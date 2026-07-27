@@ -1,0 +1,218 @@
+[
+  {
+    "task": "governance",
+    "backend": "openrouter_free",
+    "model": "openai/gpt-oss-120b",
+    "available": true,
+    "latency_s": 3.11,
+    "response_len": 348
+  },
+  {
+    "task": "governance",
+    "backend": "openrouter_free",
+    "model": "moonshotai/kimi-k2-thinking",
+    "available": true,
+    "latency_s": 8.25,
+    "response_len": 273
+  },
+  {
+    "task": "governance",
+    "backend": "openrouter_free",
+    "model": "google/gemini-2.5-flash-lite",
+    "available": true,
+    "latency_s": 0.45,
+    "response_len": 189
+  },
+  {
+    "task": "governance",
+    "backend": "openrouter",
+    "model": "anthropic/claude-sonnet-4.6",
+    "available": true,
+    "latency_s": 2.26,
+    "response_len": 270
+  },
+  {
+    "task": "governance",
+    "backend": "openrouter",
+    "model": "openai/gpt-5.4",
+    "available": true,
+    "latency_s": 1.9,
+    "response_len": 180
+  },
+  {
+    "task": "nl_governance",
+    "backend": "openrouter_free",
+    "model": "google/gemini-2.5-flash-lite",
+    "available": true,
+    "latency_s": 0.49,
+    "response_len": 189
+  },
+  {
+    "task": "nl_governance",
+    "backend": "openrouter_free",
+    "model": "openai/gpt-oss-120b",
+    "available": true,
+    "latency_s": 1.56,
+    "response_len": 271
+  },
+  {
+    "task": "nl_governance",
+    "backend": "openrouter",
+    "model": "google/gemini-2.5-pro",
+    "available": true,
+    "latency_s": 11.96,
+    "response_len": 256
+  },
+  {
+    "task": "nl_governance",
+    "backend": "google",
+    "model": "gemini-2.5-pro",
+    "available": true,
+    "latency_s": 8.2,
+    "response_len": 235
+  },
+  {
+    "task": "code_governance",
+    "backend": "openrouter_free",
+    "model": "qwen/qwen3-coder-480b",
+    "available": false,
+    "latency_s": 0.05,
+    "response_len": 0
+  },
+  {
+    "task": "code_governance",
+    "backend": "openrouter_free",
+    "model": "openai/gpt-oss-120b",
+    "available": true,
+    "latency_s": 1.13,
+    "response_len": 334
+  },
+  {
+    "task": "code_governance",
+    "backend": "openrouter",
+    "model": "moonshotai/kimi-k2.7-code",
+    "available": true,
+    "latency_s": 3.04,
+    "response_len": 244
+  },
+  {
+    "task": "code_governance",
+    "backend": "openrouter",
+    "model": "openai/gpt-5.1-codex",
+    "available": true,
+    "latency_s": 1.1,
+    "response_len": 227
+  },
+  {
+    "task": "reasoning",
+    "backend": "openrouter_free",
+    "model": "qwen/qwen3-next-80b-a3b-thinking",
+    "available": true,
+    "latency_s": 6.04,
+    "response_len": 205
+  },
+  {
+    "task": "reasoning",
+    "backend": "openrouter_free",
+    "model": "moonshotai/kimi-k2-thinking",
+    "available": true,
+    "latency_s": 6.48,
+    "response_len": 211
+  },
+  {
+    "task": "reasoning",
+    "backend": "openrouter",
+    "model": "anthropic/claude-opus-4.8",
+    "available": true,
+    "latency_s": 3.18,
+    "response_len": 302
+  },
+  {
+    "task": "reasoning",
+    "backend": "openrouter",
+    "model": "openai/gpt-5.4",
+    "available": true,
+    "latency_s": 1.64,
+    "response_len": 194
+  },
+  {
+    "task": "judge",
+    "backend": "openrouter_free",
+    "model": "google/gemini-2.5-flash-lite",
+    "available": true,
+    "latency_s": 0.81,
+    "response_len": 189
+  },
+  {
+    "task": "judge",
+    "backend": "openrouter_free",
+    "model": "deepseek/deepseek-v4-flash",
+    "available": true,
+    "latency_s": 1.9,
+    "response_len": 182
+  },
+  {
+    "task": "judge",
+    "backend": "openai",
+    "model": "gpt-4o-mini",
+    "available": true,
+    "latency_s": 1.69,
+    "response_len": 191
+  },
+  {
+    "task": "dpo_chosen",
+    "backend": "openrouter",
+    "model": "anthropic/claude-opus-4.8",
+    "available": true,
+    "latency_s": 3.12,
+    "response_len": 340
+  },
+  {
+    "task": "dpo_chosen",
+    "backend": "openrouter",
+    "model": "openai/gpt-5.4",
+    "available": true,
+    "latency_s": 1.81,
+    "response_len": 187
+  },
+  {
+    "task": "dpo_chosen",
+    "backend": "openrouter",
+    "model": "google/gemini-3.5-flash",
+    "available": true,
+    "latency_s": 4.27,
+    "response_len": 250
+  },
+  {
+    "task": "dpo_chosen",
+    "backend": "openrouter",
+    "model": "deepseek/deepseek-v4-pro",
+    "available": true,
+    "latency_s": 4.34,
+    "response_len": 302
+  },
+  {
+    "task": "dpo_rejected",
+    "backend": "openrouter_free",
+    "model": "openai/gpt-oss-120b",
+    "available": true,
+    "latency_s": 0.97,
+    "response_len": 272
+  },
+  {
+    "task": "dpo_rejected",
+    "backend": "openrouter_free",
+    "model": "qwen/qwen3.5-flash-02-23",
+    "available": false,
+    "latency_s": 0.15,
+    "response_len": 0
+  },
+  {
+    "task": "dpo_rejected",
+    "backend": "openrouter_free",
+    "model": "deepseek/deepseek-v4-flash",
+    "available": true,
+    "latency_s": 2.0,
+    "response_len": 199
+  }
+]

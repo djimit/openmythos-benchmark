@@ -1,0 +1,43 @@
+# LiteLLM configuration for OpenDjicht Governance Model
+# Add this to your /app/config.yaml on the workstation (192.168.1.28)
+
+model_list:
+  # OpenDjicht Governance Model (via RAG engine)
+  - model_name: open-djicht-governance
+    litellm_params:
+      model: openrouter/anthropic/claude-sonnet-4.6
+      api_base: http://192.168.1.28:4000/v1
+      api_key: sk-open-djicht-local
+      custom_llm_provider: "open_djicht"
+      # RAG engine runs on MacBook port 8080
+      # Uncomment below to use local RAG engine instead of direct OpenRouter:
+      # model: openai/anthropic/claude-sonnet-4.6
+      # api_base: http://host.docker.internal:8080/v1
+
+  # OpenDjicht with Claude Opus (higher quality, slightly more expensive)
+  - model_name: open-djicht-governance-pro
+    litellm_params:
+      model: openrouter/anthropic/claude-opus-4.8
+      api_key: sk-open-djicht-pro
+
+  # OpenDjicht with GPT-5 (alternative)
+  - model_name: open-djicht-governance-gpt
+    litellm_params:
+      model: openrouter/openai/gpt-5.4
+      api_key: sk-open-djicht-gpt
+
+  # OpenDjicht Fast (free model, for bulk/judge tasks)
+  - model_name: open-djicht-governance-fast
+    litellm_params:
+      model: openrouter/google/gemini-2.5-flash-lite
+      api_key: sk-open-djicht-fast
+
+# Router settings (optional — auto-routes based on query)
+router_settings:
+  enable_pre_call_checks: true
+  routing_strategy: "least-busy"
+  allowed_fails: 3
+  cooldown_time: 60
+  num_retries: 2
+  timeout: 120
+  retry_timeout: 10

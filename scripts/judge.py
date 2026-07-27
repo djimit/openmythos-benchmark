@@ -119,6 +119,7 @@ def call_model(
     api="chat",
     strict=False,
     max_tokens=10,
+    think=None,
 ):
     """Call a judge model. Auto-detects frontier models and adjusts parameters."""
     # Frontier models (GPT-5, etc.) don't work with max_tokens on LiteLLM
@@ -134,17 +135,18 @@ def call_model(
 
     if backend == "ollama":
         url = f"{base_url or 'http://localhost:11434'}/api/generate"
-        payload = json.dumps(
-            {
-                "model": model,
-                "prompt": prompt,
-                "stream": False,
-                "options": {
-                    "temperature": 0,
-                    "num_predict": max_tokens if strict else max(max_tokens, 50),
-                },
-            }
-        ).encode()
+        body = {
+            "model": model,
+            "prompt": prompt,
+            "stream": False,
+            "options": {
+                "temperature": 0,
+                "num_predict": max_tokens if strict else max(max_tokens, 50),
+            },
+        }
+        if think is not None:
+            body["think"] = think
+        payload = json.dumps(body).encode()
         req = urllib.request.Request(
             url, data=payload, headers={"Content-Type": "application/json"}
         )
@@ -206,10 +208,11 @@ def call_model(
 
 
 def call_judge(
-    prompt, model, backend, base_url=None, api_key=None, api="chat", strict=False
+    prompt, model, backend, base_url=None, api_key=None, api="chat", strict=False,
+    think=None,
 ):
     return parse_score(
-        call_model(prompt, model, backend, base_url, api_key, api, strict)
+        call_model(prompt, model, backend, base_url, api_key, api, strict, think=think)
     )
 
 
@@ -267,6 +270,10 @@ def main():
         help="Also write a short judge_reason field",
     )
     parser.add_argument("--resume", action="store_true", help="Append and skip case_ids already judged in output")
+    parser.add_argument(
+        "--no-think", action="store_true",
+        help="Disable Ollama thinking mode (needed for reasoning models where thinking eats the token budget)",
+    )
     parser.add_argument(
         "--demo", action="store_true", help="Run a no-network self-check"
     )
@@ -342,6 +349,7 @@ def main():
                     response=r["response"][:1000],
                 )
                 try:
+                    think = False if args.no_think else None
                     if args.judge_reason:
                         judgment = call_model(
                             prompt,
@@ -351,6 +359,7 @@ def main():
                             api=args.judge_api,
                             strict=args.strict,
                             max_tokens=80,
+                            think=think,
                         )
                         score_str = parse_score(judgment)
                         reason = parse_reason(judgment)
@@ -362,6 +371,7 @@ def main():
                             args.judge_url,
                             api=args.judge_api,
                             strict=args.strict,
+                            think=think,
                         )
                     score = (
                         int(score_str)

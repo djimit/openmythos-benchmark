@@ -4,6 +4,7 @@
 import argparse
 import json
 import os
+import sys
 import time
 from pathlib import Path
 
@@ -27,6 +28,7 @@ def call_ollama(
     base_url: str = "http://localhost:11434",
     num_predict: int | None = None,
     timeout: int = 120,
+    system: str | None = None,
 ) -> dict:
     """Call Ollama API."""
     import urllib.request
@@ -35,6 +37,8 @@ def call_ollama(
     body = {"model": model, "prompt": prompt, "stream": False}
     if num_predict:
         body["options"] = {"num_predict": num_predict}
+    if system:
+        body["system"] = system
     payload = json.dumps(body).encode()
     req = urllib.request.Request(
         url, data=payload, headers={"Content-Type": "application/json"}
@@ -96,7 +100,9 @@ def call_openai_responses(
     import urllib.request
 
     api_key = api_key or os.environ.get("OPENAI_API_KEY", "")
-    base_url = (base_url or os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")).rstrip("/")
+    base_url = (
+        base_url or os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
+    ).rstrip("/")
     payload = json.dumps(
         {"model": model, "input": prompt, "max_output_tokens": 512}
     ).encode()
@@ -140,6 +146,55 @@ def call_openai(
     return call_openai_chat(prompt, model, api_key, base_url)
 
 
+def call_openrouter(prompt: str, model: str, max_retries: int = 3) -> dict:
+    """Call OpenRouter API with rate-limit retry (429 backoff)."""
+    import urllib.request
+    import urllib.error
+
+    api_key = os.environ.get(
+        "OPENROUTER_API_KEY", os.environ.get("OPENCODE_OPENROUTER_API_KEY", "")
+    )
+    if not api_key:
+        raise RuntimeError("OPENROUTER_API_KEY not set")
+    payload = json.dumps(
+        {
+            "model": model,
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": 512,
+            "temperature": 0,
+        }
+    ).encode()
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {api_key}",
+    }
+
+    for attempt in range(max_retries):
+        req = urllib.request.Request(
+            "https://openrouter.ai/api/v1/chat/completions",
+            data=payload,
+            headers=headers,
+        )
+        try:
+            start = time.time()
+            with urllib.request.urlopen(req, timeout=120) as resp:
+                result = json.loads(resp.read())
+            elapsed = time.time() - start
+            usage = result.get("usage", {})
+            return {
+                "response": result["choices"][0]["message"]["content"],
+                "tokens": usage.get("total_tokens", 0),
+                "latency_ms": round(elapsed * 1000, 1),
+            }
+        except urllib.error.HTTPError as e:
+            if e.code == 429 and attempt < max_retries - 1:
+                wait = 2 ** (attempt + 1)
+                time.sleep(wait)
+                continue
+            raise
+    return {"response": "ERROR: rate limit exceeded", "tokens": 0, "latency_ms": 0}
+
+
 def call_anthropic(prompt: str, model: str, api_key: str = None) -> dict:
     """Call the Anthropic Messages API (raw HTTP — matches the stdlib style here)."""
     import urllib.request
@@ -166,7 +221,9 @@ def call_anthropic(prompt: str, model: str, api_key: str = None) -> dict:
         result = json.loads(resp.read())
     elapsed = time.time() - start
     # ponytail: first text block is the answer; refusals still carry a text block
-    text = next((b["text"] for b in result.get("content", []) if b["type"] == "text"), "")
+    text = next(
+        (b["text"] for b in result.get("content", []) if b["type"] == "text"), ""
+    )
     usage = result.get("usage", {})
     return {
         "response": text,
@@ -179,20 +236,76 @@ def main():
     parser = argparse.ArgumentParser(description="Run OpenMythos benchmark cases")
     parser.add_argument("--model", required=True, help="Model name")
     parser.add_argument(
-        "--backend", default="ollama", choices=["ollama", "openai", "anthropic"]
+        "--backend",
+        default="ollama",
+        choices=["ollama", "openai", "anthropic", "openrouter"],
+    )
+    parser.add_argument(
+        "--governance-check",
+        action="store_true",
+        help="Enforce registry governance constraints (data class, pool, lifecycle)",
+    )
+    parser.add_argument(
+        "--data-class",
+        default="public",
+        choices=["public", "internal", "confidential", "restricted"],
+        help="Data classification for governance filtering",
     )
     parser.add_argument("--base-url", default=None, help="API base URL")
-    parser.add_argument("--api", default="chat", choices=["chat", "responses"], help="OpenAI API surface")
+    parser.add_argument(
+        "--api",
+        default="chat",
+        choices=["chat", "responses"],
+        help="OpenAI API surface",
+    )
     parser.add_argument("--output", default=None, help="Output JSONL path")
-    parser.add_argument("--corpus", type=Path, default=CORPUS_PATH, help="Corpus JSONL path")
+    parser.add_argument(
+        "--corpus", type=Path, default=CORPUS_PATH, help="Corpus JSONL path"
+    )
     parser.add_argument("--limit", type=int, default=None, help="Limit number of cases")
-    parser.add_argument("--resume", action="store_true", help="Append and skip case_ids already present in output")
-    parser.add_argument("--num-predict", type=int, default=None, help="Ollama num_predict output cap")
-    parser.add_argument("--timeout", type=int, default=120, help="HTTP timeout per case in seconds")
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="Append and skip case_ids already present in output",
+    )
+    parser.add_argument(
+        "--num-predict", type=int, default=None, help="Ollama num_predict output cap"
+    )
+    parser.add_argument(
+        "--timeout", type=int, default=120, help="HTTP timeout per case in seconds"
+    )
     parser.add_argument(
         "--categories", nargs="+", default=None, help="Filter categories"
     )
+    parser.add_argument(
+        "--system", default=None, help="System prompt (ollama backend only)"
+    )
     args = parser.parse_args()
+
+    # Governance check: verify model is allowed for this data class
+    if args.governance_check:
+        sys.path.insert(0, str(REPO_ROOT / "scripts"))
+        from model_registry import load_registry, eligible_models
+
+        registry = load_registry()
+        eligible = eligible_models(registry, data_class=args.data_class)
+        eligible_names = {name for name, _ in eligible}
+        model_short = args.model.split("/")[-1] if "/" in args.model else args.model
+        # Match by full name, short name, or substring
+        matched = (
+            args.model in eligible_names
+            or model_short in eligible_names
+            or any(model_short in n or n in model_short for n in eligible_names)
+        )
+        if not matched and args.backend != "ollama":
+            print(
+                f"[GOVERNANCE BLOCK] Model '{args.model}' not eligible for data_class='{args.data_class}'"
+            )
+            print(f"  Eligible models: {', '.join(sorted(eligible_names))}")
+            sys.exit(1)
+        print(
+            f"[GOVERNANCE OK] Model '{args.model}' eligible for data_class='{args.data_class}'"
+        )
 
     cases = load_corpus(args.corpus)
     if args.categories:
@@ -229,9 +342,12 @@ def main():
                         args.base_url or "http://localhost:11434",
                         args.num_predict,
                         args.timeout,
+                        args.system,
                     )
                 elif args.backend == "anthropic":
                     result = call_anthropic(case["prompt"], args.model)
+                elif args.backend == "openrouter":
+                    result = call_openrouter(case["prompt"], args.model)
                 else:
                     result = call_openai(
                         case["prompt"], args.model, base_url=args.base_url, api=args.api

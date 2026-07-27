@@ -1,0 +1,94 @@
+name: OpenMythos CI/CD
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # === Gate 1: Lint + Syntax ===
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Syntax check
+        run: |
+          python3 -m py_compile scripts/model_registry.py
+          python3 -m py_compile scripts/governed_router.py
+          python3 -m py_compile scripts/gate_pipeline.py
+          python3 -m py_compile scripts/outcome_ledger.py
+          python3 -m py_compile scripts/evaluate.py
+      - name: Registry validation
+        run: python3 scripts/model_registry.py --validate
+
+  # === Gate 2: Unit Tests ===
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run demos (self-checks)
+        run: |
+          python3 scripts/model_registry.py --demo
+          python3 scripts/outcome_ledger.py --demo
+          python3 scripts/governed_router.py --demo
+          python3 scripts/gate_pipeline.py --demo
+
+  # === Gate 3: Security Scan ===
+  security:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - name: Secret scan
+        run: |
+          # Check for accidental secret commits
+          if grep -r "sk-\|api_key\|token" --include="*.py" scripts/ | grep -v "os.environ\|getenv\|placeholder\|example"; then
+            echo "WARNING: Potential secrets in code"
+            exit 1
+          fi
+      - name: Dependency audit
+        run: |
+          pip install safety
+          pip freeze | safety check || true
+
+  # === Gate 4: Build ===
+  build:
+    runs-on: ubuntu-latest
+    needs: [test, security]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t openmythos:${{ github.sha }} .
+      - name: Test container
+        run: |
+          docker run --rm openmythos:${{ github.sha }} python3 scripts/model_registry.py --validate
+
+  # === Deploy (main only) ===
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push image
+        run: |
+          docker tag openmythos:${{ github.sha }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest

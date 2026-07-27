@@ -1,0 +1,22 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: "openmythos"
+    static_configs:
+      - targets: ["openmythos-api:8080"]
+    metrics_path: /metrics
+
+  - job_name: "ollama"
+    static_configs:
+      - targets: ["ollama:11434"]
+    metrics_path: /metrics
+
+rule_files:
+  - "alert_rules.yml"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []

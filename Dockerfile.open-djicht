@@ -1,0 +1,17 @@
+FROM python:3.14-slim
+
+WORKDIR /app
+
+# Copy application files
+COPY cases/ ./cases/
+COPY analysis/openmythos-apex-runs/datasets/frontier-distill/ ./datasets/
+COPY scripts/open_djicht_api.py ./open_djicht_api.py
+
+# No pip dependencies needed (stdlib only)
+
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+  CMD curl -f http://localhost:8080/health || exit 1
+
+ENTRYPOINT ["python3", "open_djicht_api.py", "--host", "0.0.0.0", "--port", "8080"]

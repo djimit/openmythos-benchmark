@@ -1,0 +1,69 @@
+# Axolotl Config for OpenMythos R16 — 7B QLoRA Fine-Tuning
+# Platform: RunPod (1x NVIDIA A100 80GB or RTX A6000)
+# Base: Qwen2.5-Coder-7B-Instruct
+# Method: QLoRA 4-bit NF4
+
+base_model: Qwen/Qwen2.5-Coder-7B-Instruct
+model_type: AutoModelForCausalLM
+tokenizer_type: AutoTokenizer
+
+# Load in 4-bit for QLoRA
+load_in_4bit: true
+load_in_8bit: false
+bf16: true
+fp16: false
+
+# LoRA settings
+adapter: lora
+lora_r: 32
+lora_alpha: 64
+lora_dropout: 0.05
+lora_target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+
+# Dataset
+datasets:
+  - path: /workspace/data/r15-merged-sft.jsonl
+    type: sharegpt
+    conversation: chat
+
+# Training settings
+sequence_len: 2048
+sample_packing: true
+pad_to_sequence_len: true
+
+micro_batch_size: 4
+gradient_accumulation_steps: 8
+epochs: 5
+optimizer: adamw_torch
+lr_scheduler: cosine
+learning_rate: 0.0002
+warmup_steps: 20
+weight_decay: 0.0
+
+# Logging & save
+logging_steps: 10
+save_strategy: steps
+save_steps: 50
+output_dir: /workspace/output/r16-qlora-7b
+
+# Early stopping
+# early_stopping_patience: 3
+
+# Special tokens
+special_tokens:
+  bos_token: "<|im_start|>"
+  eos_token: "<|im_end|>"
+  unk_token: "<|unk|>"
+
+# Chat template
+chat_template: chatml
+
+# Seed
+seed: 42

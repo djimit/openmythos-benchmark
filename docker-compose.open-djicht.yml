@@ -1,0 +1,47 @@
+# OpenDjicht Governance Model — Production Deployment
+#
+# Usage:
+#   docker compose -f docker-compose.open-djicht.yml up -d
+#
+# Endpoints:
+#   http://localhost:8080/v1/chat/completions  (OpenAI-compatible)
+#   http://localhost:8080/v1/query             (Simplified)
+#   http://localhost:8080/health              (Health check)
+
+version: "3.8"
+
+services:
+  open-djicht:
+    build:
+      context: .
+      dockerfile: Dockerfile.open-djicht
+    image: open-djicht:governance-v1
+    container_name: open-djicht-governance
+    ports:
+      - "8080:8080"
+    environment:
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - OPENCODE_OPENROUTER_API_KEY=${OPENCODE_OPENROUTER_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - MODEL_PRIMARY=anthropic/claude-sonnet-4.6
+      - MODEL_FALLBACK=openai/gpt-4o-mini
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./cases:/app/cases:ro
+      - ./analysis:/app/analysis:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
+    labels:
+      - "open-djicht.service=governance"
+      - "open-djicht.version=1.0"

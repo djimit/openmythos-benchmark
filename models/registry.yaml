@@ -1,0 +1,484 @@
+# OpenMythos Model Capability Registry
+# Governance metadata for all models used in the benchmark.
+# This file is the single source of truth for model governance.
+#
+# Extend DEFAULT_REGISTRY in scripts/model_registry.py with cloud models
+# from hybrid_inference_router.py ROUTING_TABLE.
+
+models:
+  # === LOCAL / PRIVATE HOSTED (tier_1_trusted / tier_2_verified) ===
+
+  qwen2.5:14b-instruct-q4_K_M:
+    provider: ollama
+    hosting: private
+    license: apache-2.0
+    context_window: 32768
+    geopolitical_pool: tier_2_verified
+    benchmarks:
+      apex_r9_overall: 0.72
+      apex_r9_legal_reasoning: 0.68
+      apex_r9_citation: 0.81
+    allowed_data_classes:
+      - public
+      - internal
+      - confidential
+    forbidden_data_classes:
+      - restricted
+    cost_per_1m_tokens: 0.0
+    latency_p95_ms: 4500
+    known_failure_modes:
+      - hallucinated_citations
+      - language_mixing
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: apex-r9
+    tier: differentiated
+
+  qwen2.5-coder:7b:
+    provider: ollama
+    hosting: private
+    license: apache-2.0
+    context_window: 32768
+    geopolitical_pool: tier_2_verified
+    benchmarks:
+      apex_r9_overall: 0.61
+      apex_r9_code_generation: 0.74
+    allowed_data_classes:
+      - public
+      - internal
+    forbidden_data_classes:
+      - confidential
+      - restricted
+    cost_per_1m_tokens: 0.0
+    latency_p95_ms: 2200
+    known_failure_modes:
+      - incomplete_responses
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: apex-r9
+    tier: commodity
+
+  llama3.1:8b:
+    provider: ollama
+    hosting: private
+    license: llama3.1
+    context_window: 8192
+    geopolitical_pool: tier_1_trusted
+    benchmarks:
+      apex_r9_overall: 0.58
+      apex_r9_legal_reasoning: 0.55
+    allowed_data_classes:
+      - public
+      - internal
+    forbidden_data_classes:
+      - confidential
+      - restricted
+    cost_per_1m_tokens: 0.0
+    latency_p95_ms: 1800
+    known_failure_modes:
+      - citation_hallucination
+      - over_refusal
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: apex-r9
+    tier: commodity
+
+  qwen2.5:32b-instruct-q4_K_M:
+    provider: ollama
+    hosting: private
+    license: apache-2.0
+    context_window: 32768
+    geopolitical_pool: tier_2_verified
+    benchmarks:
+      apex_r9_overall: 0.82
+      apex_r9_judge_quality: 0.79
+    allowed_data_classes:
+      - public
+      - internal
+      - confidential
+    forbidden_data_classes:
+      - restricted
+    cost_per_1m_tokens: 0.0
+    latency_p95_ms: 8000
+    known_failure_modes:
+      - slow_on_short_tasks
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: apex-r9
+    tier: frontier
+
+  # === CLOUD: US CLOSED (tier_1_trusted) ===
+
+  openai/gpt-5.4:
+    provider: openrouter
+    hosting: hosted
+    license: proprietary
+    context_window: 1050000
+    geopolitical_pool: tier_1_trusted
+    benchmarks: {}
+    allowed_data_classes:
+      - public
+      - internal
+    forbidden_data_classes:
+      - confidential
+      - restricted
+    cost_per_1m_tokens: 0.02
+    latency_p95_ms: 3000
+    known_failure_modes: []
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: none
+    tier: frontier
+    notes: "Data residency: US. CLOUD Act applies. Not for confidential data."
+
+  anthropic/claude-opus-4.8:
+    provider: openrouter
+    hosting: hosted
+    license: proprietary
+    context_window: 1000000
+    geopolitical_pool: tier_1_trusted
+    benchmarks: {}
+    allowed_data_classes:
+      - public
+      - internal
+    forbidden_data_classes:
+      - confidential
+      - restricted
+    cost_per_1m_tokens: 0.03
+    latency_p95_ms: 3500
+    known_failure_modes: []
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: none
+    tier: frontier
+    notes: "Data residency: US. CLOUD Act applies. Not for confidential data."
+
+  anthropic/claude-sonnet-4.6:
+    provider: openrouter
+    hosting: hosted
+    license: proprietary
+    context_window: 1000000
+    geopolitical_pool: tier_1_trusted
+    benchmarks: {}
+    allowed_data_classes:
+      - public
+      - internal
+    forbidden_data_classes:
+      - confidential
+      - restricted
+    cost_per_1m_tokens: 0.02
+    latency_p95_ms: 2500
+    known_failure_modes: []
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: none
+    tier: frontier
+    notes: "Data residency: US. CLOUD Act applies."
+
+  openai/gpt-oss-120b:
+    provider: openrouter
+    hosting: hosted
+    license: proprietary
+    context_window: 131072
+    geopolitical_pool: tier_1_trusted
+    benchmarks: {}
+    allowed_data_classes:
+      - public
+      - internal
+    forbidden_data_classes:
+      - confidential
+      - restricted
+    cost_per_1m_tokens: 0.0
+    latency_p95_ms: 2000
+    known_failure_modes: []
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: none
+    tier: differentiated
+    notes: "Free tier. Data residency: US."
+
+  openai/gpt-5.1-codex:
+    provider: openrouter
+    hosting: hosted
+    license: proprietary
+    context_window: 400000
+    geopolitical_pool: tier_1_trusted
+    benchmarks: {}
+    allowed_data_classes:
+      - public
+      - internal
+    forbidden_data_classes:
+      - confidential
+      - restricted
+    cost_per_1m_tokens: 0.02
+    latency_p95_ms: 3000
+    known_failure_modes: []
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: none
+    tier: frontier
+    notes: "Specialized for code tasks."
+
+  openai/gpt-4o-mini:
+    provider: openai
+    hosting: hosted
+    license: proprietary
+    context_window: 128000
+    geopolitical_pool: tier_1_trusted
+    benchmarks: {}
+    allowed_data_classes:
+      - public
+      - internal
+    forbidden_data_classes:
+      - confidential
+      - restricted
+    cost_per_1m_tokens: 0.15
+    latency_p95_ms: 1500
+    known_failure_modes: []
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: none
+    tier: differentiated
+    notes: "Judge model. Low cost."
+
+  google/gemini-2.5-pro:
+    provider: google
+    hosting: hosted
+    license: proprietary
+    context_window: 1048576
+    geopolitical_pool: tier_1_trusted
+    benchmarks: {}
+    allowed_data_classes:
+      - public
+      - internal
+    forbidden_data_classes:
+      - confidential
+      - restricted
+    cost_per_1m_tokens: 1.25
+    latency_p95_ms: 2500
+    known_failure_modes: []
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: none
+    tier: frontier
+    notes: "Data residency: US. CLOUD Act applies."
+
+  google/gemini-2.5-flash-lite:
+    provider: openrouter
+    hosting: hosted
+    license: proprietary
+    context_window: 1048576
+    geopolitical_pool: tier_1_trusted
+    benchmarks: {}
+    allowed_data_classes:
+      - public
+      - internal
+    forbidden_data_classes:
+      - confidential
+      - restricted
+    cost_per_1m_tokens: 0.0
+    latency_p95_ms: 1200
+    known_failure_modes: []
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: none
+    tier: differentiated
+    notes: "Free tier. Data residency: US."
+
+  google/gemini-3.5-flash:
+    provider: openrouter
+    hosting: hosted
+    license: proprietary
+    context_window: 1048576
+    geopolitical_pool: tier_1_trusted
+    benchmarks: {}
+    allowed_data_classes:
+      - public
+      - internal
+    forbidden_data_classes:
+      - confidential
+      - restricted
+    cost_per_1m_tokens: 0.01
+    latency_p95_ms: 1500
+    known_failure_modes: []
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: none
+    tier: frontier
+
+  # === CLOUD: US/EU OPEN (tier_1_trusted) ===
+
+  moonshotai/kimi-k2-thinking:
+    provider: openrouter
+    hosting: hosted
+    license: proprietary
+    context_window: 262144
+    geopolitical_pool: tier_1_trusted
+    benchmarks: {}
+    allowed_data_classes:
+      - public
+      - internal
+    forbidden_data_classes:
+      - confidential
+      - restricted
+    cost_per_1m_tokens: 0.0
+    latency_p95_ms: 2000
+    known_failure_modes: []
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: none
+    tier: frontier
+    notes: "Free tier. Chinese company, US-hosted inference."
+
+  moonshotai/kimi-k2.7-code:
+    provider: openrouter
+    hosting: hosted
+    license: proprietary
+    context_window: 262144
+    geopolitical_pool: tier_1_trusted
+    benchmarks: {}
+    allowed_data_classes:
+      - public
+      - internal
+    forbidden_data_classes:
+      - confidential
+      - restricted
+    cost_per_1m_tokens: 0.02
+    latency_p95_ms: 2500
+    known_failure_modes: []
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: none
+    tier: frontier
+
+  # === CLOUD: CHINA OPEN (tier_2_verified) ===
+
+  qwen/qwen3-coder-480b:
+    provider: openrouter
+    hosting: hosted
+    license: apache-2.0
+    context_window: 262144
+    geopolitical_pool: tier_2_verified
+    benchmarks: {}
+    allowed_data_classes:
+      - public
+      - internal
+    forbidden_data_classes:
+      - confidential
+      - restricted
+    cost_per_1m_tokens: 0.0
+    latency_p95_ms: 2500
+    known_failure_modes: []
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: none
+    tier: differentiated
+    notes: "Chinese origin. Apache-2.0 license. Enhanced provenance recommended for confidential use."
+
+  qwen/qwen3-next-80b-a3b-thinking:
+    provider: openrouter
+    hosting: hosted
+    license: apache-2.0
+    context_window: 262144
+    geopolitical_pool: tier_2_verified
+    benchmarks: {}
+    allowed_data_classes:
+      - public
+      - internal
+    forbidden_data_classes:
+      - confidential
+      - restricted
+    cost_per_1m_tokens: 0.0
+    latency_p95_ms: 2000
+    known_failure_modes: []
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: none
+    tier: differentiated
+    notes: "Chinese origin. Apache-2.0 license."
+
+  qwen/qwen3.5-flash-02-23:
+    provider: openrouter
+    hosting: hosted
+    license: apache-2.0
+    context_window: 1000000
+    geopolitical_pool: tier_2_verified
+    benchmarks: {}
+    allowed_data_classes:
+      - public
+      - internal
+    forbidden_data_classes:
+      - confidential
+      - restricted
+    cost_per_1m_tokens: 0.0
+    latency_p95_ms: 1500
+    known_failure_modes: []
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: none
+    tier: differentiated
+    notes: "Chinese origin. Apache-2.0 license."
+
+  deepseek/deepseek-v4-flash:
+    provider: openrouter
+    hosting: hosted
+    license: mit
+    context_window: 1048576
+    geopolitical_pool: tier_2_verified
+    benchmarks: {}
+    allowed_data_classes:
+      - public
+      - internal
+    forbidden_data_classes:
+      - confidential
+      - restricted
+    cost_per_1m_tokens: 0.0
+    latency_p95_ms: 1800
+    known_failure_modes: []
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: none
+    tier: differentiated
+    notes: "Chinese origin. MIT license. Enhanced provenance recommended."
+
+  deepseek/deepseek-v4-pro:
+    provider: openrouter
+    hosting: hosted
+    license: mit
+    context_window: 1048576
+    geopolitical_pool: tier_2_verified
+    benchmarks: {}
+    allowed_data_classes:
+      - public
+      - internal
+    forbidden_data_classes:
+      - confidential
+      - restricted
+    cost_per_1m_tokens: 0.01
+    latency_p95_ms: 2500
+    known_failure_modes: []
+    security_status: scanned
+    lifecycle_state: production
+    last_evaluated: "2026-07-23"
+    eval_version: none
+    tier: frontier
+    notes: "Chinese origin. MIT license."
