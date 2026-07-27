@@ -7,13 +7,10 @@ import json
 def make_cell(cell_type, source, cell_id=None):
     """Create a properly formatted notebook cell."""
     if isinstance(source, str):
+        if source.endswith("\n"):
+            source = source[:-1]
         lines = source.split("\n")
-        source = []
-        for i, line in enumerate(lines):
-            if i < len(lines) - 1:
-                source.append(line + "\n")
-            elif line:  # last line, only add if not empty
-                source.append(line + "\n")
+        source = [line + "\n" for line in lines]
 
     cell = {
         "cell_type": cell_type,
