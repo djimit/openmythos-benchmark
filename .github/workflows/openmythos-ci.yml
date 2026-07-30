@@ -51,13 +51,10 @@ jobs:
     needs: lint
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Secret scan
-        run: |
-          # Check for accidental secret commits
-          if grep -r "sk-\|api_key\|token" --include="*.py" scripts/ | grep -v "os.environ\|getenv\|placeholder\|example"; then
-            echo "WARNING: Potential secrets in code"
-            exit 1
-          fi
+        uses: gitleaks/gitleaks-action@v2
       - name: Dependency audit
         run: |
           pip install safety
