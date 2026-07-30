@@ -70,7 +70,7 @@ jobs:
         run: docker build -t openmythos:${{ github.sha }} .
       - name: Test container
         run: |
-          docker run --rm openmythos:${{ github.sha }} python3 scripts/model_registry.py --validate
+          docker run --rm --entrypoint python3 openmythos:${{ github.sha }} scripts/model_registry.py --validate
 
   # === Deploy (main only) ===
   deploy:
