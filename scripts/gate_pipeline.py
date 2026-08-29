@@ -118,6 +118,17 @@ def run_promotion_gate(
             "reason": f"need at least 2 judged traces, found {len(judged)}",
         }
 
+    corpus_ids = {json.loads(line)["id"] for line in corpus.read_text().splitlines() if line.strip()}
+    for trace in judged:
+        rows = [json.loads(line) for line in trace.read_text().splitlines() if line.strip()]
+        trace_ids = [row.get("case_id") for row in rows]
+        if len(trace_ids) != len(set(trace_ids)) or set(trace_ids) != corpus_ids:
+            return False, {
+                "gate": "promotion",
+                "passed": False,
+                "reason": f"trace case coverage does not match certified corpus: {trace}",
+            }
+
     cmd = [
         sys.executable,
         str(SCRIPTS / "promotion_gate.py"),
