@@ -19,7 +19,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from validate import load_corpus, validate_manifest
+from validate import CORPUS_PATH, MANIFEST_PATH, load_corpus, validate_manifest
 
 REPO_ROOT = Path(__file__).parent.parent
 SCRIPTS = REPO_ROOT / "scripts"
@@ -157,9 +157,12 @@ def run_pipeline(
     results = {"gates": [], "overall": "pending", "stopped_at": None}
 
     if "promotion" in gates and corpus:
-        manifest_errors = validate_manifest(
-            load_corpus(corpus), corpus.parent / "manifest.json", require_certification=True, corpus_path=corpus
-        )
+        if corpus.resolve() != CORPUS_PATH.resolve():
+            manifest_errors = [f"  Promotion requires canonical corpus: {CORPUS_PATH}"]
+        else:
+            manifest_errors = validate_manifest(
+                load_corpus(CORPUS_PATH), MANIFEST_PATH, require_certification=True, corpus_path=CORPUS_PATH
+            )
         if manifest_errors:
             results["gates"].append({"gate": "corpus_manifest", "passed": False, "errors": manifest_errors})
             results["overall"] = "rejected"
