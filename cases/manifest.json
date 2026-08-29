@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "corpus_version": "1.0",
+  "case_count": 351,
+  "corpus_path": "cases/corpus.jsonl",
+  "sha256": "71ca62e742f71c2830f198c01dbcacdcf75487b9ef96e661d3e297d6608d41b9",
+  "certification_ready": false
+}

@@ -19,6 +19,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from validate import CORPUS_PATH, MANIFEST_PATH, load_corpus, validate_manifest
+
 REPO_ROOT = Path(__file__).parent.parent
 SCRIPTS = REPO_ROOT / "scripts"
 
@@ -100,14 +102,10 @@ def run_regression_gate(
 
 
 def run_promotion_gate(
-    tracedirs: list[Path], corpus: Path, min_spread: int = 2, pass_score: int = 4
+    traces: list[Path], corpus: Path, min_spread: int = 2, pass_score: int = 4
 ) -> tuple[bool, dict]:
     """Run promotion gate on judged traces from multiple models."""
-    # Find judged traces in each directory
-    judged = []
-    for d in tracedirs:
-        judged_files = list(d.glob("judged_*.jsonl"))
-        judged.extend(judged_files)
+    judged = list(traces)
 
     if len(judged) < 2:
         return False, {
@@ -115,6 +113,23 @@ def run_promotion_gate(
             "passed": False,
             "reason": f"need at least 2 judged traces, found {len(judged)}",
         }
+
+    corpus_rows = [json.loads(line) for line in corpus.read_text().splitlines() if line.strip()]
+    corpus_by_id = {row["id"]: row for row in corpus_rows}
+    for trace in judged:
+        rows = [json.loads(line) for line in trace.read_text().splitlines() if line.strip()]
+        trace_ids = [row.get("case_id") for row in rows]
+        content_matches = all(
+            row.get("prompt") == corpus_by_id.get(row.get("case_id"), {}).get("prompt")
+            and row.get("expected_behavior") == corpus_by_id.get(row.get("case_id"), {}).get("expected_behavior")
+            for row in rows
+        )
+        if len(trace_ids) != len(set(trace_ids)) or set(trace_ids) != set(corpus_by_id) or not content_matches:
+            return False, {
+                "gate": "promotion",
+                "passed": False,
+                "reason": f"trace case coverage or content does not match certified corpus: {trace}",
+            }
 
     cmd = [
         sys.executable,
@@ -154,29 +169,36 @@ def run_pipeline(
     thresholds = thresholds or {}
     results = {"gates": [], "overall": "pending", "stopped_at": None}
 
+    if "promotion" in gates and corpus:
+        if corpus.resolve() != CORPUS_PATH.resolve():
+            manifest_errors = [f"  Promotion requires canonical corpus: {CORPUS_PATH}"]
+        else:
+            manifest_errors = validate_manifest(
+                load_corpus(CORPUS_PATH), MANIFEST_PATH, require_certification=True, corpus_path=CORPUS_PATH
+            )
+        if manifest_errors:
+            results["gates"].append({"gate": "corpus_manifest", "passed": False, "errors": manifest_errors})
+            results["overall"] = "rejected"
+            results["stopped_at"] = "corpus_manifest"
+            return results
+
     for gate in gates:
         if gate == "operational":
             passed, detail = run_operational_gate(candidate_traces, thresholds)
         elif gate == "regression":
             if not baseline_traces:
-                results["gates"].append(
-                    {"gate": "regression", "passed": None, "skipped": True}
+                passed, detail = False, {"gate": "regression", "passed": False, "reason": "baseline traces required"}
+            else:
+                # Compare first baseline vs first candidate (simplified)
+                passed, detail = run_regression_gate(
+                    baseline_traces[0], candidate_traces[0]
                 )
-                continue
-            # Compare first baseline vs first candidate (simplified)
-            passed, detail = run_regression_gate(
-                baseline_traces[0], candidate_traces[0]
-            )
         elif gate == "promotion":
             if not corpus:
-                results["gates"].append(
-                    {"gate": "promotion", "passed": None, "skipped": True}
-                )
-                continue
-            all_traces = candidate_traces + (baseline_traces or [])
-            # Group by directory for promotion gate
-            dirs = list(set(t.parent for t in all_traces))
-            passed, detail = run_promotion_gate(dirs, corpus)
+                passed, detail = False, {"gate": "promotion", "passed": False, "reason": "corpus required"}
+            else:
+                all_traces = candidate_traces + (baseline_traces or [])
+                passed, detail = run_promotion_gate(all_traces, corpus)
         elif gate == "spec_compliance":
             if not specs_dir:
                 results["gates"].append(
@@ -197,7 +219,7 @@ def run_pipeline(
             results["stopped_at"] = gate
             return results
 
-    results["overall"] = "approved"
+    results["overall"] = "evidence_ready"
     return results
 
 
@@ -244,7 +266,7 @@ def demo() -> int:
             {"gate": "regression", "passed": True},
             {"gate": "promotion", "passed": True},
         ],
-        "overall": "approved",
+        "overall": "evidence_ready",
     }
     report = render_report(results)
     assert "PASS" in report
@@ -320,7 +342,7 @@ def main() -> int:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(report + "\n")
 
-    return 0 if results["overall"] == "approved" else 1
+    return 0 if results["overall"] == "evidence_ready" else 1
 
 
 if __name__ == "__main__":
