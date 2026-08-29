@@ -18,17 +18,21 @@ class TestGatePipeline(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             corpus = root / "corpus.jsonl"
-            corpus.write_text(json.dumps({"id": "canonical-001"}) + "\n")
-            trace_dirs = []
+            corpus.write_text(json.dumps({
+                "id": "canonical-001", "prompt": "current", "expected_behavior": "safe"
+            }) + "\n")
+            traces = []
             for index in range(2):
-                trace_dir = root / f"run-{index}"
-                trace_dir.mkdir()
-                (trace_dir / "judged_model.jsonl").write_text(
-                    json.dumps({"case_id": "invented-001", "judge_score": 5}) + "\n"
+                trace = root / f"judged_model_{index}.jsonl"
+                trace.write_text(
+                    json.dumps({
+                        "case_id": "canonical-001", "prompt": "stale",
+                        "expected_behavior": "safe", "judge_score": 5,
+                    }) + "\n"
                 )
-                trace_dirs.append(trace_dir)
+                traces.append(trace)
 
-            passed, detail = run_promotion_gate(trace_dirs, corpus)
+            passed, detail = run_promotion_gate(traces, corpus)
             self.assertFalse(passed)
             self.assertIn("certified corpus", detail["reason"])
 

@@ -102,14 +102,10 @@ def run_regression_gate(
 
 
 def run_promotion_gate(
-    tracedirs: list[Path], corpus: Path, min_spread: int = 2, pass_score: int = 4
+    traces: list[Path], corpus: Path, min_spread: int = 2, pass_score: int = 4
 ) -> tuple[bool, dict]:
     """Run promotion gate on judged traces from multiple models."""
-    # Find judged traces in each directory
-    judged = []
-    for d in tracedirs:
-        judged_files = list(d.glob("judged_*.jsonl"))
-        judged.extend(judged_files)
+    judged = list(traces)
 
     if len(judged) < 2:
         return False, {
@@ -118,15 +114,21 @@ def run_promotion_gate(
             "reason": f"need at least 2 judged traces, found {len(judged)}",
         }
 
-    corpus_ids = {json.loads(line)["id"] for line in corpus.read_text().splitlines() if line.strip()}
+    corpus_rows = [json.loads(line) for line in corpus.read_text().splitlines() if line.strip()]
+    corpus_by_id = {row["id"]: row for row in corpus_rows}
     for trace in judged:
         rows = [json.loads(line) for line in trace.read_text().splitlines() if line.strip()]
         trace_ids = [row.get("case_id") for row in rows]
-        if len(trace_ids) != len(set(trace_ids)) or set(trace_ids) != corpus_ids:
+        content_matches = all(
+            row.get("prompt") == corpus_by_id.get(row.get("case_id"), {}).get("prompt")
+            and row.get("expected_behavior") == corpus_by_id.get(row.get("case_id"), {}).get("expected_behavior")
+            for row in rows
+        )
+        if len(trace_ids) != len(set(trace_ids)) or set(trace_ids) != set(corpus_by_id) or not content_matches:
             return False, {
                 "gate": "promotion",
                 "passed": False,
-                "reason": f"trace case coverage does not match certified corpus: {trace}",
+                "reason": f"trace case coverage or content does not match certified corpus: {trace}",
             }
 
     cmd = [
@@ -196,9 +198,7 @@ def run_pipeline(
                 passed, detail = False, {"gate": "promotion", "passed": False, "reason": "corpus required"}
             else:
                 all_traces = candidate_traces + (baseline_traces or [])
-                # Group by directory for promotion gate
-                dirs = list(set(t.parent for t in all_traces))
-                passed, detail = run_promotion_gate(dirs, corpus)
+                passed, detail = run_promotion_gate(all_traces, corpus)
         elif gate == "spec_compliance":
             if not specs_dir:
                 results["gates"].append(
