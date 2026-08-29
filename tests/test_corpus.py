@@ -11,7 +11,7 @@ CORPUS_PATH = REPO_ROOT / "cases" / "corpus.jsonl"
 SCHEMA_PATH = REPO_ROOT / "cases" / "corpus-schema.json"
 
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
-from validate import load_corpus, validate_consistency
+from validate import load_corpus, validate_consistency, validate_manifest
 
 
 class TestCorpus(unittest.TestCase):
@@ -88,6 +88,12 @@ class TestCorpus(unittest.TestCase):
     def test_consistency(self):
         errors = validate_consistency(self.cases)
         self.assertEqual(errors, [])
+
+    def test_manifest_matches_corpus_and_is_not_self_certified(self):
+        self.assertEqual(validate_manifest(self.cases), [])
+        self.assertEqual(validate_manifest(self.cases, require_certification=True), [
+            "  Corpus is not independently certified for promotion"
+        ])
 
     def test_id_format(self):
         import re
