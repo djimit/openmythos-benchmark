@@ -6,12 +6,6 @@ import hashlib
 import sys
 from pathlib import Path
 
-try:
-    import jsonschema
-except ImportError:
-    print("ERROR: jsonschema not installed. pip install jsonschema")
-    sys.exit(1)
-
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
 SCHEMA_PATH = REPO_ROOT / "cases" / "corpus-schema.json"
@@ -40,6 +34,10 @@ def load_corpus(corpus_path: Path = CORPUS_PATH) -> list[dict]:
 
 
 def validate_schema(cases: list[dict], schema: dict) -> list[str]:
+    try:
+        import jsonschema
+    except ImportError:
+        return ["  jsonschema not installed; pip install jsonschema"]
     errors = []
     for i, case in enumerate(cases):
         try:
