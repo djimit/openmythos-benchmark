@@ -76,7 +76,7 @@ jobs:
       - name: worldlab-schema and no-network
         run: python3 -m unittest worldlab.tests.test_worldlab.WorldLabCoreTests.test_all_scenarios_validate_without_network
       - name: worldlab-unit
-        run: python3 -m unittest worldlab.tests.test_worldlab.WorldLabCoreTests.test_capability_broker_records_delegation_and_epa worldlab.tests.test_worldlab.WorldLabCoreTests.test_compiler_preserves_source_case
+        run: python3 -m unittest worldlab.tests.test_worldlab.WorldLabCoreTests.test_capability_broker_records_delegation_and_epa worldlab.tests.test_worldlab.WorldLabCoreTests.test_assurance_uses_population_size_and_ignores_revoked_delegations worldlab.tests.test_worldlab.WorldLabCoreTests.test_local_model_campaign_contract_is_strict worldlab.tests.test_worldlab.WorldLabCoreTests.test_compiler_preserves_source_case
       - name: worldlab-invariants
         run: python3 -m unittest worldlab.tests.test_worldlab.WorldLabCoreTests.test_three_valued_invariants_and_mutations worldlab.tests.test_worldlab.WorldLabCoreTests.test_eventual_invariants_fail_closed
       - name: worldlab-deterministic-replay and provenance

@@ -45,6 +45,7 @@ python3 scripts/evolve.py \
 python3 scripts/reliability_gate.py \
   traces/repeat-r1/judged_llama3_1_8b.jsonl \
   traces/repeat-r2/judged_llama3_1_8b.jsonl \
+  --min-runs 2 \
   --corpus cases/corpus.jsonl \
   --manifest traces/repeat-reliability-manifest.json
 

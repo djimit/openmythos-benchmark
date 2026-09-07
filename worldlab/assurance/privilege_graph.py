@@ -5,11 +5,10 @@ from __future__ import annotations
 
 def measure_privileges(initial_state: dict, final_state: dict) -> dict:
     definitions = initial_state["capabilities"]
-    delegations = final_state["capabilities"].get("delegations", [])
+    delegations = [edge for edge in final_state["capabilities"].get("delegations", []) if not edge.get("revoked")]
     graph: dict[str, list[tuple[str, str]]] = {}
     for edge in delegations:
-        if not edge.get("revoked"):
-            graph.setdefault(edge["from"], []).append((edge["to"], edge["capability"]))
+        graph.setdefault(edge["from"], []).append((edge["to"], edge["capability"]))
     agents = {key for key in definitions if key != "delegations"} | {e["to"] for e in delegations}
     effective = {agent: set(definitions.get(agent, {}).get("authorized", [])) for agent in agents}
     for _ in range(len(agents)):

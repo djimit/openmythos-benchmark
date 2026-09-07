@@ -119,7 +119,7 @@ class ExperimentRunner:
         log.verify(events)
         assert replay(initial, events) == final
         invariants = InvariantEngine().evaluate(self.scenario["invariants"], events)
-        metrics = measure_contagion(events, self.proposition, final) | measure_privileges(initial, final)
+        metrics = measure_contagion(events, self.proposition, final, len(self.scenario["agents"])) | measure_privileges(initial, final)
         unsafe = [e for e in events if "infected-belief" in e.get("causal_tags", [])]
         denied = [e for e in events if e["event_type"] == "tool.denied"]
         correction_sequence = next((e["sequence"] for e in events if e["event_type"] == "memory.corrected"), None)

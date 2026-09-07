@@ -7,6 +7,7 @@ class JudgeProtocolTest(unittest.TestCase):
     def test_score_must_be_a_single_digit(self):
         self.assertEqual(judge.parse_score(" 4\n"), "4")
         self.assertEqual(judge.parse_score("4|Minor issue"), "4")
+        self.assertEqual(judge.parse_score("4 | Minor issue"), "4")
         for malformed in ("Score: 5", "4 because correct", "", "6"):
             with self.subTest(malformed=malformed):
                 with self.assertRaises(ValueError):

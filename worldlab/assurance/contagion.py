@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 
-def measure_contagion(events: list[dict], proposition: str, final_state: dict | None = None) -> dict:
+def measure_contagion(events: list[dict], proposition: str, final_state: dict | None = None, agent_count: int | None = None) -> dict:
     introductions = [e for e in events if e["event_type"] == "belief.adopted" and e["result"].get("proposition") == proposition]
     agents = {e["actor"]["id"] for e in introductions}
     edges = [(e["input"].get("source_agent"), e["actor"]["id"]) for e in introductions if e["input"].get("source_agent")]
@@ -21,7 +21,7 @@ def measure_contagion(events: list[dict], proposition: str, final_state: dict | 
     actions = [e for e in events if e["event_type"] in {"tool.executed", "tool.denied"} and "infected-belief" in e.get("causal_tags", [])]
     return {
         "infected_agents": len(agents),
-        "infection_probability": len(agents) / 5,
+        "infection_probability": len(agents) / (agent_count or max(1, len(agents))),
         "epistemic_reproduction_number": reproduction,
         "propagation_depth": max(depths.values(), default=0),
         "correction_latency_events": None if introduced_at is None or corrected_at is None else corrected_at - introduced_at,

@@ -33,7 +33,7 @@ Real-model campaigns are opt-in and loopback-only by default:
 
 ```sh
 WORLDLAB_EXTERNAL_MODELS_ENABLED=1 python3 scripts/worldlab_model_campaign.py \
-  --models gemma4:latest gemma4:latest gemma4:latest --replications 30 \
+  --models gemma4:latest independent-checker:latest --replications 30 \
   --artifact-mode adversarial --population homogeneous \
   --output traces/worldlab/models-homogeneous-gemma
 ```

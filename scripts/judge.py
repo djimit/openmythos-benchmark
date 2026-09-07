@@ -126,7 +126,7 @@ def _response_text(result):
 
 
 def parse_score(text):
-    score = text.strip().split("|", 1)[0]
+    score = text.strip().split("|", 1)[0].strip()
     if score in {"1", "2", "3", "4", "5"}:
         return score
     raise ValueError("judge response must be exactly one score from 1 to 5")

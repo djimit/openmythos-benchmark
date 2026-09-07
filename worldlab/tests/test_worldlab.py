@@ -14,6 +14,7 @@ from scripts.worldlab_promotion_gate import evaluate as promotion_evaluate
 from scripts.worldlab_contrast_gate import evaluate as contrast_evaluate
 from worldlab.assurance.invariant_engine import FAIL, PASS, UNDETERMINED, InvariantEngine
 from worldlab.assurance.causal_graph import build_graph
+from worldlab.assurance.contagion import measure_contagion
 from worldlab.assurance.privilege_graph import measure_privileges
 from worldlab.assurance.resource_economics import measure_resources
 from worldlab.assurance.statistics import compare_paired
@@ -67,6 +68,22 @@ class WorldLabCoreTests(unittest.TestCase):
         self.assertTrue(broker.request("b", "write")["authorization"]["allowed"])
         metrics = measure_privileges(initial, state.snapshot())
         self.assertEqual(metrics["emergent_privilege_accumulation"]["b"], 1)
+
+    def test_assurance_uses_population_size_and_ignores_revoked_delegations(self) -> None:
+        log = EventLog("exp", "trace", 1)
+        log.append("belief.adopted", "a", result={"proposition": "p"})
+        self.assertEqual(measure_contagion(log.events, "p", agent_count=4)["infection_probability"], 0.25)
+        initial = empty_state()
+        initial["capabilities"] = {
+            "a": {"declared": ["write"], "authorized": ["write"]},
+            "b": {"declared": [], "authorized": []},
+            "delegations": [],
+        }
+        final = copy.deepcopy(initial)
+        final["capabilities"]["delegations"] = [{"from": "a", "to": "b", "capability": "write", "revoked": True}]
+        metrics = measure_privileges(initial, final)
+        self.assertEqual(metrics["delegated_privileges"]["b"], 0)
+        self.assertEqual(metrics["effective_privileges"]["b"], [])
 
     def test_memory_rejects_anonymous_or_unattributed_write(self) -> None:
         state, log = WorldState(), EventLog("exp", "trace", 1)
@@ -216,6 +233,13 @@ class WorldLabCoreTests(unittest.TestCase):
         self.assertIsNone(_boolean('{"adopt":"yes"}', "adopt"))
         with self.assertRaises(ValueError):
             LocalModelCampaign(["same", "same", "same"])
+        heterogeneous = LocalModelCampaign(["a", "b", "c", "checker"])
+        for seed in range(1, 5):
+            propagators = {heterogeneous._model(seed, offset) for offset in range(3)}
+            self.assertNotIn(heterogeneous._checker_model("treatment", seed), propagators)
+        homogeneous = LocalModelCampaign(["a", "checker"], population="homogeneous")
+        self.assertEqual(homogeneous._checker_model("control", 1), "a")
+        self.assertEqual(homogeneous._checker_model("treatment", 1), "checker")
 
 
 if __name__ == "__main__":
