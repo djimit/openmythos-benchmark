@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openmythos.org/worldlab/trajectory-v1.json",
+  "type": "object",
+  "required": ["schema", "experiment_id", "trajectory_id", "scenario_hash", "seed", "condition", "initial_state", "events", "final_state", "invariants", "metrics", "status"],
+  "properties": {
+    "schema": {"const": "openmythos.worldlab.trajectory.v1"}, "experiment_id": {"type": "string"}, "trajectory_id": {"type": "string"},
+    "scenario_hash": {"type": "string"}, "seed": {"type": "integer"}, "condition": {"type": "string"},
+    "initial_state": {"$ref": "world-state.schema.json"}, "events": {"type": "array", "items": {"$ref": "event.schema.json"}},
+    "final_state": {"$ref": "world-state.schema.json"}, "invariants": {"type": "array"}, "metrics": {"type": "object"},
+    "status": {"enum": ["DRAFT", "EXPLORATORY", "REPLICATED", "SUPPORTED", "FALSIFIED", "UNDETERMINED", "PROMOTION_CANDIDATE", "PROMOTED", "REJECTED"]},
+    "assurance_vector": {"type": "object"}, "causal_graph": {"type": "object"}, "reviewer_independence": {"type": "object"}
+  },
+  "additionalProperties": false
+}

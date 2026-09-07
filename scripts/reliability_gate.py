@@ -25,6 +25,17 @@ def load(path: Path) -> dict[str, dict]:
     return rows
 
 
+def require_one_rubric(traces: dict[str, dict[str, dict]]) -> str:
+    versions = {
+        row.get("judge_rubric_version")
+        for rows in traces.values()
+        for row in rows.values()
+    }
+    if None in versions or len(versions) != 1:
+        raise SystemExit(f"judged traces must use one explicit rubric version: {versions}")
+    return versions.pop()
+
+
 def mean(values: list[float]) -> float:
     values = list(values)
     return sum(values) / len(values) if values else 0.0
@@ -44,6 +55,7 @@ def reliability_rows(
         scores = {name: traces[name][case_id]["judge_score"] for name in traces}
         values = list(scores.values())
         passes = {name: score >= pass_score for name, score in scores.items()}
+        responses = {traces[name][case_id].get("response", "") for name in traces}
         pass_votes = sum(passes.values())
         score_range = max(values) - min(values)
         pass_disagreement = 0 < pass_votes < len(passes)
@@ -59,6 +71,7 @@ def reliability_rows(
                 "pass_votes": pass_votes,
                 "judge_count": len(passes),
                 "pass_disagreement": pass_disagreement,
+                "exact_response_agreement": len(responses) == 1,
                 "low_reliability": low_reliability,
             }
         )
@@ -120,6 +133,7 @@ def analyze(
         "runs": runs,
         "avg_range": avg_range,
         "pass_rate_range": pass_rate_range,
+        "exact_response_agreement_rate": sum(row["exact_response_agreement"] for row in cases) / len(cases),
         "unstable_cases": unstable,
         "cases": cases,
         "categories": category_rows(cases),
@@ -149,7 +163,20 @@ def git_sha() -> str:
         return "unknown"
 
 
-def write_manifest(path: Path, report: dict, trace_paths: list[Path], corpus: Path | None) -> None:
+def write_manifest(path: Path, report: dict, trace_paths: list[Path], corpus: Path | None, oracle: Path | None = None) -> None:
+    trace_evidence = []
+    for trace_path in trace_paths:
+        first = next((json.loads(line) for line in trace_path.read_text().splitlines() if line.strip()), {})
+        trace_evidence.append({
+            "path": str(trace_path),
+            "sha256": sha256(trace_path),
+            "model": first.get("model"),
+            "model_digest": first.get("model_digest"),
+            "judge_model": first.get("judge_model"),
+            "judge_digest": first.get("judge_digest"),
+            "judge_rubric_version": first.get("judge_rubric_version"),
+            "generation_options": first.get("generation_options"),
+        })
     payload = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "git_sha": git_sha(),
@@ -159,10 +186,19 @@ def write_manifest(path: Path, report: dict, trace_paths: list[Path], corpus: Pa
         "avg_range": report["avg_range"],
         "pass_rate_range": report["pass_rate_range"],
         "unstable_case_ids": [row["case_id"] for row in report["unstable_cases"]],
-        "traces": [{"path": str(p), "sha256": sha256(p)} for p in trace_paths],
+        "case_ids": [row["case_id"] for row in report["cases"]],
+        "exact_response_agreement_rate": report["exact_response_agreement_rate"],
+        "traces": trace_evidence,
     }
     if corpus:
         payload["corpus"] = {"path": str(corpus), "sha256": sha256(corpus)}
+    if oracle:
+        rows = [json.loads(line) for line in oracle.read_text().splitlines() if line.strip()]
+        payload["oracle"] = {
+            "path": str(oracle), "sha256": sha256(oracle),
+            "applicable_cases": len({row["case_id"] for row in rows if row.get("oracle_applicable")}),
+            "judge_disagreements": sum(bool(row.get("oracle_judge_disagreement")) for row in rows),
+        }
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2) + "\n")
 
@@ -186,6 +222,7 @@ def render_markdown(report: dict, limit: int) -> str:
         f"- cases compared: `{report['n_cases']}`",
         f"- avg score range: `{report['avg_range']:.3f}`",
         f"- pass-rate range: `{report['pass_rate_range']:.1f}%`",
+        f"- exact response agreement: `{report['exact_response_agreement_rate']:.1%}`",
         f"- low-reliability cases: `{len(report['unstable_cases'])}`",
         "",
         "## Runs",
@@ -248,6 +285,7 @@ def print_report(report: dict, limit: int) -> None:
         print(f"  {name:<32} avg={row['avg_score']:.3f} pass_rate={row['pass_rate']:.1f}%")
     print(f"\navg score range: {report['avg_range']:.3f}")
     print(f"pass-rate range: {report['pass_rate_range']:.1f}%")
+    print(f"exact response agreement: {report['exact_response_agreement_rate']:.1%}")
 
     if report["unstable_cases"]:
         print("\nunstable cases:")
@@ -299,21 +337,24 @@ def main() -> int:
     parser.add_argument("--max-avg-range", type=float, default=0.5)
     parser.add_argument("--max-pass-rate-range", type=float, default=15.0)
     parser.add_argument("--pass-score", type=int, default=4)
+    parser.add_argument("--min-runs", type=int, default=3)
     parser.add_argument("--limit", type=int, default=20)
     parser.add_argument("--manifest", type=Path)
     parser.add_argument("--json-output", type=Path)
     parser.add_argument("--case-output", type=Path)
     parser.add_argument("--markdown-output", type=Path)
     parser.add_argument("--corpus", type=Path)
+    parser.add_argument("--oracle", type=Path)
     parser.add_argument("--demo", action="store_true")
     args = parser.parse_args()
 
     if args.demo:
         return demo()
-    if len(args.traces) < 2:
-        parser.error("need at least 2 judged traces or --demo")
+    if len(args.traces) < args.min_runs:
+        parser.error(f"need at least {args.min_runs} judged traces or --demo")
 
     traces = {name.replace("judged_", ""): load(path) for name, path in zip(trace_names(args.traces), args.traces)}
+    require_one_rubric(traces)
     report = analyze(
         traces,
         args.max_case_range,
@@ -323,7 +364,7 @@ def main() -> int:
     )
     print_report(report, args.limit)
     if args.manifest:
-        write_manifest(args.manifest, report, args.traces, args.corpus)
+        write_manifest(args.manifest, report, args.traces, args.corpus, args.oracle)
     if args.json_output:
         write_json(args.json_output, report)
     if args.case_output:

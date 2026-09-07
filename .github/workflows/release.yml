@@ -32,3 +32,4 @@ jobs:
           files: |
             cases/corpus.jsonl
             cases/corpus-schema.json
+            cases/manifest.json

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Validate corpus.jsonl against corpus-schema.json plus consistency checks."""
 
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -15,6 +16,7 @@ SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
 SCHEMA_PATH = REPO_ROOT / "cases" / "corpus-schema.json"
 CORPUS_PATH = REPO_ROOT / "cases" / "corpus.jsonl"
+MANIFEST_PATH = REPO_ROOT / "cases" / "manifest.json"
 
 
 def load_schema() -> dict:
@@ -108,6 +110,23 @@ def validate_consistency(cases: list[dict]) -> list[str]:
     return errors
 
 
+def validate_manifest(cases: list[dict]) -> list[str]:
+    if not MANIFEST_PATH.exists():
+        return [f"  Missing corpus manifest: {MANIFEST_PATH}"]
+    manifest = json.loads(MANIFEST_PATH.read_text())
+    errors = []
+    digest = hashlib.sha256(CORPUS_PATH.read_bytes()).hexdigest()
+    if manifest.get("schema_version") != 1:
+        errors.append("  Manifest schema_version must be 1")
+    if manifest.get("case_count") != len(cases):
+        errors.append(f"  Manifest case_count {manifest.get('case_count')} != {len(cases)}")
+    if manifest.get("sha256") != digest:
+        errors.append(f"  Manifest sha256 {manifest.get('sha256')} != {digest}")
+    if manifest.get("corpus_path") != "cases/corpus.jsonl":
+        errors.append("  Manifest corpus_path must be cases/corpus.jsonl")
+    return errors
+
+
 def main():
     if not CORPUS_PATH.exists():
         print(f"ERROR: {CORPUS_PATH} not found")
@@ -121,7 +140,7 @@ def main():
     schema_errors = validate_schema(cases, schema)
     consistency_errors = validate_consistency(cases)
 
-    all_errors = schema_errors + consistency_errors
+    all_errors = schema_errors + consistency_errors + validate_manifest(cases)
 
     if all_errors:
         print(f"\nFAILED — {len(all_errors)} error(s):\n")

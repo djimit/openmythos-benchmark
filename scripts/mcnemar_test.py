@@ -8,6 +8,7 @@ Usage:
     python3 mcnemar_test.py --before before.jsonl --after after.jsonl
 """
 import argparse
+from collections import defaultdict
 import json
 import sys
 from math import comb
@@ -69,17 +70,58 @@ def main():
     parser.add_argument("--before", required=True, help="JSONL with baseline results (field: passed)")
     parser.add_argument("--after", required=True, help="JSONL with candidate results (field: passed)")
     parser.add_argument("--exact", action="store_true", default=True, help="Use exact binomial test")
+    parser.add_argument("--pass-score", type=float, default=4, help="Score considered passing")
+    parser.add_argument("--output", type=Path, help="Write JSON report")
     args = parser.parse_args()
 
     before_data = [json.loads(l) for l in Path(args.before).read_text().splitlines() if l.strip()]
     after_data = [json.loads(l) for l in Path(args.after).read_text().splitlines() if l.strip()]
 
-    before_passed = [d.get("passed", d.get("pass", False)) for d in before_data]
-    after_passed = [d.get("passed", d.get("pass", False)) for d in after_data]
+    before_by_id = {d["case_id"]: d for d in before_data}
+    after_by_id = {d["case_id"]: d for d in after_data}
+    if set(before_by_id) != set(after_by_id):
+        raise SystemExit("case_id mismatch between before and after")
+
+    def score(row):
+        return float(row.get("avg_score", row.get("judge_score", 5 if row.get("passed", row.get("pass", False)) else 1)))
+
+    def passed(row):
+        if "passed" in row:
+            return bool(row["passed"])
+        if "pass" in row:
+            return bool(row["pass"])
+        return score(row) >= args.pass_score
+
+    case_ids = sorted(before_by_id)
+    before_passed = [passed(before_by_id[case_id]) for case_id in case_ids]
+    after_passed = [passed(after_by_id[case_id]) for case_id in case_ids]
 
     result = mcnemar_test(before_passed, after_passed, args.exact)
+    categories = defaultdict(lambda: {"before": [], "after": []})
+    for case_id in case_ids:
+        category = before_by_id[case_id].get("category", "unknown")
+        categories[category]["before"].append(score(before_by_id[case_id]))
+        categories[category]["after"].append(score(after_by_id[case_id]))
+    result["category_scores"] = {
+        category: {
+            "before": sum(rows["before"]) / len(rows["before"]),
+            "after": sum(rows["after"]) / len(rows["after"]),
+        }
+        for category, rows in sorted(categories.items())
+    }
+    regressions = [
+        category for category, rates in result["category_scores"].items()
+        if rates["after"] < rates["before"]
+    ]
+    result["category_regressions"] = regressions
+    result["passed"] = not regressions and not (
+        result["p_value"] < 0.05 and result["table"]["b10"] > result["table"]["b01"]
+    )
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps(result, indent=2))
-    return 0 if result["p_value"] >= 0.05 or result["table"]["b01"] > result["table"]["b10"] else 1
+    return 0 if result["passed"] else 1
 
 
 if __name__ == "__main__":

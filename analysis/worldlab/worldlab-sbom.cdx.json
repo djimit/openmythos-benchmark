@@ -1,0 +1,64 @@
+{
+  "bomFormat": "CycloneDX",
+  "components": [
+    {
+      "name": "attrs",
+      "purl": "pkg:pypi/attrs@26.1.0",
+      "type": "library",
+      "version": "26.1.0"
+    },
+    {
+      "name": "jsonschema",
+      "purl": "pkg:pypi/jsonschema@4.26.0",
+      "type": "library",
+      "version": "4.26.0"
+    },
+    {
+      "name": "jsonschema-specifications",
+      "purl": "pkg:pypi/jsonschema-specifications@2025.9.1",
+      "type": "library",
+      "version": "2025.9.1"
+    },
+    {
+      "name": "referencing",
+      "purl": "pkg:pypi/referencing@0.37.0",
+      "type": "library",
+      "version": "0.37.0"
+    },
+    {
+      "name": "rpds-py",
+      "purl": "pkg:pypi/rpds-py@0.30.0",
+      "type": "library",
+      "version": "0.30.0"
+    },
+    {
+      "name": "typing-extensions",
+      "purl": "pkg:pypi/typing-extensions@4.15.0",
+      "type": "library",
+      "version": "4.15.0"
+    },
+    {
+      "name": "python:3.12-slim",
+      "purl": "pkg:oci/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea",
+      "type": "container",
+      "version": "sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea"
+    }
+  ],
+  "metadata": {
+    "component": {
+      "name": "openmythos-worldlab",
+      "type": "application",
+      "version": "0.1.0"
+    },
+    "properties": [
+      {
+        "name": "openmythos:dependency-lock-sha256",
+        "value": "f613b39d331a3370070c3a8e04e0ed98a58a7a20eaa6cd918fffc49aebd51892"
+      }
+    ],
+    "timestamp": "2026-09-07T07:17:04+00:00"
+  },
+  "serialNumber": "urn:uuid:f613b39d-331a-5370-a70c-3a8e04e0ed98",
+  "specVersion": "1.5",
+  "version": 1
+}

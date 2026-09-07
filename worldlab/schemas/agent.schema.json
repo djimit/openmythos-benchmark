@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openmythos.org/worldlab/agent-v1.json",
+  "type": "object",
+  "required": ["id", "model", "role", "initial_capabilities", "memory_scope", "authority", "objectives", "constraints", "budget"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "model": {
+      "type": "object",
+      "required": ["provider", "model", "version", "temperature", "system_prompt_hash", "toolset_hash", "context_hash"],
+      "properties": {
+        "provider": {"type": "string"}, "model": {"type": "string"}, "version": {"type": "string"},
+        "temperature": {"type": "number"}, "seed": {"type": ["integer", "null"]},
+        "system_prompt_hash": {"type": "string"}, "toolset_hash": {"type": "string"}, "context_hash": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "role": {"type": "string"},
+    "initial_capabilities": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "memory_scope": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "authority": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "objectives": {"type": "array", "items": {"type": "string"}},
+    "constraints": {"type": "array", "items": {"type": "string"}},
+    "budget": {"type": "object"}
+  },
+  "additionalProperties": false
+}

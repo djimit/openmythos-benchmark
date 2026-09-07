@@ -28,7 +28,7 @@
 ## Djimitflo Goal Batch
 
 - change: `openmythos-apex-r12-djimitflo-active-evolution`
-- ordered goals: `5`
+- ordered goals: `5` across `2` bounded waves
 - preview expectation: `writes=0`
 
 | order | goal | risk | target |

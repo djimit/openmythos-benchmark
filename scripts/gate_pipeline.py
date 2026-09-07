@@ -6,6 +6,7 @@ Runs in order:
 2. regression_gate.py — no degradation vs baseline
 3. promotion_gate.py — spread + discrimination quality
 4. spec_compliance_gate.py — DDD artifact completeness (Constitution v1.2.0 Article VI)
+5. worldlab_promotion_gate.py — targeted longitudinal regression or explicit NOT_APPLICABLE
 
 Usage:
     python3 gate_pipeline.py --baseline traces/baseline/ --candidate traces/candidate/ --corpus cases/corpus.jsonl
@@ -140,6 +141,20 @@ def run_promotion_gate(
     }
 
 
+def run_worldlab_gate(report: Path | None, relevance: str) -> tuple[bool, dict]:
+    """Require targeted trajectory evidence for relevant changes."""
+    cmd = [sys.executable, str(SCRIPTS / "worldlab_promotion_gate.py"), "--relevance", relevance]
+    if report:
+        cmd.extend(["--report", str(report)])
+    result = subprocess.run(cmd, capture_output=True, text=True, cwd=str(REPO_ROOT))
+    try:
+        detail = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        detail = {"gate": "worldlab", "state": "UNDETERMINED", "passed": False,
+                  "stderr": result.stderr[-500:]}
+    return result.returncode == 0, detail
+
+
 def run_pipeline(
     candidate_traces: list[Path],
     baseline_traces: list[Path] | None = None,
@@ -148,9 +163,11 @@ def run_pipeline(
     gates: list[str] | None = None,
     specs_dir: Path | None = None,
     change_type: str = "greenfield",
+    worldlab_report: Path | None = None,
+    worldlab_relevance: str = "unknown",
 ) -> dict:
     """Run full pipeline. Stops at first failure."""
-    gates = gates or ["operational", "regression", "promotion", "spec_compliance"]
+    gates = gates or ["operational", "regression", "promotion", "spec_compliance", "worldlab"]
     thresholds = thresholds or {}
     results = {"gates": [], "overall": "pending", "stopped_at": None}
 
@@ -187,6 +204,12 @@ def run_pipeline(
             passed, detail = run_spec_compliance_gate(
                 specs_dir, change_type, gate_thresholds
             )
+        elif gate == "worldlab":
+            if worldlab_relevance == "unknown":
+                passed, detail = False, {"gate": "worldlab", "state": "UNDETERMINED", "passed": False,
+                                         "reason": "declare relevant or not-applicable"}
+            else:
+                passed, detail = run_worldlab_gate(worldlab_report, worldlab_relevance)
         else:
             continue
 
@@ -232,7 +255,7 @@ def render_report(results: dict) -> str:
 def demo() -> int:
     """Self-check: verify pipeline structure without running actual gates."""
     # Verify all gate scripts exist
-    required = ["operational_gate.py", "regression_gate.py", "promotion_gate.py", "spec_compliance_gate.py"]
+    required = ["operational_gate.py", "regression_gate.py", "promotion_gate.py", "spec_compliance_gate.py", "worldlab_promotion_gate.py"]
     for script in required:
         path = SCRIPTS / script
         assert path.exists(), f"missing {script}"
@@ -279,7 +302,7 @@ def main() -> int:
     parser.add_argument(
         "--gates",
         nargs="+",
-        default=["operational", "regression", "promotion"],
+        default=["operational", "regression", "promotion", "worldlab"],
         help="Gates to run (in order)",
     )
     parser.add_argument("--max-error-rate", type=float, default=0.0)
@@ -288,6 +311,8 @@ def main() -> int:
     parser.add_argument("--output", type=Path, help="Write report to file")
     parser.add_argument("--specs-dir", type=Path, help="Project /specs directory for DDD compliance gate")
     parser.add_argument("--change-type", default="greenfield", choices=["greenfield", "brownfield", "external", "bugfix"])
+    parser.add_argument("--worldlab-report", type=Path, help="Targeted WorldLab report for relevant changes")
+    parser.add_argument("--worldlab-relevance", default="unknown", choices=["unknown", "relevant", "not-applicable"])
     parser.add_argument("--demo", action="store_true", help="Run self-check")
     args = parser.parse_args()
 
@@ -311,6 +336,8 @@ def main() -> int:
         gates=args.gates,
         specs_dir=args.specs_dir,
         change_type=args.change_type,
+        worldlab_report=args.worldlab_report,
+        worldlab_relevance=args.worldlab_relevance,
     )
 
     report = render_report(results)

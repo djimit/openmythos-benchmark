@@ -11,6 +11,8 @@ the governance, safety, and reasoning quality of large language models.
 # Validate the corpus
 python3 scripts/validate.py
 
+# The canonical identity and certification boundary live in cases/manifest.json.
+
 # Run against a local Ollama model
 python3 scripts/evaluate.py --model llama3.1:8b --backend ollama --base-url http://localhost:11434
 

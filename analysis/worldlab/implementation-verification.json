@@ -1,0 +1,68 @@
+{
+  "schema": "openmythos.worldlab.implementation-verification.v1",
+  "captured_at": "2026-09-07T09:15:27+02:00",
+  "scope": "local-worktrees-and-isolated-runtime",
+  "implementation": {
+    "worldlab_v0_1": "COMPLETE",
+    "worldlab_v0_2": "COMPLETE",
+    "worldlab_v1_information_criterion": "SUPPORTED_EXPLORATORY",
+    "production_promotion": false
+  },
+  "validation": {
+    "openmythos_unit": {"passed": 44, "failed": 0},
+    "worldlab_unit": {"passed": 20, "failed": 0},
+    "corpus": {"valid": 351, "invalid": 0},
+    "djimitflo_server": {"passed": 2018, "failed": 0, "skipped": 19},
+    "djimitflo_other_workspaces": {"passed": 146, "failed": 0},
+    "djimitflo_mutation": {"score_percent": 100, "killed": 11, "survived": 0, "no_coverage": 0},
+    "djimitflo_typecheck": "PASS",
+    "djimitflo_lint": "PASS",
+    "djimitflo_build": "PASS",
+    "dependency_audit": "PASS_NO_KNOWN_VULNERABILITIES",
+    "critical_contract_inventory": {"routes": 571, "mcp_tools": 56, "critical_unclassified": 0}
+  },
+  "experiments": {
+    "synthetic_control_treatment": "SUPPORTED",
+    "homogeneous_gemma": {
+      "status": "SUPPORTED",
+      "study_phase": "exploratory_post_falsification",
+      "replications_per_condition": 30,
+      "infection_control": 0.8,
+      "infection_treatment": 0.2,
+      "unsafe_requests_control": 1.0,
+      "unsafe_requests_treatment": 0.0,
+      "invalid_response_rate": 0.0,
+      "sha256": "43c53033f348a01d6d6646a91191c63fd07dd9a4fbdd6bf0089af9fa64d6e54c"
+    },
+    "heterogeneous_treatment": {
+      "status": "FALSIFIED",
+      "replications_per_condition": 30,
+      "sha256": "ebdbb0cb669c72c2fd889f5278c1489f9e34e890a381a2f2a6256e12105b3a61"
+    },
+    "pointwise_pass_trajectory_fail": {
+      "status": "SUPPORTED",
+      "sha256": "a50277ed2e75f76fafa6255e889612cdc2c8fa7e9718609565364f9acd8e86a6"
+    }
+  },
+  "isolated_djimitflo_handshake": {
+    "goal_preview": {"total": 1, "valid": 1, "blocked": 0, "writes": 0},
+    "goal_apply": {"created": 1, "workers_started": 0},
+    "outcomes_ingested": 30,
+    "outcome_assessment": "UNDETERMINED",
+    "outcome_signal": "SUPPORTED",
+    "causal_support": false,
+    "promotion_eligible": false,
+    "retest_decision": "UNDETERMINED",
+    "promoted": false,
+    "visible_interactions": 40
+  },
+  "fail_closed_blockers": [
+    "OpenMythos broad governance certification lacks repeatability and held-out discrimination evidence",
+    "no clean deployed DjimitFlo runtime identity was available at http://127.0.0.1:3001",
+    "the local-model finding remains exploratory until preregistered independent confirmation"
+  ],
+  "artifacts": {
+    "confirmatory_goal_batch_sha256": "0fc3121c020caf2c177d7e3091e68c1d6cd7db6fb6a1b1a6ec13f75ba1d6b2ea",
+    "sbom_sha256": "26603203e6b867e3b71bb99a2bf88ba462b3f564b192fcddd6a4ba8c79603de9"
+  }
+}

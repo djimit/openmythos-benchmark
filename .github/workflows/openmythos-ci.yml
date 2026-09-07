@@ -5,6 +5,8 @@ on:
     branches: [main, develop]
   pull_request:
     branches: [main]
+  schedule:
+    - cron: "17 2 * * *"
 
 env:
   REGISTRY: ghcr.io
@@ -26,6 +28,11 @@ jobs:
           python3 -m py_compile scripts/gate_pipeline.py
           python3 -m py_compile scripts/outcome_ledger.py
           python3 -m py_compile scripts/evaluate.py
+          python3 -m py_compile scripts/judge.py
+          python3 -m py_compile scripts/oracle_score.py
+          python3 -m py_compile scripts/reliability_gate.py
+          python3 -m py_compile scripts/mcnemar_test.py
+          python3 -m py_compile scripts/validate.py
       - name: Registry validation
         run: python3 scripts/model_registry.py --validate
 
@@ -38,12 +45,55 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - run: pip install -r requirements-lock.txt
+      - name: Unit and corpus validation
+        run: |
+          python3 -m unittest discover -s tests
+          python3 scripts/validate.py
       - name: Run demos (self-checks)
         run: |
           python3 scripts/model_registry.py --demo
           python3 scripts/outcome_ledger.py --demo
           python3 scripts/governed_router.py --demo
           python3 scripts/gate_pipeline.py --demo
+          python3 scripts/judge.py --demo
+          python3 scripts/oracle_score.py --demo
+          python3 scripts/reliability_gate.py --demo
+
+  worldlab:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-lock.txt
+      - name: worldlab-schema and no-network
+        run: python3 -m unittest worldlab.tests.test_worldlab.WorldLabCoreTests.test_all_scenarios_validate_without_network
+      - name: worldlab-unit
+        run: python3 -m unittest worldlab.tests.test_worldlab.WorldLabCoreTests.test_capability_broker_records_delegation_and_epa worldlab.tests.test_worldlab.WorldLabCoreTests.test_compiler_preserves_source_case
+      - name: worldlab-invariants
+        run: python3 -m unittest worldlab.tests.test_worldlab.WorldLabCoreTests.test_three_valued_invariants_and_mutations worldlab.tests.test_worldlab.WorldLabCoreTests.test_eventual_invariants_fail_closed
+      - name: worldlab-deterministic-replay and provenance
+        run: python3 -m unittest worldlab.tests.test_worldlab.WorldLabCoreTests.test_hash_chain_replay_is_exact_and_tamper_evident worldlab.tests.test_worldlab.WorldLabCoreTests.test_memory_rejects_anonymous_or_unattributed_write worldlab.tests.test_worldlab.WorldLabCoreTests.test_private_memory_and_messages_preserve_scope_and_provenance
+      - name: worldlab-scenario-validation
+        run: python3 -m unittest worldlab.tests.test_worldlab.WorldLabCoreTests.test_replicated_control_treatment_outputs_closed_goal_contract
+      - name: worldlab-supply-chain
+        run: python3 scripts/worldlab_sbom.py --output /tmp/worldlab-sbom.cdx.json
+
+  worldlab-nightly:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    needs: worldlab
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-lock.txt
+      - name: Synthetic 30x30 campaign
+        run: python3 scripts/worldlab_experiment.py --scenario worldlab/scenarios/injection/shared-memory-001.json --replications 30 --output traces/worldlab/nightly
 
   # === Gate 3: Security Scan ===
   security:
@@ -53,20 +103,19 @@ jobs:
       - uses: actions/checkout@v4
       - name: Secret scan
         run: |
-          # Check for accidental secret commits
-          if grep -r "sk-\|api_key\|token" --include="*.py" scripts/ | grep -v "os.environ\|getenv\|placeholder\|example"; then
+          if git grep -nP '(^|[^A-Za-z0-9])(?:sk-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----)' -- . | grep -v 'REPLACE_WITH'; then
             echo "WARNING: Potential secrets in code"
             exit 1
           fi
       - name: Dependency audit
         run: |
-          pip install safety
-          pip freeze | safety check || true
+          pip install pip-audit
+          pip-audit -r requirements-lock.txt
 
   # === Gate 4: Build ===
   build:
     runs-on: ubuntu-latest
-    needs: [test, security]
+    needs: [test, security, worldlab]
     steps:
       - uses: actions/checkout@v4
       - name: Build Docker image
@@ -79,7 +128,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
       - name: Login to GHCR
