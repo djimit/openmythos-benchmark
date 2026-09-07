@@ -1,7 +1,7 @@
 {
   "schema": "openmythos.worldlab.implementation-verification.v1",
-  "captured_at": "2026-09-07T09:15:27+02:00",
-  "scope": "local-worktrees-and-isolated-runtime",
+  "captured_at": "2026-09-07T20:03:38+02:00",
+  "scope": "clean-openmythos-candidate-and-live-djimitflo-runtime",
   "implementation": {
     "worldlab_v0_1": "COMPLETE",
     "worldlab_v0_2": "COMPLETE",
@@ -9,11 +9,11 @@
     "production_promotion": false
   },
   "validation": {
-    "openmythos_unit": {"passed": 44, "failed": 0},
+    "openmythos_unit": {"passed": 48, "failed": 0},
     "worldlab_unit": {"passed": 20, "failed": 0},
     "corpus": {"valid": 351, "invalid": 0},
-    "djimitflo_server": {"passed": 2018, "failed": 0, "skipped": 19},
-    "djimitflo_other_workspaces": {"passed": 146, "failed": 0},
+    "djimitflo_server": {"passed": 2025, "failed": 0, "skipped": 21},
+    "djimitflo_other_workspaces": {"passed": 150, "failed": 0},
     "djimitflo_mutation": {"score_percent": 100, "killed": 11, "survived": 0, "no_coverage": 0},
     "djimitflo_typecheck": "PASS",
     "djimitflo_lint": "PASS",
@@ -56,10 +56,36 @@
     "promoted": false,
     "visible_interactions": 40
   },
+  "canonical_candidate": {
+    "source_branch": "codex/worldlab-governance-lab-20260907",
+    "source_commit": "7e9f84ea2bcb90922cea305787fcac5f23767605",
+    "base_commit": "cdeed396db828c15d11d4d2c3ca165287f9e0504",
+    "working_tree_dirty": false,
+    "corpus_cases": 351,
+    "openmythos_tests_passed": 48,
+    "worldlab_tests_passed": 20,
+    "campaign": {
+      "replications_per_condition": 30,
+      "status": "SUPPORTED",
+      "pointwise_static_status": "PASS",
+      "trajectory_failure_observed": true,
+      "report_sha256": "9b800f66d81d72bcf6ce0c9837c68e6d69c7b4fd7cfe1fa662425dccf3bbb256",
+      "contrast_sha256": "c64d219b523835a1db0d3061a6c234f31236676e407504de11c2be129dfcae2d",
+      "manifest_sha256": "60517c2079ada47edbd22ae5587124489cc4207a61c13755ac29e73e6fd2db9c"
+    },
+    "djimitflo_runtime": {
+      "commit": "2847861cd233eb2c077fa0ef42c2906a3b77aea2",
+      "image_id": "sha256:e03ae19d99b0f717fd95225343e3ca2f94615cb984be3fcd3fe5a5c381c218e0",
+      "internal_health": "PASS",
+      "external_health": "PASS",
+      "promotion_performed": false
+    }
+  },
   "fail_closed_blockers": [
     "OpenMythos broad governance certification lacks repeatability and held-out discrimination evidence",
-    "no clean deployed DjimitFlo runtime identity was available at http://127.0.0.1:3001",
-    "the local-model finding remains exploratory until preregistered independent confirmation"
+    "the local-model finding remains exploratory until preregistered independent confirmation",
+    "DjimitFlo pull request 183 still requires independent human review",
+    "live research worker execution requires an isolated Git source and worktree mount"
   ],
   "artifacts": {
     "confirmatory_goal_batch_sha256": "0fc3121c020caf2c177d7e3091e68c1d6cd7db6fb6a1b1a6ec13f75ba1d6b2ea",
