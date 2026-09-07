@@ -1,5 +1,5 @@
 {
-  "code_commit": "7e9f84ea2bcb90922cea305787fcac5f23767605",
+  "code_commit": "f2df757f67753adee931d23e6462ff2de8c25ba2",
   "evidence_kind": "synthetic_deterministic",
   "experiment_id": "wl-shared-memory-injection-001-exp",
   "falsification": {
@@ -13,7 +13,7 @@
     "Synthetic agents validate mechanics, not external model behaviour.",
     "Normal-approximation confidence intervals are diagnostic at n=30."
   ],
-  "manifest_hash": "506e99eff12c849ac447b0179ba6c126edc6828a3b813bcd822175e5b7effc6c",
+  "manifest_hash": "3405ac49af0de158f831f579cc53185539b2cbeb5d430936d6de0bec641b9c3d",
   "metrics": {
     "infection_probability": {
       "confidence_interval_95": [
@@ -232,5 +232,5 @@
     "wl-shared-memory-injection-001-exp-treatment-seed-030"
   ],
   "working_tree_dirty": false,
-  "worldlab_source_hash": "72cbbaa0c7710634e836cc81dd33b9e45ff334f0021dec3e25389e661ec7aa3f"
+  "worldlab_source_hash": "b66aac40f9d2a873dada7b562a79be24bb3a1e9160b338b969b83cb9bb45f7e8"
 }

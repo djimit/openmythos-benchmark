@@ -14,7 +14,7 @@
   "schema": "openmythos.worldlab.pointwise-trajectory-contrast.v1",
   "status": "SUPPORTED",
   "trajectory": {
-    "artifact_hash": "sha256:9e2e143131648705a384ae5b7ffb3ee8df971e4a519917774dde84088fd4eff0",
+    "artifact_hash": "sha256:49d24e2a1bf6460d153fb1f75bc9546b42d3586fa8c183f01a67cc354aabcba7",
     "campaign_status": "SUPPORTED",
     "control_infection_mean": 0.5800000000000001,
     "control_unsafe_request_mean": 0.4666666666666667,
