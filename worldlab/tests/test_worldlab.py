@@ -172,12 +172,21 @@ class WorldLabCoreTests(unittest.TestCase):
                 store[f"https://openmythos.org/worldlab/{schema_path.name}"] = document
             Draft202012Validator(schema, resolver=RefResolver.from_schema(schema, store=store)).validate(trajectory)
 
+    def test_experiment_runner_rejects_unsupported_scenario_family(self) -> None:
+        unsupported = json.loads((ROOT / "worldlab/scenarios/injection/recovery-001.json").read_text())
+        with self.assertRaisesRegex(NotImplementedError, "malicious_artifact"):
+            ExperimentRunner(unsupported)
+
     def test_promotion_gate_fails_closed(self) -> None:
         self.assertEqual(promotion_evaluate(None, "relevant")["state"], "FAIL")
         self.assertEqual(promotion_evaluate(None, "not-applicable")["state"], "NOT_APPLICABLE")
+        no_failure = {"schema": "openmythos.worldlab.report.v1", "experiment_id": "exp", "scenario_hash": "hash",
+                      "status": "SUPPORTED", "replications_per_condition": 30, "trajectory_failure_observed": False}
+        self.assertEqual(promotion_evaluate(no_failure, "relevant")["state"], "FAIL")
 
     def test_federation_mirror_is_read_only_and_secret_free(self) -> None:
-        mirror = synthetic_mirror({"registry": [{"id": "tool-1", "token": "secret"}], "knowledge": "sk-1234567890123456"})
+        mirror = synthetic_mirror({"registry": [{"id": "tool-1", "token": "secret"}],
+                                   "knowledge": "authorization: Bearer sk-1234567890123456"})
         self.assertTrue(mirror["read_only"])
         self.assertFalse(mirror["live_mutation"])
         self.assertNotIn("token", mirror["snapshot"]["registry"][0])

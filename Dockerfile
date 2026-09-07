@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Python deps (minimal — no ML framework needed for orchestration)
-COPY requirements.txt* ./
+COPY requirements.txt requirements-lock.txt ./
 RUN if [ -f requirements-lock.txt ]; then pip install --no-cache-dir -r requirements-lock.txt; else pip install --no-cache-dir -r requirements.txt; fi
 
 # Application

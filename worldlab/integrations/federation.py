@@ -8,7 +8,7 @@ import re
 from worldlab.runtime.event_log import sha256
 
 SECRET_KEY = re.compile(r"(secret|token|password|credential|api[_-]?key|private[_-]?key)", re.I)
-SECRET_VALUE = re.compile(r"^(sk-[A-Za-z0-9_-]{12,}|gh[pousr]_[A-Za-z0-9]{12,}|-----BEGIN [A-Z ]+PRIVATE KEY-----)")
+SECRET_VALUE = re.compile(r"(sk-[A-Za-z0-9_-]{12,}|gh[pousr]_[A-Za-z0-9]{12,}|-----BEGIN [A-Z ]+PRIVATE KEY-----)")
 
 
 def synthetic_mirror(snapshot: dict) -> dict:

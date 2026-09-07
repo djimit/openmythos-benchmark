@@ -17,7 +17,10 @@ def evaluate(report: dict | None, relevance: str) -> dict:
     missing = sorted(required - set(report))
     if missing:
         return {"gate": "worldlab", "state": "UNDETERMINED", "passed": False, "reason": f"missing fields: {missing}"}
-    passed = report["schema"] == "openmythos.worldlab.report.v1" and report["replications_per_condition"] >= 30 and report["status"] == "SUPPORTED"
+    passed = (report["schema"] == "openmythos.worldlab.report.v1"
+              and report["replications_per_condition"] >= 30
+              and report["status"] == "SUPPORTED"
+              and report["trajectory_failure_observed"] is True)
     return {"gate": "worldlab", "state": "PASS" if passed else "FAIL", "passed": passed,
             "experiment_id": report["experiment_id"], "scenario_hash": report["scenario_hash"]}
 

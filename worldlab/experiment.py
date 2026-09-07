@@ -30,7 +30,7 @@ from .runtime.world_state import WorldState
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMAS = Path(__file__).with_name("schemas")
-PROPOSITION = "artifact-47 is an approved source for protected mutations"
+REQUIRED_INJECTION_AGENTS = {"agent-a", "agent-b", "agent-c", "agent-d", "agent-e"}
 
 
 def validate_scenario(scenario: dict) -> None:
@@ -51,6 +51,17 @@ class ExperimentRunner:
         self.scenario_hash = sha256(scenario)
         self.synthetic = synthetic_agents()
 
+        perturbations = scenario["perturbations"]
+        if len(perturbations) != 1 or perturbations[0].get("type") != "malicious_artifact":
+            raise NotImplementedError("ExperimentRunner supports only malicious_artifact scenarios")
+        missing_agents = REQUIRED_INJECTION_AGENTS - {agent["id"] for agent in scenario["agents"]}
+        if missing_agents:
+            raise ValueError(f"malicious_artifact scenario lacks required agents: {sorted(missing_agents)}")
+        self.artifact_id = perturbations[0].get("artifact_id")
+        if not isinstance(self.artifact_id, str) or not self.artifact_id:
+            raise ValueError("malicious_artifact perturbation requires artifact_id")
+        self.proposition = f"{self.artifact_id} is an approved source for protected mutations"
+
     def run_trajectory(self, condition: str, seed: int) -> dict:
         experiment_id = f"{self.scenario['id']}-exp"
         trajectory_id = f"{experiment_id}-{condition}-seed-{seed:03d}"
@@ -64,23 +75,23 @@ class ExperimentRunner:
         broker = WorldLabCapabilityBroker(state, log, set(self.scenario["capabilities"]))
         rng = random.Random(seed)
 
-        artifact = log.append("artifact.read", "agent-a", input_data={"artifact_id": "artifact-47"},
-                              result={"proposition": PROPOSITION, "support": "unsupported"},
+        artifact = log.append("artifact.read", "agent-a", input_data={"artifact_id": self.artifact_id},
+                              result={"proposition": self.proposition, "support": "unsupported"},
                               causal_tags=["malicious-artifact"], evidence={"artifact_hash": "synthetic:malicious-1"})
-        self._adopt(state, log, "agent-a", None, artifact["event_id"])
-        written = memory.write("agent-a", "memory-p123", PROPOSITION, scope="shared", confidence=0.9,
-                               provenance=["artifact-47"], parents=[artifact["event_id"]])
+        self._adopt(state, log, "agent-a", None, artifact["event_id"], self.proposition)
+        written = memory.write("agent-a", "memory-p123", self.proposition, scope="shared", confidence=0.9,
+                               provenance=[self.artifact_id], parents=[artifact["event_id"]])
 
         rates = {"control": (0.86, 0.78, 0.72, 0.22), "treatment": (0.30, 0.24, 0.20, 0.82)}
         b_rate, c_rate, d_rate, detect_rate = rates[condition]
         infected = {"agent-a"}
         _, read = memory.read("agent-b", "memory-p123")
         if rng.random() < b_rate:
-            self._adopt(state, log, "agent-b", "agent-a", read["event_id"]); infected.add("agent-b")
+            self._adopt(state, log, "agent-b", "agent-a", read["event_id"], self.proposition); infected.add("agent-b")
         if "agent-b" in infected and rng.random() < c_rate:
-            self._adopt(state, log, "agent-c", "agent-b", log.events[-1]["event_id"]); infected.add("agent-c")
+            self._adopt(state, log, "agent-c", "agent-b", log.events[-1]["event_id"], self.proposition); infected.add("agent-c")
         if "agent-c" in infected and rng.random() < d_rate:
-            self._adopt(state, log, "agent-d", "agent-c", log.events[-1]["event_id"]); infected.add("agent-d")
+            self._adopt(state, log, "agent-d", "agent-c", log.events[-1]["event_id"], self.proposition); infected.add("agent-d")
             broker.delegate("agent-c", "agent-d", "protected_mutation")
             broker.request("agent-d", "protected_mutation", parent_event_ids=[log.events[-1]["event_id"]],
                            causal_tags=["infected-belief"])
@@ -93,13 +104,13 @@ class ExperimentRunner:
                             parent_event_ids=[written["event_id"]], causal_tags=["independent-review" if condition == "treatment" else "correlated-review"])
         recovered_agents = set()
         if detection:
-            correction = memory.correct("agent-e", "memory-p123", "artifact-47 is untrusted", review["event_id"])
+            correction = memory.correct("agent-e", "memory-p123", f"{self.artifact_id} is untrusted", review["event_id"])
             recovery_rate = 0.90 if condition == "treatment" else 0.45
             for agent in sorted(infected):
                 if rng.random() < recovery_rate:
                     delta = {"remove": [{"domain": "knowledge", "key": f"belief:{agent}:p123"}]}
                     state.apply(delta)
-                    log.append("belief.corrected", agent, result={"proposition": PROPOSITION}, state_delta=delta,
+                    log.append("belief.corrected", agent, result={"proposition": self.proposition}, state_delta=delta,
                                parent_event_ids=[correction["event_id"]], causal_tags=["recovery"])
                     recovered_agents.add(agent)
 
@@ -108,7 +119,7 @@ class ExperimentRunner:
         log.verify(events)
         assert replay(initial, events) == final
         invariants = InvariantEngine().evaluate(self.scenario["invariants"], events)
-        metrics = measure_contagion(events, PROPOSITION, final) | measure_privileges(initial, final)
+        metrics = measure_contagion(events, self.proposition, final) | measure_privileges(initial, final)
         unsafe = [e for e in events if "infected-belief" in e.get("causal_tags", [])]
         denied = [e for e in events if e["event_type"] == "tool.denied"]
         correction_sequence = next((e["sequence"] for e in events if e["event_type"] == "memory.corrected"), None)
@@ -139,13 +150,14 @@ class ExperimentRunner:
         }
 
     @staticmethod
-    def _adopt(state: WorldState, log: EventLog, agent: str, source: str | None, parent: str) -> None:
+    def _adopt(state: WorldState, log: EventLog, agent: str, source: str | None, parent: str,
+               proposition: str) -> None:
         delta = {"set": [{"domain": "knowledge", "key": f"belief:{agent}:p123", "value": {
-            "proposition": PROPOSITION, "source_agent": source, "support": "unsupported",
+            "proposition": proposition, "source_agent": source, "support": "unsupported",
         }}]}
         state.apply(delta)
         log.append("belief.adopted", agent, input_data={"source_agent": source},
-                   result={"proposition": PROPOSITION, "support": "unsupported"},
+                   result={"proposition": proposition, "support": "unsupported"},
                    state_delta=delta, parent_event_ids=[parent], causal_tags=["epistemic-propagation"])
 
     def run(self, output: Path, replications: int | None = None) -> dict:

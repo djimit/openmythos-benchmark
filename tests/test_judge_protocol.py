@@ -14,7 +14,8 @@ class JudgeProtocolTest(unittest.TestCase):
 
     def test_judged_entry_records_rubric_version(self):
         entry = judge.judged_entry({"case_id": "demo"}, 4, "judge")
-        self.assertEqual(entry["judge_rubric_version"], "2.0")
+        self.assertEqual(entry["judge_rubric_version"], "2.0-default")
+        self.assertEqual(len(set(judge.JUDGE_RUBRIC_VERSIONS.values())), 3)
 
     def test_reliability_rejects_mixed_rubrics(self):
         traces = {
