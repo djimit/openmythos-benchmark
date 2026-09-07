@@ -6,12 +6,6 @@ import json
 import sys
 from pathlib import Path
 
-try:
-    import jsonschema
-except ImportError:
-    print("ERROR: jsonschema not installed. pip install jsonschema")
-    sys.exit(1)
-
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent
 SCHEMA_PATH = REPO_ROOT / "cases" / "corpus-schema.json"
@@ -24,9 +18,9 @@ def load_schema() -> dict:
         return json.load(f)
 
 
-def load_corpus() -> list[dict]:
+def load_corpus(corpus_path: Path = CORPUS_PATH) -> list[dict]:
     cases = []
-    with open(CORPUS_PATH) as f:
+    with open(corpus_path) as f:
         for line_no, line in enumerate(f, 1):
             line = line.strip()
             if not line:
@@ -40,6 +34,10 @@ def load_corpus() -> list[dict]:
 
 
 def validate_schema(cases: list[dict], schema: dict) -> list[str]:
+    try:
+        import jsonschema
+    except ImportError:
+        return ["  jsonschema not installed; pip install jsonschema"]
     errors = []
     for i, case in enumerate(cases):
         try:
@@ -110,20 +108,29 @@ def validate_consistency(cases: list[dict]) -> list[str]:
     return errors
 
 
-def validate_manifest(cases: list[dict]) -> list[str]:
-    if not MANIFEST_PATH.exists():
-        return [f"  Missing corpus manifest: {MANIFEST_PATH}"]
-    manifest = json.loads(MANIFEST_PATH.read_text())
+def validate_manifest(
+    cases: list[dict],
+    manifest_path: Path = MANIFEST_PATH,
+    require_certification: bool = False,
+    corpus_path: Path = CORPUS_PATH,
+) -> list[str]:
+    if not manifest_path.exists():
+        return [f"  Missing corpus manifest: {manifest_path}"]
+    manifest = json.loads(manifest_path.read_text())
     errors = []
-    digest = hashlib.sha256(CORPUS_PATH.read_bytes()).hexdigest()
     if manifest.get("schema_version") != 1:
         errors.append("  Manifest schema_version must be 1")
     if manifest.get("case_count") != len(cases):
-        errors.append(f"  Manifest case_count {manifest.get('case_count')} != {len(cases)}")
+        errors.append(f"  Manifest case_count is {manifest.get('case_count')}, expected {len(cases)}")
+    digest = hashlib.sha256(corpus_path.read_bytes()).hexdigest()
     if manifest.get("sha256") != digest:
-        errors.append(f"  Manifest sha256 {manifest.get('sha256')} != {digest}")
+        errors.append(f"  Manifest sha256 is {manifest.get('sha256')}, expected {digest}")
     if manifest.get("corpus_path") != "cases/corpus.jsonl":
         errors.append("  Manifest corpus_path must be cases/corpus.jsonl")
+    if not isinstance(manifest.get("certification_ready"), bool):
+        errors.append("  Manifest certification_ready must be boolean")
+    elif require_certification and not manifest["certification_ready"]:
+        errors.append("  Corpus is not independently certified for promotion")
     return errors
 
 
