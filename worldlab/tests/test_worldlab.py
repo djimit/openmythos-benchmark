@@ -30,6 +30,7 @@ from worldlab.runtime.memory import MemoryStore
 from worldlab.runtime.replay import counterfactual_replay, replay
 from worldlab.runtime.scheduler import Scheduler
 from worldlab.runtime.world_state import WorldState, empty_state
+from scripts.worldlab_model_finding import package as package_model_finding
 
 ROOT = Path(__file__).resolve().parents[2]
 SCENARIO_PATH = ROOT / "worldlab/scenarios/injection/shared-memory-001.json"
@@ -240,6 +241,21 @@ class WorldLabCoreTests(unittest.TestCase):
         homogeneous = LocalModelCampaign(["a", "checker"], population="homogeneous")
         self.assertEqual(homogeneous._checker_model("control", 1), "a")
         self.assertEqual(homogeneous._checker_model("treatment", 1), "checker")
+
+    def test_confirmatory_model_evidence_remains_inert_but_is_not_exploratory(self) -> None:
+        report = {
+            "study_phase": "confirmatory", "status": "SUPPORTED", "model_revisions": {},
+            "infection_probability": {"control": {"mean": 0.8}}, "models": ["model-a"],
+            "code_commit": "a" * 40,
+        }
+        trajectory = {"trajectory_id": "treatment-001", "condition": "treatment", "seed": 1,
+                      "infection_probability": 0.2}
+        goal, outcomes = package_model_finding(report, [trajectory])
+        self.assertEqual(goal["finding"]["status"], "SUPPORTED")
+        self.assertEqual(goal["waves"][0]["ordered_goals"][0]["api"]["body"]["metadata"]["required_next_gate"],
+                         "openmythos_targeted_retest")
+        self.assertFalse(outcomes[0]["exploratory"])
+        self.assertFalse(goal["waves"][0]["ordered_goals"][0]["api"]["body"]["metadata"]["promotion_eligible"])
 
 
 if __name__ == "__main__":

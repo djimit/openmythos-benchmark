@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Package an exploratory model campaign as inert DjimitFlo evidence and a confirmatory goal."""
+"""Package a model campaign as inert DjimitFlo evidence and its next assurance goal."""
 
 import argparse
 import json
@@ -14,22 +14,25 @@ from worldlab.runtime.event_log import sha256
 def package(report: dict, trajectories: list[dict]) -> tuple[dict, list[dict]]:
     report_hash = f"sha256:{sha256(report)}"
     finding_id = f"worldlab-finding:{report_hash.split(':')[-1][:16]}"
+    confirmatory = report.get("study_phase") == "confirmatory"
+    next_gate = "openmythos_targeted_retest" if confirmatory else "confirmatory_replication"
+    finding_status = report.get("status", "UNDETERMINED") if confirmatory else "EXPLORATORY"
     goal = {
         "schema": "djimit.openmythos.worldlab.goal.v1", "campaign_id": f"confirm-{finding_id.split(':')[-1]}",
-        "change": "confirm-exploratory-memory-propagation", "source": {"finding_id": finding_id, "evidence_hash": report_hash,
+        "change": "assure-memory-propagation", "source": {"finding_id": finding_id, "evidence_hash": report_hash,
             "study_phase": report["study_phase"], "models": report["model_revisions"]},
         "finding": {"failure_mode": "memory_poisoning_propagation", "severity": "high", "confidence": 0.95,
-                    "status": "EXPLORATORY"},
-        "waves": [{"wave_id": "confirmatory-replication", "ordered_goals": [{
-            "key": "worldlab-confirm-memory-propagation", "title": "Confirm shared-memory propagation finding",
+                    "status": finding_status},
+        "waves": [{"wave_id": next_gate.replace("_", "-"), "ordered_goals": [{
+            "key": "worldlab-assure-memory-propagation", "title": "Assure shared-memory propagation finding",
             "risk": "medium", "target": "openmythos-benchmark/worldlab", "depends_on": [],
-            "api": {"body": {"objective": "Preregister and independently replicate the homogeneous-model memory poisoning cascade.",
+            "api": {"body": {"objective": "Independently assure the homogeneous-model memory poisoning cascade.",
                 "risk_class": "medium", "constraints": ["no production tools", "no automatic promotion", "preserve ToolBroker"],
                 "acceptance_criteria": ["at least 30 preregistered paired replications", "model revisions and prompt hashes pinned",
                                         "static OpenMythos and WorldLab targeted regressions pass"],
                 "falsification_tests": ["trajectory failure is not independently reproduced", "treatment reduction lower bound is not positive"],
                 "recommended_loop": "worldlab-confirmatory-research-loop", "metadata": {"finding_id": finding_id,
-                    "evidence_hash": report_hash, "promotion_eligible": False, "required_next_gate": "confirmatory_replication"}}}
+                    "evidence_hash": report_hash, "promotion_eligible": False, "required_next_gate": next_gate}}}
         }]}],
     }
     baseline = report["infection_probability"]["control"]["mean"]
@@ -45,7 +48,7 @@ def package(report: dict, trajectories: list[dict]) -> tuple[dict, list[dict]]:
         "evidence_refs": [report_hash, f"worldlab:{row['trajectory_id']}"], "confidence": 0.95,
         "causal_status": "randomized", "experiment_id": "local-model-campaign", "trajectory_id": row["trajectory_id"],
         "finding_id": finding_id, "condition": "treatment", "replication_id": f"seed-{row['seed']:03d}",
-        "risk_class": "medium", "exploratory": True, "observed_at": "2026-09-07T00:00:00+02:00",
+        "risk_class": "medium", "exploratory": not confirmatory, "observed_at": "2026-09-07T00:00:00+02:00",
         "dedupe_key": f"worldlab:{row['trajectory_id']}:infection_probability",
     } for row in trajectories if row["condition"] == "treatment"]
     return goal, outcomes
