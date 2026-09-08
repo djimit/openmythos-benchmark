@@ -23,7 +23,7 @@ from worldlab.advanced import run_advanced
 from worldlab.integrations.eve_v import evaluate_challenge
 from worldlab.integrations.federation import synthetic_mirror
 from worldlab.integrations.models import ollama_adapter
-from worldlab.model_experiment import LocalModelCampaign, _boolean
+from worldlab.model_experiment import LocalModelCampaign, _boolean, _condition_flags
 from worldlab.runtime.capability_broker import WorldLabCapabilityBroker
 from worldlab.runtime.event_log import EventLog, sha256
 from worldlab.runtime.memory import MemoryStore
@@ -241,6 +241,43 @@ class WorldLabCoreTests(unittest.TestCase):
         homogeneous = LocalModelCampaign(["a", "checker"], population="homogeneous")
         self.assertEqual(homogeneous._checker_model("control", 1), "a")
         self.assertEqual(homogeneous._checker_model("treatment", 1), "checker")
+        self.assertEqual(_condition_flags("provenance_correlated_checker"), (True, False))
+        self.assertEqual(_condition_flags("no_provenance_independent_checker"), (False, True))
+        self.assertEqual(homogeneous._checker_model("provenance_correlated_checker", 1), "a")
+        self.assertEqual(homogeneous._checker_model("no_provenance_independent_checker", 1), "checker")
+        with self.assertRaises(ValueError):
+            _condition_flags("invented")
+
+    def test_factorial_model_campaign_requires_calibration_and_keeps_factors_separate(self) -> None:
+        class FakeCampaign(LocalModelCampaign):
+            def run_trajectory(self, condition: str, seed: int) -> dict:
+                provenance, independent = _condition_flags(condition)
+                return {
+                    "trajectory_id": f"fake-{condition}-{seed}", "condition": condition, "seed": seed,
+                    "provenance_validation": provenance, "independent_checker": independent,
+                    "infected_agents": 1 if provenance else 3,
+                    "infection_probability": 0.2 if provenance else 0.6,
+                    "unsafe_tool_requests": 0 if provenance else 1, "tool_blocks": 0 if provenance else 1,
+                    "detected": independent, "recovered": independent, "invalid_responses": 0,
+                    "token_count": 0, "latency_ms": 0, "events": [],
+                }
+
+        campaign = FakeCampaign(["a", "b", "c", "checker"])
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            calibration = campaign.calibrate(root / "calibration", 3)
+            self.assertEqual(calibration["state"], "PASS")
+            with patch("worldlab.model_experiment.ollama_model_metadata", return_value={}):
+                report = campaign.run(root / "factorial", 30, "factorial", calibration)
+            self.assertEqual(report["status"], "SUPPORTED")
+            self.assertEqual(len(report["conditions"]), 4)
+            self.assertEqual(report["condition_vectors"]["provenance_correlated_checker"]["infection_probability"]["n"], 30)
+            self.assertAlmostEqual(report["provenance_effect_on_infection"]["correlated_checker"]["effect"], 0.4)
+            self.assertAlmostEqual(report["checker_independence_recovery_gain"]["effect"], 1.0)
+            self.assertTrue((root / "factorial/trajectory-index.json").exists())
+
+            with self.assertRaises(ValueError):
+                campaign.run(root / "uncalibrated", 30, "factorial")
 
     def test_confirmatory_model_evidence_remains_inert_but_is_not_exploratory(self) -> None:
         report = {
@@ -259,7 +296,28 @@ class WorldLabCoreTests(unittest.TestCase):
         self.assertRegex(outcomes[0]["event_id"], r"^worldlab:[a-f0-9]{16}:treatment-001:")
         self.assertRegex(outcomes[0]["experiment_id"], r"^local-model-campaign:[a-f0-9]{16}$")
         self.assertEqual(outcomes[0]["checker_model_id"], "")
+        self.assertEqual(outcomes[0]["skill_id"], "worldlab-provenance-independent-checker")
+        self.assertEqual(outcomes[0]["cost_basis"], "local_runtime_no_api_charge")
         self.assertRegex(outcomes[0]["observed_at"], r"^\d{4}-\d{2}-\d{2}T")
+
+    def test_factorial_model_evidence_selects_the_combined_condition(self) -> None:
+        report = {
+            "study_phase": "confirmatory_factorial", "design": "factorial", "status": "SUPPORTED",
+            "model_revisions": {}, "infection_probability": {"control": {"mean": 0.8}},
+            "models": ["model-a"], "code_commit": "b" * 40, "worldlab_source_hash": "c" * 64,
+        }
+        trajectories = [
+            {"trajectory_id": "base-001", "condition": "no_provenance_correlated_checker", "seed": 1,
+             "infection_probability": 0.8},
+            {"trajectory_id": "combined-001", "condition": "provenance_independent_checker", "seed": 1,
+             "infection_probability": 0.2, "token_count": 12, "latency_ms": 34},
+        ]
+        goal, outcomes = package_model_finding(report, trajectories)
+        self.assertEqual(goal["source"]["study_phase"], "confirmatory_factorial")
+        self.assertEqual(len(outcomes), 1)
+        self.assertEqual(outcomes[0]["condition"], "provenance_independent_checker")
+        self.assertFalse(outcomes[0]["exploratory"])
+        self.assertEqual(outcomes[0]["token_count"], 12)
 
 
 if __name__ == "__main__":

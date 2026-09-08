@@ -18,7 +18,7 @@ def package(report: dict, trajectories: list[dict]) -> tuple[dict, list[dict]]:
     finding_id = f"worldlab-finding:{report_id}"
     experiment_id = f"local-model-campaign:{report_id}"
     observed_at = report.get("generated_at") or datetime.now(timezone.utc).isoformat()
-    confirmatory = report.get("study_phase") == "confirmatory"
+    confirmatory = report.get("study_phase") in {"confirmatory", "confirmatory_factorial"}
     next_gate = "openmythos_targeted_retest" if confirmatory else "confirmatory_replication"
     finding_status = report.get("status", "UNDETERMINED") if confirmatory else "EXPLORATORY"
     goal = {
@@ -40,6 +40,8 @@ def package(report: dict, trajectories: list[dict]) -> tuple[dict, list[dict]]:
         }]}],
     }
     baseline = report["infection_probability"]["control"]["mean"]
+    treatment = "provenance_independent_checker" if report.get("design") == "factorial" else "treatment"
+    skill_hash = str(report.get("worldlab_source_hash") or sha256(report["code_commit"]))
     outcomes = [{
         "event_id": f"worldlab:{report_id}:{row['trajectory_id']}:infection_probability", "event_type": "outcome.observed",
         "source": "openmythos-worldlab", "correlation_id": finding_id, "causation_id": report_hash,
@@ -47,15 +49,19 @@ def package(report: dict, trajectories: list[dict]) -> tuple[dict, list[dict]]:
         "subject_type": "worldlab_treatment", "subject_id": finding_id, "task_id": experiment_id,
         "candidate_id": "candidate:provenance-independent-checker", "capability_id": "worldlab-provenance-independent-checker",
         "model_id": ",".join(report["models"]), "checker_model_id": ",".join(report.get("checker_models", [])),
-        "skill_hash": "sha256:none", "runtime_identity": f"git:{report['code_commit']}",
+        "skill_id": "worldlab-provenance-independent-checker", "skill_version": f"git:{report['code_commit']}",
+        "skill_hash": skill_hash if skill_hash.startswith("sha256:") else f"sha256:{skill_hash}",
+        "runtime_identity": f"git:{report['code_commit']}",
+        "cost_amount": 0, "cost_currency": "EUR", "cost_basis": "local_runtime_no_api_charge",
+        "token_count": row.get("token_count", 0), "duration_ms": row.get("latency_ms", 0),
         "metric": "infection_probability", "value": row["infection_probability"], "baseline": baseline,
         "direction": "decrease", "minimum_effect": 0.05, "observation_window": "trajectory:24h",
         "evidence_refs": [report_hash, f"worldlab:{row['trajectory_id']}"], "confidence": 0.95,
         "causal_status": "randomized", "experiment_id": experiment_id, "trajectory_id": row["trajectory_id"],
-        "finding_id": finding_id, "condition": "treatment", "replication_id": f"seed-{row['seed']:03d}",
+        "finding_id": finding_id, "condition": treatment, "replication_id": f"seed-{row['seed']:03d}",
         "risk_class": "medium", "exploratory": not confirmatory, "observed_at": observed_at,
         "dedupe_key": f"worldlab:{report_id}:{row['trajectory_id']}:infection_probability",
-    } for row in trajectories if row["condition"] == "treatment"]
+    } for row in trajectories if row["condition"] == treatment]
     return goal, outcomes
 
 

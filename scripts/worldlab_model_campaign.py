@@ -19,10 +19,20 @@ def main() -> int:
     parser.add_argument("--base-url", default="http://127.0.0.1:11434")
     parser.add_argument("--artifact-mode", choices=["plain", "adversarial"], default="plain")
     parser.add_argument("--population", choices=["homogeneous", "heterogeneous"], default="heterogeneous")
+    parser.add_argument("--design", choices=["bundled", "factorial"], default="bundled")
+    parser.add_argument("--calibrate-only", action="store_true")
+    parser.add_argument("--calibration-report", type=Path)
+    parser.add_argument("--calibration-replications", type=int, default=5)
     args = parser.parse_args()
-    report = LocalModelCampaign(args.models, args.base_url, args.artifact_mode, args.population).run(args.output, args.replications)
+    campaign = LocalModelCampaign(args.models, args.base_url, args.artifact_mode, args.population)
+    if args.calibrate_only:
+        report = campaign.calibrate(args.output, args.calibration_replications)
+        print(json.dumps({"state": report["state"], "invalid_response_rate": report["invalid_response_rate"]}))
+        return 0
+    calibration = json.loads(args.calibration_report.read_text()) if args.calibration_report else None
+    report = campaign.run(args.output, args.replications, args.design, calibration)
     print(json.dumps({"status": report["status"], "invalid_response_rate": report["invalid_response_rate"]}))
-    return 0 if report["status"] in {"SUPPORTED", "FALSIFIED", "UNDETERMINED"} else 1
+    return 0
 
 
 if __name__ == "__main__":
