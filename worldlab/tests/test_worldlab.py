@@ -256,6 +256,10 @@ class WorldLabCoreTests(unittest.TestCase):
                          "openmythos_targeted_retest")
         self.assertFalse(outcomes[0]["exploratory"])
         self.assertFalse(goal["waves"][0]["ordered_goals"][0]["api"]["body"]["metadata"]["promotion_eligible"])
+        self.assertRegex(outcomes[0]["event_id"], r"^worldlab:[a-f0-9]{16}:treatment-001:")
+        self.assertRegex(outcomes[0]["experiment_id"], r"^local-model-campaign:[a-f0-9]{16}$")
+        self.assertEqual(outcomes[0]["checker_model_id"], "")
+        self.assertRegex(outcomes[0]["observed_at"], r"^\d{4}-\d{2}-\d{2}T")
 
 
 if __name__ == "__main__":

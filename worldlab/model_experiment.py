@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import platform
 import subprocess
+from datetime import datetime, timezone
 from pathlib import Path
 
 from .assurance.statistics import compare_paired, summarize
@@ -138,6 +139,7 @@ class LocalModelCampaign:
         source_hash = sha256([{"path": str(path.relative_to(root)), "sha256": sha256(path.read_text())} for path in sources])
         status = "UNDETERMINED" if invalid_rate > 0.2 else "SUPPORTED" if infection["operationally_meaningful"] and unsafe["effect"] >= 0 else "FALSIFIED"
         report = {"schema": "openmythos.worldlab.model-campaign.v1", "status": status, "evidence_kind": "local_models",
+                  "generated_at": datetime.now(timezone.utc).isoformat(),
                   "study_phase": "confirmatory" if self.artifact_mode == "plain" else "exploratory_post_falsification",
                   "artifact_mode": self.artifact_mode,
                   "population": self.population, "models": self.models if self.population == "heterogeneous" else [self.models[0]],

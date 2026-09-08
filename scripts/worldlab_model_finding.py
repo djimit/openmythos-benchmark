@@ -4,6 +4,7 @@
 import argparse
 import json
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -13,7 +14,10 @@ from worldlab.runtime.event_log import sha256
 
 def package(report: dict, trajectories: list[dict]) -> tuple[dict, list[dict]]:
     report_hash = f"sha256:{sha256(report)}"
-    finding_id = f"worldlab-finding:{report_hash.split(':')[-1][:16]}"
+    report_id = report_hash.split(":")[-1][:16]
+    finding_id = f"worldlab-finding:{report_id}"
+    experiment_id = f"local-model-campaign:{report_id}"
+    observed_at = report.get("generated_at") or datetime.now(timezone.utc).isoformat()
     confirmatory = report.get("study_phase") == "confirmatory"
     next_gate = "openmythos_targeted_retest" if confirmatory else "confirmatory_replication"
     finding_status = report.get("status", "UNDETERMINED") if confirmatory else "EXPLORATORY"
@@ -37,19 +41,20 @@ def package(report: dict, trajectories: list[dict]) -> tuple[dict, list[dict]]:
     }
     baseline = report["infection_probability"]["control"]["mean"]
     outcomes = [{
-        "event_id": f"worldlab:{row['trajectory_id']}:infection_probability", "event_type": "outcome.observed",
+        "event_id": f"worldlab:{report_id}:{row['trajectory_id']}:infection_probability", "event_type": "outcome.observed",
         "source": "openmythos-worldlab", "correlation_id": finding_id, "causation_id": report_hash,
-        "aggregate_id": finding_id, "aggregate_version": row["seed"], "outcome_id": f"outcome:{row['trajectory_id']}",
-        "subject_type": "worldlab_treatment", "subject_id": finding_id, "task_id": "local-model-campaign",
+        "aggregate_id": finding_id, "aggregate_version": row["seed"], "outcome_id": f"outcome:{report_id}:{row['trajectory_id']}",
+        "subject_type": "worldlab_treatment", "subject_id": finding_id, "task_id": experiment_id,
         "candidate_id": "candidate:provenance-independent-checker", "capability_id": "worldlab-provenance-independent-checker",
-        "model_id": ",".join(report["models"]), "skill_hash": "sha256:none", "runtime_identity": f"git:{report['code_commit']}",
+        "model_id": ",".join(report["models"]), "checker_model_id": ",".join(report.get("checker_models", [])),
+        "skill_hash": "sha256:none", "runtime_identity": f"git:{report['code_commit']}",
         "metric": "infection_probability", "value": row["infection_probability"], "baseline": baseline,
         "direction": "decrease", "minimum_effect": 0.05, "observation_window": "trajectory:24h",
         "evidence_refs": [report_hash, f"worldlab:{row['trajectory_id']}"], "confidence": 0.95,
-        "causal_status": "randomized", "experiment_id": "local-model-campaign", "trajectory_id": row["trajectory_id"],
+        "causal_status": "randomized", "experiment_id": experiment_id, "trajectory_id": row["trajectory_id"],
         "finding_id": finding_id, "condition": "treatment", "replication_id": f"seed-{row['seed']:03d}",
-        "risk_class": "medium", "exploratory": not confirmatory, "observed_at": "2026-09-07T00:00:00+02:00",
-        "dedupe_key": f"worldlab:{row['trajectory_id']}:infection_probability",
+        "risk_class": "medium", "exploratory": not confirmatory, "observed_at": observed_at,
+        "dedupe_key": f"worldlab:{report_id}:{row['trajectory_id']}:infection_probability",
     } for row in trajectories if row["condition"] == "treatment"]
     return goal, outcomes
 
