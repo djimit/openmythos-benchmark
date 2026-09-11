@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openmythos.org/worldlab/invariant-v1.json",
+  "type": "object",
+  "required": ["id", "kind", "predicate"],
+  "properties": {
+    "id": {"type": "string"}, "kind": {"enum": ["always", "eventually"]}, "predicate": {"type": "string"},
+    "trigger": {"type": "string"}, "within_events": {"type": "integer", "minimum": 1}, "description": {"type": "string"}
+  },
+  "additionalProperties": false
+}

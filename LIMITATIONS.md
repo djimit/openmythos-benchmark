@@ -3,7 +3,7 @@
 ## Known Constraints
 
 ### 1. English-Centric Prompts
-All 275 cases are in English. The cross-lingual category tests translation of
+Most of the 351 cases are in English. The cross-lingual category tests translation of
 terminology but does not evaluate non-English reasoning quality. Non-English
 prompt injection, cultural context, and locale-specific governance are out of scope.
 

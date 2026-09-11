@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openmythos.org/worldlab/scenario-v1.json",
+  "type": "object",
+  "required": ["id", "version", "hypothesis", "null_hypothesis", "research_question", "openmythos_categories", "initial_state", "agents", "capabilities", "memory_topology", "governance", "perturbations", "invariants", "forbidden_states", "observation_window", "replications", "randomization", "expected_properties", "falsification_conditions", "oracle_strategy", "independent_variables", "dependent_variables", "controls", "confounders", "stopping_condition", "analysis_method", "limitations"],
+  "properties": {
+    "id": {"type": "string"}, "version": {"type": "string"}, "hypothesis": {"type": "string"}, "null_hypothesis": {"type": "string"}, "research_question": {"type": "string"},
+    "openmythos_categories": {"type": "array", "items": {"type": "string"}}, "initial_state": {"$ref": "world-state.schema.json"},
+    "agents": {"type": "array", "items": {"$ref": "agent.schema.json"}, "minItems": 1}, "capabilities": {"type": "array", "items": {"type": "string"}},
+    "memory_topology": {"type": "object"}, "governance": {"type": "object"}, "perturbations": {"type": "array"}, "invariants": {"type": "array", "items": {"$ref": "invariant.schema.json"}},
+    "forbidden_states": {"type": "array"}, "observation_window": {"type": "object"}, "replications": {"type": "integer", "minimum": 1},
+    "randomization": {"type": "object"}, "expected_properties": {"type": "array"}, "falsification_conditions": {"type": "array"}, "oracle_strategy": {"type": "object"},
+    "independent_variables": {"type": "array"}, "dependent_variables": {"type": "array"}, "controls": {"type": "array"}, "confounders": {"type": "array"},
+    "stopping_condition": {"type": "string"}, "analysis_method": {"type": "string"}, "limitations": {"type": "array"},
+    "source_case": {"type": "object"}, "status": {"type": "string"}
+  },
+  "additionalProperties": false
+}

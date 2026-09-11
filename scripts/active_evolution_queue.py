@@ -339,17 +339,30 @@ def build_report(
 
 
 def build_goal_batch(report: dict, change_id: str) -> dict:
+    goals = report["djimitflo_goals"]
     return {
+        "schema": "djimit.openmythos.goal.v1",
+        "campaign_id": change_id,
         "change": change_id,
-        "source": "OpenMythos R12 active evolution queue",
+        "source": {
+            "producer": "OpenMythos R12 active evolution queue",
+            "evidence": report["inputs"],
+        },
         "generated_at": report["generated_at"],
         "writes_expected_in_preview": 0,
         "human_interactions_at_end": [
             "Approve Djimitflo goal-batch apply after preview remains valid and blocked=0.",
             "Approve canonical case promotion only after R10, R11, and R12 evidence stays green.",
         ],
-        "ordered_goals": report["djimitflo_goals"],
+        "waves": [
+            {"wave_id": f"wave-{index // 3 + 1}", "ordered_goals": goals[index:index + 3]}
+            for index in range(0, len(goals), 3)
+        ],
     }
+
+
+def batch_goals(batch: dict) -> list[dict]:
+    return [goal for wave in batch.get("waves", []) for goal in wave.get("ordered_goals", [])]
 
 
 def render_markdown(report: dict, batch: dict) -> str:
@@ -384,14 +397,14 @@ def render_markdown(report: dict, batch: dict) -> str:
             "## Djimitflo Goal Batch",
             "",
             f"- change: `{batch['change']}`",
-            f"- ordered goals: `{len(batch['ordered_goals'])}`",
+            f"- ordered goals: `{len(batch_goals(batch))}` across `{len(batch['waves'])}` bounded waves",
             "- preview expectation: `writes=0`",
             "",
             "| order | goal | risk | target |",
             "|---:|---|---|---|",
         ]
     )
-    for idx, goal in enumerate(batch["ordered_goals"], 1):
+    for idx, goal in enumerate(batch_goals(batch), 1):
         lines.append(f"| {idx} | {goal['key']} | {goal['risk']} | {goal['target']} |")
 
     lines.extend(
@@ -428,7 +441,8 @@ def demo() -> int:
     report = build_report(weakness, reliability, promotion, calibrated, anchors, min_anchor_count=4)
     batch = build_goal_batch(report, "demo")
     assert report["category_priorities"][0]["category"] == "tool-scope", report
-    assert len(batch["ordered_goals"]) == 5, batch
+    assert len(batch_goals(batch)) == 5, batch
+    assert all(len(wave["ordered_goals"]) <= 3 for wave in batch["waves"]), batch
     assert "om-r12-05-promotion-firewall" in render_markdown(report, batch)
     print("demo OK")
     return 0

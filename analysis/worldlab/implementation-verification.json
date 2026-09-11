@@ -1,0 +1,94 @@
+{
+  "schema": "openmythos.worldlab.implementation-verification.v1",
+  "captured_at": "2026-09-07T20:03:38+02:00",
+  "scope": "clean-openmythos-candidate-and-live-djimitflo-runtime",
+  "implementation": {
+    "worldlab_v0_1": "COMPLETE",
+    "worldlab_v0_2": "COMPLETE",
+    "worldlab_v1_information_criterion": "SUPPORTED_EXPLORATORY",
+    "production_promotion": false
+  },
+  "validation": {
+    "openmythos_unit": {"passed": 48, "failed": 0},
+    "worldlab_unit": {"passed": 20, "failed": 0},
+    "corpus": {"valid": 351, "invalid": 0},
+    "djimitflo_server": {"passed": 2025, "failed": 0, "skipped": 21},
+    "djimitflo_other_workspaces": {"passed": 150, "failed": 0},
+    "djimitflo_mutation": {"score_percent": 100, "killed": 11, "survived": 0, "no_coverage": 0},
+    "djimitflo_typecheck": "PASS",
+    "djimitflo_lint": "PASS",
+    "djimitflo_build": "PASS",
+    "dependency_audit": "PASS_NO_KNOWN_VULNERABILITIES",
+    "critical_contract_inventory": {"routes": 571, "mcp_tools": 56, "critical_unclassified": 0}
+  },
+  "experiments": {
+    "synthetic_control_treatment": "SUPPORTED",
+    "homogeneous_gemma": {
+      "status": "SUPPORTED",
+      "study_phase": "exploratory_post_falsification",
+      "replications_per_condition": 30,
+      "infection_control": 0.8,
+      "infection_treatment": 0.2,
+      "unsafe_requests_control": 1.0,
+      "unsafe_requests_treatment": 0.0,
+      "invalid_response_rate": 0.0,
+      "sha256": "43c53033f348a01d6d6646a91191c63fd07dd9a4fbdd6bf0089af9fa64d6e54c"
+    },
+    "heterogeneous_treatment": {
+      "status": "FALSIFIED",
+      "replications_per_condition": 30,
+      "sha256": "ebdbb0cb669c72c2fd889f5278c1489f9e34e890a381a2f2a6256e12105b3a61"
+    },
+    "pointwise_pass_trajectory_fail": {
+      "status": "SUPPORTED",
+      "sha256": "a50277ed2e75f76fafa6255e889612cdc2c8fa7e9718609565364f9acd8e86a6"
+    }
+  },
+  "isolated_djimitflo_handshake": {
+    "goal_preview": {"total": 1, "valid": 1, "blocked": 0, "writes": 0},
+    "goal_apply": {"created": 1, "workers_started": 0},
+    "outcomes_ingested": 30,
+    "outcome_assessment": "UNDETERMINED",
+    "outcome_signal": "SUPPORTED",
+    "causal_support": false,
+    "promotion_eligible": false,
+    "retest_decision": "UNDETERMINED",
+    "promoted": false,
+    "visible_interactions": 40
+  },
+  "canonical_candidate": {
+    "source_branch": "codex/worldlab-governance-lab-20260907",
+    "source_commit": "f2df757f67753adee931d23e6462ff2de8c25ba2",
+    "base_commit": "cdeed396db828c15d11d4d2c3ca165287f9e0504",
+    "working_tree_dirty": false,
+    "corpus_cases": 351,
+    "openmythos_tests_passed": 48,
+    "worldlab_tests_passed": 21,
+    "campaign": {
+      "replications_per_condition": 30,
+      "status": "SUPPORTED",
+      "pointwise_static_status": "PASS",
+      "trajectory_failure_observed": true,
+      "report_sha256": "f4b3af819caf1bf1f28c783c9220ac17d8c9343465554aad63cebe9fb1f83ecd",
+      "contrast_sha256": "d525d22c47407bcfbd54e94c3831301e37692b5d350d19ac5d8bf422efdfdf6d",
+      "manifest_sha256": "042ce0ed85ccd81cffc0b043f259b7803314b30605d5d7ae7259eb14dfec04e8"
+    },
+    "djimitflo_runtime": {
+      "commit": "2847861cd233eb2c077fa0ef42c2906a3b77aea2",
+      "image_id": "sha256:e03ae19d99b0f717fd95225343e3ca2f94615cb984be3fcd3fe5a5c381c218e0",
+      "internal_health": "PASS",
+      "external_health": "PASS",
+      "promotion_performed": false
+    }
+  },
+  "fail_closed_blockers": [
+    "OpenMythos broad governance certification lacks repeatability and held-out discrimination evidence",
+    "the local-model finding remains exploratory until preregistered independent confirmation",
+    "DjimitFlo pull request 183 still requires independent human review",
+    "live research worker execution requires an isolated Git source and worktree mount"
+  ],
+  "artifacts": {
+    "confirmatory_goal_batch_sha256": "0fc3121c020caf2c177d7e3091e68c1d6cd7db6fb6a1b1a6ec13f75ba1d6b2ea",
+    "sbom_sha256": "26603203e6b867e3b71bb99a2bf88ba462b3f564b192fcddd6a4ba8c79603de9"
+  }
+}

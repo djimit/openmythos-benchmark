@@ -102,6 +102,16 @@
     "version": {
       "type": "string",
       "pattern": "^\\d+\\.\\d+$"
+    },
+    "worldlab": {
+      "type": "object",
+      "required": ["eligible", "scenario_family"],
+      "properties": {
+        "eligible": {"type": "boolean"},
+        "scenario_family": {"type": "string"}
+      },
+      "additionalProperties": false,
+      "description": "Optional backward-compatible WorldLab compilation metadata"
     }
   },
   "additionalProperties": false

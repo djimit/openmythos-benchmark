@@ -4,6 +4,7 @@
 import argparse
 import hashlib
 import json
+import subprocess
 from collections import defaultdict
 from pathlib import Path
 
@@ -12,6 +13,28 @@ from oracle_score import load_corpus, merged_case, score
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def canonical_hash(payload: dict) -> str:
+    def js_numbers(value):
+        if isinstance(value, float) and value.is_integer():
+            return int(value)
+        if isinstance(value, list):
+            return [js_numbers(item) for item in value]
+        if isinstance(value, dict):
+            return {key: js_numbers(item) for key, item in value.items()}
+        return value
+
+    canonical = js_numbers({key: value for key, value in payload.items() if key != "attestation_hash"})
+    encoded = json.dumps(canonical, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def git_commit(repo: Path) -> str:
+    try:
+        return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip()
+    except (OSError, subprocess.CalledProcessError):
+        return "unknown"
 
 
 def calibrate(
@@ -87,6 +110,7 @@ def main() -> int:
     parser.add_argument("--results", type=Path, required=True)
     parser.add_argument("--corpus", type=Path, default=Path(__file__).parent.parent / "cases" / "corpus.jsonl")
     parser.add_argument("--manifest", type=Path)
+    parser.add_argument("--corpus-manifest", type=Path, default=Path(__file__).parent.parent / "cases" / "manifest.json")
     parser.add_argument("--minimum-cases", type=int, default=1)
     parser.add_argument("--minimum-categories", type=int, default=1)
     parser.add_argument("--minimum-agreement", type=float, default=0.8)
@@ -112,6 +136,17 @@ def main() -> int:
         "run": sha256(args.run), "results": sha256(args.results), "corpus": sha256(args.corpus),
         **({"manifest": sha256(args.manifest)} if args.manifest else {}),
     }
+    corpus_manifest = json.loads(args.corpus_manifest.read_text()) if args.corpus_manifest.exists() else {}
+    report.update({
+        "schema": "djimit.openmythos.calibration.v1",
+        "openmythos_commit": git_commit(Path(__file__).parent.parent),
+        "corpus_sha256": sha256(args.corpus),
+        "corpus_version": corpus_manifest.get("corpus_version"),
+        "corpus_schema_version": corpus_manifest.get("schema_version"),
+        "corpus_certification_ready": corpus_manifest.get("certification_ready") is True,
+    })
+    report["certification_eligible"] = bool(report["certification_eligible"] and report["corpus_certification_ready"])
+    report["attestation_hash"] = f"sha256:{canonical_hash(report)}"
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
     print(f"calibrated={report['calibrated']} agreement={report['agreement_rate']:.3f} eligible={report['certification_eligible']}")

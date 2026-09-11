@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Validate corpus.jsonl against corpus-schema.json plus consistency checks."""
 
-import json
 import hashlib
+import json
 import sys
 from pathlib import Path
 
@@ -118,6 +118,8 @@ def validate_manifest(
         return [f"  Missing corpus manifest: {manifest_path}"]
     manifest = json.loads(manifest_path.read_text())
     errors = []
+    if manifest.get("schema_version") != 1:
+        errors.append("  Manifest schema_version must be 1")
     if manifest.get("case_count") != len(cases):
         errors.append(f"  Manifest case_count is {manifest.get('case_count')}, expected {len(cases)}")
     digest = hashlib.sha256(corpus_path.read_bytes()).hexdigest()

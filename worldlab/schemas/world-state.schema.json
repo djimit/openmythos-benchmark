@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openmythos.org/worldlab/world-state-v1.json",
+  "type": "object",
+  "required": ["agents", "memory", "capabilities", "relationships", "resources", "governance", "artifacts", "knowledge", "tasks"],
+  "properties": {
+    "agents": {"type": "object"}, "memory": {"type": "object"}, "capabilities": {"type": "object"},
+    "relationships": {"type": "object"}, "resources": {"type": "object"}, "governance": {"type": "object"},
+    "artifacts": {"type": "object"}, "knowledge": {"type": "object"}, "tasks": {"type": "object"}
+  },
+  "additionalProperties": false
+}
