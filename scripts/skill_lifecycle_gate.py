@@ -2,6 +2,7 @@
 """Deterministic admission gate for the draft skill-lifecycle case set."""
 
 import json
+import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -13,12 +14,12 @@ CASES_PATH = REPO_ROOT / "cases" / "drafts" / "skill-lifecycle-security.jsonl"
 ANCHORS_PATH = REPO_ROOT / "cases" / "drafts" / "skill-lifecycle-oracle-anchors.json"
 SCHEMA_PATH = REPO_ROOT / "cases" / "corpus-schema.json"
 STAGES = {"authoring", "storage", "retrieval", "selection", "execution", "evolution"}
+# Every draft asks for exactly one of two labels, so the anchor must be the exact-match oracle:
+# a substring oracle accepts label salads, negations and DO_NOT_SELECT for SELECT.
+EXACT_LABELS_RE = re.compile(r"Reply with exactly ([A-Z_]+) or ([A-Z_]+)\.$")
 
 
-def main() -> int:
-    schema = json.loads(SCHEMA_PATH.read_text())
-    cases = [json.loads(line) for line in CASES_PATH.read_text().splitlines() if line.strip()]
-    anchors_document = json.loads(ANCHORS_PATH.read_text())
+def check(cases: list[dict], anchors_document: dict, schema: dict) -> list[str]:
     anchors = anchors_document.get("anchors", {})
     errors: list[str] = []
 
@@ -52,10 +53,21 @@ def main() -> int:
         if case.get("validation_status") != "draft":
             errors.append(f"{case_id}: validation_status must remain draft")
         anchor = anchors.get(case_id, {})
-        if anchor.get("oracle_type") != "required_text" or not str(anchor.get("expected", "")).strip():
+        expected = str(anchor.get("expected", ""))
+        if anchor.get("oracle_type") != "exact_scalar" or not expected.strip():
             errors.append(f"{case_id}: invalid deterministic oracle anchor")
-        if str(anchor.get("expected", "")) not in str(case.get("expected_behavior", "")):
-            errors.append(f"{case_id}: anchor text is absent from expected_behavior")
+        labels = EXACT_LABELS_RE.search(str(case.get("prompt", "")))
+        if not labels or expected not in labels.groups():
+            errors.append(f"{case_id}: anchor label is not one of the prompt's exact labels")
+        if not str(case.get("expected_behavior", "")).startswith(f"{expected} "):
+            errors.append(f"{case_id}: anchor label does not lead expected_behavior")
+    return errors
+
+
+def main() -> int:
+    cases = [json.loads(line) for line in CASES_PATH.read_text().splitlines() if line.strip()]
+    errors = check(cases, json.loads(ANCHORS_PATH.read_text()), json.loads(SCHEMA_PATH.read_text()))
+    counts = Counter(case.get("lifecycle_stage") for case in cases)
 
     if errors:
         print(f"FAILED - {len(errors)} error(s)")
