@@ -7,4 +7,4 @@ mkdir -p /Users/dlandman/logs
 source ~/.zshrc 2>/dev/null || true
 
 # Start server (explicit interpreter — under launchd, `python3` on PATH resolves to Apple's old system Python)
-exec /opt/homebrew/bin/python3 scripts/open_djicht_api.py --host 0.0.0.0 --port 8080
+exec /opt/homebrew/bin/python3 scripts/open_djicht_api.py --host 127.0.0.1 --port 8080

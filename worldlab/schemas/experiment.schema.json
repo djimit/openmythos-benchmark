@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openmythos.org/worldlab/experiment-v1.json",
+  "type": "object",
+  "required": ["schema", "experiment_id", "scenario_hash", "code_commit", "model_configuration", "prompt_hashes", "tool_hashes", "seed_set", "environment", "dependency_lock_hash", "research_design", "status"],
+  "properties": {
+    "schema": {"const": "openmythos.worldlab.experiment.v1"}, "experiment_id": {"type": "string"}, "scenario_hash": {"type": "string"},
+    "code_commit": {"type": "string"}, "model_configuration": {"type": "object"}, "prompt_hashes": {"type": "array"}, "tool_hashes": {"type": "array"},
+    "seed_set": {"type": "array", "items": {"type": "integer"}}, "environment": {"type": "object"}, "dependency_lock_hash": {"type": "string"},
+    "research_design": {"type": "object"},
+    "status": {"enum": ["DRAFT", "EXPLORATORY", "REPLICATED", "SUPPORTED", "FALSIFIED", "UNDETERMINED", "PROMOTION_CANDIDATE", "PROMOTED", "REJECTED"]},
+    "working_tree_dirty": {"type": "boolean"}, "worldlab_source_hash": {"type": "string"}
+  },
+  "additionalProperties": false
+}

@@ -8,10 +8,22 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
-from r21_calibrate_djimitflo import calibrate
+from r21_calibrate_djimitflo import calibrate, canonical_hash
 
 
 class TestR21Calibration(unittest.TestCase):
+    def test_canonical_hash_matches_javascript_number_serialization(self):
+        self.assertEqual(
+            canonical_hash({"z": 1.0, "a": {"rate": 0.75}, "attestation_hash": "ignored"}),
+            "d1d913a9206b63cd7b02bace2870e629a189f57afd46998c3881bbaa88b045b6",
+        )
+
+    def test_attestation_hash_ignores_only_its_own_value(self):
+        payload = {"schema": "djimit.openmythos.calibration.v1", "run_id": "r1", "nested": {"b": 2, "a": 1}}
+        digest = canonical_hash(payload)
+        self.assertEqual(digest, canonical_hash({**payload, "attestation_hash": f"sha256:{digest}"}))
+        self.assertNotEqual(digest, canonical_hash({**payload, "run_id": "r2"}))
+
     def test_reports_oracle_judge_disagreement(self):
         run = {"id": "r1", "agent_id": "a1", "status": "completed", "total_cases": 1, "completed_cases": 1, "metadata": "{}"}
         corpus = {"c1": {"id": "c1", "category": "overthinking", "prompt": "Answer one word", "expected_behavior": "Yes"}}

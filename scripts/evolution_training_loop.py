@@ -106,7 +106,7 @@ def identify_weak_categories(model: str, backend: str) -> list[dict]:
     """Run benchmark and identify categories where the model is weakest."""
     print(f"  [EVAL] Running benchmark against {model}...")
 
-    trace_dir = TRACES_DIR / f"evolution-eval-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}")
+    trace_dir = TRACES_DIR / f"evolution-eval-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}"
     trace_dir.mkdir(parents=True, exist_ok=True)
 
     trace_file = trace_dir / "eval.jsonl"

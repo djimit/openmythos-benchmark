@@ -2,14 +2,49 @@
 """Run benchmark cases against a model via Ollama or OpenAI-compatible API."""
 
 import argparse
+import hashlib
 import json
 import os
+import signal
 import sys
 import time
+from contextlib import contextmanager
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
 CORPUS_PATH = REPO_ROOT / "cases" / "corpus.jsonl"
+
+
+@contextmanager
+def wall_timeout(seconds: int):
+    """Enforce elapsed time; socket timeouts only bound idle reads."""
+    if seconds <= 0 or not hasattr(signal, "SIGALRM"):
+        yield
+        return
+    previous = signal.getsignal(signal.SIGALRM)
+
+    def expired(_signum, _frame):
+        raise TimeoutError(f"case exceeded {seconds}s wall timeout")
+
+    signal.signal(signal.SIGALRM, expired)
+    signal.setitimer(signal.ITIMER_REAL, seconds)
+    try:
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, previous)
+
+
+def ollama_model_digest(base_url: str, model: str) -> str:
+    import urllib.request
+
+    with urllib.request.urlopen(f"{base_url.rstrip('/')}/api/tags", timeout=10) as resp:
+        models = json.loads(resp.read()).get("models", [])
+    wanted = {model, f"{model}:latest"}
+    for item in models:
+        if item.get("name") in wanted or item.get("model") in wanted:
+            return str(item.get("digest") or "")
+    raise RuntimeError(f"Ollama model not found: {model}")
 
 
 def load_corpus(path: Path = CORPUS_PATH) -> list[dict]:
@@ -29,14 +64,17 @@ def call_ollama(
     num_predict: int | None = None,
     timeout: int = 120,
     system: str | None = None,
+    temperature: float = 0,
+    seed: int = 0,
 ) -> dict:
     """Call Ollama API."""
     import urllib.request
 
     url = f"{base_url}/api/generate"
     body = {"model": model, "prompt": prompt, "stream": False}
+    body["options"] = {"temperature": temperature, "seed": seed}
     if num_predict:
-        body["options"] = {"num_predict": num_predict}
+        body["options"]["num_predict"] = num_predict
     if system:
         body["system"] = system
     payload = json.dumps(body).encode()
@@ -44,8 +82,9 @@ def call_ollama(
         url, data=payload, headers={"Content-Type": "application/json"}
     )
     start = time.time()
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        result = json.loads(resp.read())
+    with wall_timeout(timeout):
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            result = json.loads(resp.read())
     elapsed = time.time() - start
     return {
         "response": result.get("response", ""),
@@ -280,6 +319,8 @@ def main():
     parser.add_argument(
         "--system", default=None, help="System prompt (ollama backend only)"
     )
+    parser.add_argument("--temperature", type=float, default=0, help="Ollama sampling temperature")
+    parser.add_argument("--seed", type=int, default=0, help="Ollama sampling seed")
     args = parser.parse_args()
 
     # Governance check: verify model is allowed for this data class
@@ -308,6 +349,8 @@ def main():
         )
 
     cases = load_corpus(args.corpus)
+    corpus_sha256 = hashlib.sha256(args.corpus.read_bytes()).hexdigest()
+    model_digest = ollama_model_digest(args.base_url or "http://localhost:11434", args.model) if args.backend == "ollama" else None
     if args.categories:
         cases = [c for c in cases if c["category"] in args.categories]
     if args.limit:
@@ -343,6 +386,8 @@ def main():
                         args.num_predict,
                         args.timeout,
                         args.system,
+                        args.temperature,
+                        args.seed,
                     )
                 elif args.backend == "anthropic":
                     result = call_anthropic(case["prompt"], args.model)
@@ -352,6 +397,8 @@ def main():
                     result = call_openai(
                         case["prompt"], args.model, base_url=args.base_url, api=args.api
                     )
+            except TimeoutError as e:
+                raise SystemExit(f"ERROR: {case['id']}: {e}") from e
             except Exception as e:
                 result = {"response": f"ERROR: {e}", "tokens": 0, "latency_ms": 0}
 
@@ -366,6 +413,13 @@ def main():
                 "latency_ms": result["latency_ms"],
                 "model": args.model,
                 "backend": args.backend,
+                "model_digest": model_digest,
+                "corpus_sha256": corpus_sha256,
+                "generation_options": {
+                    "temperature": args.temperature if args.backend == "ollama" else 0,
+                    "seed": args.seed if args.backend == "ollama" else None,
+                    "num_predict": args.num_predict,
+                },
             }
             f.write(json.dumps(entry, ensure_ascii=False) + "\n")
             f.flush()

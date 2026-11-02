@@ -20,7 +20,7 @@ class TestCorpus(unittest.TestCase):
         cls.cases = load_corpus()
 
     def test_total_count(self):
-        self.assertGreaterEqual(len(self.cases), 275)
+        self.assertEqual(len(self.cases), 351)
 
     def test_eleven_categories(self):
         cats = set(c["category"] for c in self.cases)

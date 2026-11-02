@@ -1,0 +1,31 @@
+{
+  "captured_at": "2026-09-07T00:15:00+02:00",
+  "evidence_scope": "local_worktree",
+  "openmythos_commit": "4edbb42416658cca6c059402867f0dd1a5be3f5c",
+  "openmythos_worktree_dirty": true,
+  "djimitflo_commit": "1299adbe1afafc0dcd60d715ec83833e0ca70216",
+  "djimitflo_worktree_dirty": false,
+  "corpus_hash": "71ca62e742f71c2830f198c01dbcacdcf75487b9ef96e661d3e297d6608d41b9",
+  "openmythos_tests": {
+    "unit": {"status": "pass", "passed": 41},
+    "corpus_validation": {"status": "pass", "valid_cases": 351}
+  },
+  "djimitflo_tests": {
+    "focused_integration": {"status": "pass", "passed": 56},
+    "server_typecheck": {"status": "pass"}
+  },
+  "api_contract_hash": "sha256:97ab181e7be2932afd8a537103e93f2e86c626acbede0909dbd432437c76ed42",
+  "schema_versions": {
+    "openmythos_corpus": "1",
+    "djimitflo_sqlite_user_version": "0"
+  },
+  "security_invariants": [
+    "production mutation requires DjimitFlo policy and ToolBroker mediation",
+    "maker, checker, and final approver remain separate",
+    "WorldLab external side effects are disabled by default",
+    "unknown assurance state is never treated as pass"
+  ],
+  "known_contract_failures": [
+    "OpenMythos R12 and R21 generated goal batches exceed DjimitFlo's maximum of three goals"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openmythos.org/worldlab/event-v1.json",
+  "type": "object",
+  "required": ["event_id", "experiment_id", "trajectory_id", "sequence", "timestamp_simulated", "timestamp_wallclock", "actor", "event_type", "intent", "input", "authorization", "result", "state_delta", "parent_event_ids", "causal_tags", "evidence", "previous_hash", "event_hash"],
+  "properties": {
+    "event_id": {"type": "string"}, "experiment_id": {"type": "string"}, "trajectory_id": {"type": "string"},
+    "sequence": {"type": "integer", "minimum": 0}, "timestamp_simulated": {"type": "string"}, "timestamp_wallclock": {"type": "string"},
+    "actor": {"type": "object", "required": ["type", "id"], "properties": {"type": {"type": "string"}, "id": {"type": "string"}}, "additionalProperties": false},
+    "event_type": {"type": "string"}, "intent": {"type": "object"}, "input": {"type": "object"},
+    "authorization": {"type": "object"}, "result": {"type": "object"}, "state_delta": {"type": "object"},
+    "parent_event_ids": {"type": "array", "items": {"type": "string"}}, "causal_tags": {"type": "array", "items": {"type": "string"}},
+    "evidence": {"type": "object"}, "previous_hash": {"type": ["string", "null"]}, "event_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "additionalProperties": false
+}

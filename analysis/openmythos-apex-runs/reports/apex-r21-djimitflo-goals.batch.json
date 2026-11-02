@@ -1,6 +1,15 @@
 {
+  "schema": "djimit.openmythos.goal.v1",
+  "campaign_id": "openmythos-r21-evidence-closed-training-pilot",
   "change": "openmythos-r21-evidence-closed-training-pilot",
-  "ordered_goals": [
+  "source": {
+    "producer": "OpenMythos R21 evidence-closed training pilot",
+    "evidence": "apex-r21-djimitflo-calibration.json"
+  },
+  "waves": [
+    {
+      "wave_id": "holdout-foundation",
+      "ordered_goals": [
     {
       "key": "om-r21-01-expand-untouched-holdout",
       "title": "Expand the untouched category-stratified holdout",
@@ -17,7 +26,12 @@
           ]
         }
       }
+    }
+      ]
     },
+    {
+      "wave_id": "training-and-calibration",
+      "ordered_goals": [
     {
       "key": "om-r21-02-produce-measurable-training-delta",
       "title": "Produce a measurable non-regressing training delta",
@@ -54,7 +68,12 @@
           ]
         }
       }
+    }
+      ]
     },
+    {
+      "wave_id": "human-promotion-decision",
+      "ordered_goals": [
     {
       "key": "om-r21-04-human-promotion-decision",
       "title": "Require an evidence-backed human promotion decision",
@@ -75,6 +94,8 @@
           ]
         }
       }
+    }
+      ]
     }
   ]
 }
