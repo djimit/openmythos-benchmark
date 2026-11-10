@@ -1,0 +1,16 @@
+# Gitleaks configuration (auto-loaded from the repo root by `gitleaks git /repo`).
+# Extends the default ruleset; only adds narrowly scoped false-positive allowlists.
+
+[extend]
+useDefault = true
+
+# Djimitflo goal/task identifiers such as `"key": "om-r12-01-stabilize-..."`
+# match the generic-api-key rule because the JSON field is literally named
+# "key". They are human-readable slugs, not credentials. Allowlisting the
+# value shape (instead of per-commit fingerprints in .gitleaksignore) keeps
+# every future commit that touches these reports from re-triggering the gate.
+[[allowlists]]
+description = "OpenMythos/Djimitflo task key slugs (om-r<N>-...)"
+targetRules = ["generic-api-key"]
+regexTarget = "secret"
+regexes = ['''^om-r\d+-[a-z0-9]+(?:-[a-z0-9]+)*$''']
