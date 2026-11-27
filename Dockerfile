@@ -5,7 +5,6 @@ WORKDIR /app
 # System deps
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
-    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 # Python deps (minimal — no ML framework needed for orchestration)
